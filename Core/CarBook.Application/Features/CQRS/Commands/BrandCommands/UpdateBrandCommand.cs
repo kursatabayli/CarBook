@@ -1,15 +1,8 @@
-﻿using CarBook.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CarBook.Application.Features.CQRS.Commands.BrandCommands
+﻿namespace CarBook.Application.Features.CQRS.Commands.BrandCommands
 {
-    public class UpdateBrandCommand
-    {
-        public int BrandID { get; set; }
-        public string Name { get; set; }
-    }
+	public class UpdateBrandCommand
+	{
+		public int BrandID { get; set; }
+		public string Name { get; set; }
+	}
 }
