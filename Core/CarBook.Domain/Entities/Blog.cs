@@ -12,6 +12,7 @@ namespace CarBook.Domain.Entities
         public string Title { get; set; }
         public int AuthorID { get; set; }
         public Author Author { get; set; }
+        public string Description { get; set; }
         public string CoverImageUrl { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CategoryID { get; set; }

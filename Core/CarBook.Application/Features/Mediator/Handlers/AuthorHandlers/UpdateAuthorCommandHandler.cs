@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CarBook.Application.Features.Mediator.Handlers.AuthorHandlers
 {
-    internal class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand>
+    public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand>
     {
         private readonly IRepository<Author> _repository;
 

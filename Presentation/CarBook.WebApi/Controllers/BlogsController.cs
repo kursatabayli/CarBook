@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.BlogCommands;
-using CarBook.Application.Features.Mediator.Handlers.BlogHandlers;
 using CarBook.Application.Features.Mediator.Queries.BlogQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +54,13 @@ namespace CarBook.WebApi.Controllers
         public async Task<IActionResult> GetLast3BlogsWithAuthorsList()
         {
             var values = await _mediator.Send(new GetLast3BlogsWithAuthorsQuery());
+            return Ok(values);
+        }
+
+        [HttpGet("GetAllBlogsWithAuthorsList")]
+        public async Task<IActionResult> GetAllBlogsWithAuthorsList()
+        {
+            var values = await _mediator.Send(new GetAllBlogsWithAuthorsQuery());
             return Ok(values);
         }
     }
