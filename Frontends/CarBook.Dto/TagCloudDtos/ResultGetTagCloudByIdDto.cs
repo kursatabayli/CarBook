@@ -8,7 +8,7 @@ namespace CarBook.Dto.TagCloudDtos
 {
     public class ResultGetTagCloudByIdDto
     {
-        public int Id { get; set; }
+        public int TagCloudId { get; set; }
         public string Title { get; set; }
         public int BlogID { get; set; }
     }

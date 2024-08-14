@@ -33,6 +33,8 @@ namespace CarBook.Application.Features.Mediator.Handlers.BlogHandlers
                 Title = x.Title,
                 CategoryName = x.Category.Name,
                 Description = x.Description,
+                AuthorImageUrl = x.Author.ImageUrl,
+                AuthorDescription = x.Author.Description,
             }).ToList();
         }
     }

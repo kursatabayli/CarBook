@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace CarBook.Domain.Entities
 {
-    public class TagCloud
+    public class Comment
     {
-        public int TagCloudId { get; set; }
-        public string Title { get; set; }        
+        public int CommentID { get; set; }
+        public string Name { get; set; }
+        public string CommentText { get; set; }
+        public DateTime CreatedDate { get; set; }
         public int BlogID { get; set; }
         public Blog Blog { get; set; }
-
     }
 }

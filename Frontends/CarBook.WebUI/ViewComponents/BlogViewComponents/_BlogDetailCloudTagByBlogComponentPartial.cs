@@ -16,12 +16,13 @@ namespace CarBook.WebUI.ViewComponents.BlogViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int id)
         {
+            ViewBag.BlogID = id;
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/TagClouds//" + id);
+            var responseMessage = await client.GetAsync($"https://localhost:7278/api/TagClouds/GetTagCloudByBlogId?id=" + id);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<ResultGetTagCloudByIdDto>(jsonData);
+                var values = JsonConvert.DeserializeObject<List<ResultGetTagCloudByIdDto>>(jsonData);
                 return View(values);
             }
             return View();

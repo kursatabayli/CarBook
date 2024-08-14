@@ -20,7 +20,7 @@ namespace CarBook.Application.Features.Mediator.Handlers.TagCloudHandlers
         }
         public async Task Handle(UpdateTagCloudCommand request, CancellationToken cancellationToken)
         {
-            var values = await _repository.GetByIdAsync(request.Id);
+            var values = await _repository.GetByIdAsync(request.TagCloudId);
             values.Title = request.Title;
             values.BlogID = request.BlogID;
             await _repository.UpdateAsync(values);

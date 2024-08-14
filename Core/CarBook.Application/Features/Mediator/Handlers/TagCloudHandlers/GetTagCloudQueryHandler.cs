@@ -25,7 +25,7 @@ namespace CarBook.Application.Features.Mediator.Handlers.TagCloudHandlers
             var values = await _repository.GetAllAsync();
             return values.Select(x => new GetTagCloudQueryResult
             {
-                Id = x.Id,
+                TagCloudId = x.TagCloudId,
                 Title = x.Title,
                 BlogID = x.BlogID,
             }).ToList();

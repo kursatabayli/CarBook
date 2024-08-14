@@ -4,20 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarBook.Domain.Entities
+namespace CarBook.Dto.BlogDtos
 {
-    public class Blog
+    public class ResultGetBlogByIdDto
     {
         public int BlogID { get; set; }
         public string Title { get; set; }
         public int AuthorID { get; set; }
-        public Author Author { get; set; }
         public string Description { get; set; }
         public string CoverImageUrl { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CategoryID { get; set; }
-        public Category Category { get; set; }
-        public List<TagCloud> Tags { get; set; }
-        public List<Comment> Comments { get; set; }
     }
 }
