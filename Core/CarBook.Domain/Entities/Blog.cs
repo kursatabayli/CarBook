@@ -17,5 +17,6 @@ namespace CarBook.Domain.Entities
         public DateTime CreatedDate { get; set; }
         public int CategoryID { get; set; }
         public Category Category { get; set; }
+        public List<TagCloud> Tags { get; set; }
     }
 }

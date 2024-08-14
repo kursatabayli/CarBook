@@ -7,9 +7,9 @@ namespace CarBook.Application.Features.Mediator.Handlers.LocationHandlers
 {
 	public class RemoveLocationCommandHandler : IRequestHandler<RemoveLocationCommand>
 	{
-		private readonly IRepository<Feature> _repository;
+		private readonly IRepository<Location> _repository;
 
-		public RemoveLocationCommandHandler(IRepository<Feature> repository)
+		public RemoveLocationCommandHandler(IRepository<Location> repository)
 		{
 			_repository = repository;
 		}
