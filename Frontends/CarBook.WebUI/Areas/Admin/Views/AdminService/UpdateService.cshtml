@@ -1,0 +1,40 @@
+﻿@model UpdateServiceDto
+
+@{
+    ViewData["Title"] = "UpdateService";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Hizmet Güncelleme</h4>
+                        <form data-action-type="update" asp-action="UpdateService" method="post">
+                            <input type="hidden" asp-for="ServiceID" />
+                            <div class="form-group">
+                                <label asp-for="Title">Hizmet Adı</label>
+                                <input type="text" class="form-control" asp-for="Title" placeholder="Hizmet Adı" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description">Hizmet Açıklaması</label>
+                                <textarea class="form-control" asp-for="Description" placeholder="Açıklama Girişi" rows="5"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="IconUrl">Hizmet İkonu</label>
+                                <input type="text" class="form-control" asp-for="IconUrl" placeholder="Görsel URL'si" />
+                                <span asp-validation-for="IconUrl" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Hizmeti Güncelle</button>
+                            <a href="/Admin/AdminService/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

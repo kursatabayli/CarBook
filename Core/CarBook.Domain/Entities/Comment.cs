@@ -14,5 +14,6 @@ namespace CarBook.Domain.Entities
         public DateTime CreatedDate { get; set; }
         public int BlogID { get; set; }
         public Blog Blog { get; set; }
+
     }
 }

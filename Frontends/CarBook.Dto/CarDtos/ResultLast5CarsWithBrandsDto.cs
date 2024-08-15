@@ -13,11 +13,8 @@ namespace CarBook.Dto.CarDtos
         public string BrandName { get; set; }
         public string Model { get; set; }
         public string CoverImageUrl { get; set; }
-        public int Km { get; set; }
-        public string Transmission { get; set; }
-        public byte Seat { get; set; }
-        public byte Luggage { get; set; }
-        public string Fuel { get; set; }
-        public string BigImageUrl { get; set; }
+        public decimal DailyPrice { get; set; }
+        public decimal WeeklyPrice { get; set; }
+        public decimal MonthlyPrice { get; set; }
     }
 }

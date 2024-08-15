@@ -1,0 +1,39 @@
+﻿@model CreateSocialMediaDto
+
+@{
+    ViewData["Title"] = "CreateSocialMedia";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Yeni Sosyal Medya Ekleme</h4>
+                        <form data-action-type="create" asp-action="CreateSocialMedia" method="post">
+                            <div class="form-group">
+                                <label asp-for="Name">Sosyal Medya</label>
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Hesap Adı Girişi" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Url">Hesap Url</label>
+                                <input type="text" class="form-control" asp-for="Url" placeholder="URL Girişi" />
+                                <span asp-validation-for="Url" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Icon">İkon</label>
+                                <input type="text" class="form-control" asp-for="Icon" placeholder="İkon Girişi" />
+                                <span asp-validation-for="Icon" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Hesabı Ekle</button>
+                            <a href="/Admin/AdminSocialMedia/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

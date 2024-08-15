@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,10 +19,20 @@ namespace CarBook.Persistence.Repositories.CarPricingRepositories
         {
             _context = context;
         }
+		public List<CarPricing> GetCarPricingByCarAndPricingId(int id)
+		{
+			var values = _context.CarPricings
+								 .Include(x => x.Car).ThenInclude(y => y.Brand)
+								 .Include(z => z.Pricing)
+								 .Where(x => x.CarID == id)
+								 .ToList();
 
-        public List<CarPricing> GetCarPringWithCars()
+			return values;
+		}
+
+		public List<CarPricing> GetCarPricingWithCars()
         {
-            var values = _context.CarPricings.Include(x => x.Car).ThenInclude(y => y.Brand).Include(z => z.Pricing).Where(a => a.PricingID == 1).ToList();
+            var values =  _context.CarPricings.Include(x => x.Car).ThenInclude(y => y.Brand).Include(z => z.Pricing).ToList();
             return values;
         }
     }

@@ -1,0 +1,28 @@
+﻿<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var actionType = form.data('action-type');
+
+            var title, text;
+            title = 'İşlem Tamamlandı!';
+            if (actionType === 'create') {                
+                text = 'Yeni veri eklendi';
+            } else if (actionType === 'update') {
+                text = 'Veriler güncellendi';
+            }
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>

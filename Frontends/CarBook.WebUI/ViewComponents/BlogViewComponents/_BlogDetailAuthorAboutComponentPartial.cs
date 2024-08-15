@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace CarBook.WebUI.ViewComponents.BlogViewComponents
 {
-    public class _BlogDetailAuthorAboutComponentPartial:ViewComponent
+    public class _BlogDetailAuthorAboutComponentPartial : ViewComponent
     {
         private readonly IHttpClientFactory _httpClientFactory;
 

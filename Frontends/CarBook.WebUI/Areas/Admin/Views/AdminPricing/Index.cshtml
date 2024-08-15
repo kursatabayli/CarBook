@@ -1,0 +1,59 @@
+﻿@model List<ResultPricingDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Ödeme Türleri Alanı</h4>
+                        <p class="card-subtitle mb-4">Araçların kiralama opsiyonları.</p>
+
+                        @if (Model.Count == 0)
+                        {
+                            <div class="alert alert-info" role="alert">
+                                <p><i>Daha önce eklenen herhangi bir periyot bulunamadı. <b>Periyot Oluştur</b> butonunu kullanarak yeni bir periyot ekleyebilirsiniz.</i></p>
+                            </div>
+                        }
+
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Periyot Adı</th>
+                                        <th>Sil</th>
+                                        <th>Güncelle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        count++;
+                                        <tr>
+                                            <th scope="row">@count</th>
+                                            <td>@item.Name</td>
+                                            <td><a href="/Admin/AdminPricing/RemovePricing/@item.PricingID"class="btn btn-outline-danger"onclick="return confirm('Bu periyodu silmek istediğinize emin misiniz?');">
+                                                    Sil
+                                                </a>
+                                            </td>
+                                            <td><a href="/Admin/AdminPricing/UpdatePricing/@item.PricingID" class="btn btn-outline-success">Güncelle</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <a href="/Admin/AdminPricing/CreatePricing/" class="btn btn-outline-primary mt-4">Periyot Oluştur</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

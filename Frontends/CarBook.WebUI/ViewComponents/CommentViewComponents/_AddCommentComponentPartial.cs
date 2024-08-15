@@ -2,7 +2,7 @@
 
 namespace CarBook.WebUI.ViewComponents.CommentViewComponents
 {
-    public class _AddCommentComponentPartial:ViewComponent
+    public class _AddCommentComponentPartial : ViewComponent
     {
         public IViewComponentResult Invoke()
         {

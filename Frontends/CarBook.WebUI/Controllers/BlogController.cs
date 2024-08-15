@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace CarBook.WebUI.Controllers
+namespace CarBook.WebUI.Areas.Default.Controllers
 {
     public class BlogController : Controller
     {
-         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public BlogController(IHttpClientFactory httpClientFactory)
         {
