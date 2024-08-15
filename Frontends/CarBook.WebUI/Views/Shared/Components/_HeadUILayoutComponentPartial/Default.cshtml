@@ -23,4 +23,47 @@
     <link rel="stylesheet" href="~/carbook-master/css/flaticon.css">
     <link rel="stylesheet" href="~/carbook-master/css/icomoon.css">
     <link rel="stylesheet" href="~/carbook-master/css/style.css">
+
+
+    <!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Pikaday CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.0/css/pikaday.min.css">
+    <!-- Moment.js (Gerekli) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <!-- Pikaday JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.0/pikaday.min.js"></script>  
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var pickerDate = new Pikaday({ field: document.getElementById('reservationDate'), format: 'DD-MM-YYYY' });
+            var pickerReturnDate = new Pikaday({ field: document.getElementById('returnDate'), format: 'DD-MM-YYYY' });
+        });
+    </script>
+
+
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Timepicker CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.1/jquery.timepicker.min.css">
+    <!-- Timepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.1/jquery.timepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#reservationTime').timepicker({
+                'timeFormat': 'H:i'
+            });
+            $('#returnTime').timepicker({
+                'timeFormat': 'H:i'
+            });
+        });
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Placeholder olarak ayarlanmış seçeneği gizle
+            $('select.form-control.firstdropdown option:first-child').hide();
+        });
+    </script>
+
   </head>

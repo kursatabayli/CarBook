@@ -1,0 +1,65 @@
+﻿@model UpdateFooterAddressDto
+
+@{
+    ViewData["Title"] = "UpdateFooterAddress";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            Swal.fire({
+                title: 'İşlem Tamamlandı!',
+                text: 'İletişim bilgisi güncellendi',
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">İletişim Bilgileri Güncelleme</h4>
+                        <form asp-action="UpdateFooterAddress" method="post">
+                            <input type="hidden" asp-for="FooterAddressID" />
+                            <div class="form-group">
+                                <label asp-for="Address">Adres</label>
+                                <input type="text" class="form-control" asp-for="Address" placeholder="Adres Girişi" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Phone">Telefon</label>
+                                <input type="tel" class="form-control" asp-for="Phone" placeholder="Telefon Girişi" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email">Email</label>
+                                <input type="email" class="form-control" asp-for="Email" placeholder="Email Girişi" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description">Açıklama</label>
+                                <input type="text" class="form-control" asp-for="Description" placeholder="Açıklama Girişi" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Güncelle</button>
+                            <a href="/Admin/AdminFooterAddress/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

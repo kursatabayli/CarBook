@@ -1,10 +1,63 @@
 ﻿@model List<ResultCarWithBrandsDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Araba Listesi";
     Layout = "~/Views/AdminLayout/Index.cshtml";
     int count = 0;
 }
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            swal({
+                title: "Bu arabayı silmek istediğinize emin misiniz?",
+                text: "Sildiğiniz takdirde veriler tamamen kaybolacak!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "İptal",
+                        value: null,
+                        visible: true,
+                        className: "btn btn-secondary",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Sil",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-danger",
+                        closeModal: false
+                    }
+                },
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: url,
+                            method: 'POST',
+                            success: function () {
+                                swal("Araç Kaydı Silindi!", {
+                                    icon: "success",
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function () {
+                                swal("Hata!", "Silme işlemi başarısız oldu.", "error");
+                            }
+                        });
+                    }
+                });
+        });
+    });
+</script>
+
+
+
 
 <div class="page-content">
     <div class="container-fluid">
@@ -24,12 +77,12 @@
                                         <th>Marka</th>
                                         <th>Model</th>
                                         <th>Vites Türü</th>
-                                        <th>Km</th>
-                                        <th>Sil</th>
-                                        <th>Güncelle</th>
+                                        <th>Yakıt Türü</th>
                                         <th>Detaylar</th>
                                         <th>Fiyat Bilgileri</th>
                                         <th>Sitede Gör</th>
+                                        <th>Sil</th>
+                                        <th>Güncelle</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,13 +93,13 @@
                                             <th scope="row">@count</th>
                                             <td>@item.BrandName</td>
                                             <td>@item.Model</td>
-                                            <td>@item.Transmission</td>
-                                            <td>@item.Km</td>
-                                            <td><a href="/AdminCar/RemoveCar/@item.CarID" class="btn btn-outline-danger">Sil</a></td>
-                                            <td><a href="/AdminCar/UpdateCar/@item.CarID" class="btn btn-outline-success">Güncelle</a></td>
-                                            <td><a href="/AdminCar/CarDetail/@item.CarID" class="btn btn-outline-dark">Detaylar</a></td>
-                                            <td><a href="/AdminCar/CarDetail/@item.CarID" class="btn btn-outline-secondary">Fiyat Bilgileri</a></td>
-                                            <td><a href="/AdminCar/CarDetail/@item.CarID" class="btn btn-outline-warning">Sitede Gör</a></td>
+                                            <td>@item.TransmissionType</td>
+                                            <td>@item.FuelType</td>
+                                            <td><a href="/Admin/AdminCarFeatureDetail/Index/@item.CarID" class="btn btn-outline-dark btn-sm">Detaylar</a></td>
+                                            <td><a href="/AdminCar/CarDetail/@item.CarID" class="btn btn-outline-secondary btn-sm">Fiyat Bilgileri</a></td>
+                                            <td><a href="/CarList/CarDetail/@item.CarID" class="btn btn-outline-warning btn-sm">Sitede Gör</a></td>
+                                            <td><a href="/AdminCar/RemoveCar/@item.CarID" class="btn btn-outline-danger btn-sm btn-delete">Sil</a></td>
+                                            <td><a href="/AdminCar/UpdateCar/@item.CarID" class="btn btn-outline-success btn-sm">Güncelle</a></td>
                                         </tr>
                                     }
                                 </tbody>

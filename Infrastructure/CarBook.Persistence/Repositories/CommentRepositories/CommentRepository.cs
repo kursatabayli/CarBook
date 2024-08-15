@@ -1,6 +1,7 @@
-﻿using CarBook.Application.Features.RepositoryPattern;
+﻿using CarBook.Application.Interfaces.CommentInterfaces;
 using CarBook.Domain.Entities;
 using CarBook.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CarBook.Persistence.Repositories.CommentRepositories
 {
-    public class CommentRepository<T> : IGenericRepository<Comment>
+    public class CommentRepository : ICommentRepository
     {
         private readonly CarBookContext _context;
 
@@ -18,40 +19,10 @@ namespace CarBook.Persistence.Repositories.CommentRepositories
             _context = context;
         }
 
-        public void Create(Comment entity)
+        public List<Comment> GetCommentsByBlogId(int id)
         {
-            _context.Comments.Add(entity);
-            _context.SaveChanges();
-        }
-
-        public List<Comment> GetAll()
-        {
-            return _context.Comments.Select(x=>new Comment 
-            { 
-                CommentID = x.CommentID,
-                BlogID = x.BlogID,
-                CommentText = x.CommentText,
-                Name = x.Name,
-                CreatedDate = x.CreatedDate,
-            }).ToList();
-        }
-
-        public Comment GetById(int id)
-        {
-            return _context.Comments.Find(id);
-        }
-
-        public void Remove(Comment entity)
-        {
-            var value = _context.Comments.Find(entity.CommentID);
-            _context.Comments.Remove(value);
-            _context.SaveChanges();
-        }
-
-        public void Update(Comment entity)
-        {
-            _context.Comments.Update(entity);
-            _context.SaveChanges();
+            var values = _context.Comments.Include(x => x.Blog).Where(y => y.BlogID == id).ToList();
+            return values;
         }
     }
 }

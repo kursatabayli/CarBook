@@ -19,7 +19,7 @@ namespace CarBook.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7278/api/Cars/GetCarWithBrand");
+            var responseMessage = await client.GetAsync("https://localhost:7278/api/Cars/CarsListWithBrandAndOtherFeatures");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -33,16 +33,50 @@ namespace CarBook.WebUI.Controllers
         public async Task<IActionResult> CreateCar()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7278/api/Brands");
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<ResultGetBrandsDto>>(jsonData);
-            List<SelectListItem> BrandValues = (from x in values 
+
+            var brandResponse = await client.GetAsync("https://localhost:7278/api/Brands");
+            var brandJson = await brandResponse.Content.ReadAsStringAsync();
+            var brands = JsonConvert.DeserializeObject<List<ResultGetBrandsDto>>(brandJson);
+            List<SelectListItem> BrandValues = (from x in brands
                                                 select new SelectListItem
                                                 {
                                                     Text = x.Name,
                                                     Value=x.BrandID.ToString(),
                                                 }).ToList();
-            ViewBag.BrandValues = BrandValues;
+            ViewBag.BrandValues = BrandValues;            
+            
+            var fuelResponse = await client.GetAsync("https://localhost:7278/api/Cars/FeulTypes");
+            var fuelJson = await fuelResponse.Content.ReadAsStringAsync();
+            var fuels = JsonConvert.DeserializeObject<List<FuelDto>>(fuelJson);
+            List<SelectListItem> FuelValues = (from x in fuels
+                                                select new SelectListItem
+                                                {
+                                                    Text = x.FuelType,
+                                                    Value=x.CarFuelID.ToString(),
+                                                }).ToList();
+            ViewBag.FuelValues = FuelValues;            
+            
+            var luggageResponse = await client.GetAsync("https://localhost:7278/api/Cars/LuggageTypes");
+            var luggageJson = await luggageResponse.Content.ReadAsStringAsync();
+            var luggages = JsonConvert.DeserializeObject<List<LuggageDto>>(luggageJson);
+            List<SelectListItem> LuggageValues = (from x in luggages
+                                                  select new SelectListItem
+                                                {
+                                                    Text = x.LuggageType,
+                                                    Value=x.CarLuggageID.ToString(),
+                                                }).ToList();
+            ViewBag.LuggageValues = LuggageValues;            
+            
+            var transmissionResponse = await client.GetAsync("https://localhost:7278/api/Cars/TransmissionTypes");
+            var transmissionJson = await transmissionResponse.Content.ReadAsStringAsync();
+            var transmissions = JsonConvert.DeserializeObject<List<TransmissionDto>>(transmissionJson);
+            List<SelectListItem> TransmissionValues = (from x in transmissions
+                                                       select new SelectListItem
+                                                {
+                                                    Text = x.TransmissionType,
+                                                    Value=x.CarTransmissionID.ToString(),
+                                                }).ToList();
+            ViewBag.TransmissionValues = TransmissionValues;
 
             return View();
         }
@@ -76,16 +110,49 @@ namespace CarBook.WebUI.Controllers
         {
             var client = _httpClientFactory.CreateClient();
 
-            var responseMessage1 = await client.GetAsync("https://localhost:7278/api/Brands");
-            var jsonData1 = await responseMessage1.Content.ReadAsStringAsync();
-            var values1 = JsonConvert.DeserializeObject<List<ResultGetBrandsDto>>(jsonData1);
-            List<SelectListItem> BrandValues = (from x in values1
+            var brandResponse = await client.GetAsync("https://localhost:7278/api/Brands");
+            var brandJson = await brandResponse.Content.ReadAsStringAsync();
+            var brands = JsonConvert.DeserializeObject<List<ResultGetBrandsDto>>(brandJson);
+            List<SelectListItem> BrandValues = (from x in brands
                                                 select new SelectListItem
                                                 {
                                                     Text = x.Name,
                                                     Value = x.BrandID.ToString(),
                                                 }).ToList();
             ViewBag.BrandValues = BrandValues;
+
+            var fuelResponse = await client.GetAsync("https://localhost:7278/api/Cars/FeulTypes");
+            var fuelJson = await fuelResponse.Content.ReadAsStringAsync();
+            var fuels = JsonConvert.DeserializeObject<List<FuelDto>>(fuelJson);
+            List<SelectListItem> FuelValues = (from x in fuels
+                                               select new SelectListItem
+                                               {
+                                                   Text = x.FuelType,
+                                                   Value = x.CarFuelID.ToString(),
+                                               }).ToList();
+            ViewBag.FuelValues = FuelValues;
+
+            var luggageResponse = await client.GetAsync("https://localhost:7278/api/Cars/LuggageTypes");
+            var luggageJson = await luggageResponse.Content.ReadAsStringAsync();
+            var luggages = JsonConvert.DeserializeObject<List<LuggageDto>>(luggageJson);
+            List<SelectListItem> LuggageValues = (from x in luggages
+                                                  select new SelectListItem
+                                                  {
+                                                      Text = x.LuggageType,
+                                                      Value = x.CarLuggageID.ToString(),
+                                                  }).ToList();
+            ViewBag.LuggageValues = LuggageValues;
+
+            var transmissionResponse = await client.GetAsync("https://localhost:7278/api/Cars/TransmissionTypes");
+            var transmissionJson = await transmissionResponse.Content.ReadAsStringAsync();
+            var transmissions = JsonConvert.DeserializeObject<List<TransmissionDto>>(transmissionJson);
+            List<SelectListItem> TransmissionValues = (from x in transmissions
+                                                       select new SelectListItem
+                                                       {
+                                                           Text = x.TransmissionType,
+                                                           Value = x.CarTransmissionID.ToString(),
+                                                       }).ToList();
+            ViewBag.TransmissionValues = TransmissionValues;
 
             var responseMessage = await client.GetAsync($"https://localhost:7278/api/Cars/{id}");
             if (responseMessage.IsSuccessStatusCode)
@@ -111,5 +178,6 @@ namespace CarBook.WebUI.Controllers
             }
             return View();
         }
+
     }
 }

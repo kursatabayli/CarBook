@@ -14,11 +14,29 @@ namespace CarBook.Persistence.Repositories.CarReporsitories
 			_context = context;
 		}
 
-		public List<Car> GetCarsListWithBrands()
-		{
-			var values = _context.Cars.Include(x => x.Brand).ToList();
-			return values;
-		}
+        public async Task<Car> GetCarDetailsById(int id)
+        {
+            var values = await _context.Cars
+            .Include(x => x.Brand)
+            .Include(y => y.CarFuel)
+            .Include(z => z.CarTransmission)
+            .Include(q => q.CarLuggage)
+            .Where(c => c.CarID == id)
+            .SingleOrDefaultAsync();
+            return values;
+        }
+
+        public List<Car> GetCarsListWithBrandAndOtherFeatures()
+        {
+            var values = _context.Cars
+                .Include(x => x.Brand)
+                .Include(y => y.CarFuel)
+                .Include(z => z.CarTransmission)
+                .Include(q => q.CarLuggage)
+                .ToList();
+            return values;
+        }
+
 
         public List<Car> GetLast5CarsWithBrands()
         {

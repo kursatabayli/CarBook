@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Controllers\AdminStatisticsController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\carbook-master\.DS_Store" />
     <None Include="wwwroot\carbook-master\css\.DS_Store" />
     <None Include="wwwroot\carbook-master\css\bootstrap\.DS_Store" />
@@ -19,6 +23,7 @@
     <None Include="wwwroot\carbook-master\js\.DS_Store" />
     <None Include="wwwroot\carbook-master\scss\.DS_Store" />
     <None Include="wwwroot\carbook-master\scss\bootstrap\.DS_Store" />
+    <None Include="wwwroot\images\frontend-images\.DS_Store" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,11 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\" />
-    <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,60 @@
+﻿@model UpdateAboutDto
+@{
+    ViewData["Title"] = "UpdateAbout";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            Swal.fire({
+                title: 'İşlem Tamamlandı!',
+                text: 'Hakkımda bilgisi güncellendi',
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Hakkımızda Güncelleme Sayfası</h4>
+                        <form asp-action="UpdateAbout" method="post">
+                            <input type="hidden" asp-for="AboutID" />
+                            <div class="form-group">
+                                <label asp-for="Title">Başlık</label>
+                                <input type="text" class="form-control" asp-for="Title" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description">Açıklama</label>
+                                <textarea class="form-control" asp-for="Description" rows="5"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageUrl">Video URL</label>
+                                <input type="text" class="form-control" asp-for="ImageUrl" />
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" id="btn1" class="btn btn-primary waves-effect waves-light">Bilgiyi Güncelle</button>
+                            <a href="/Admin/AdminAbout/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

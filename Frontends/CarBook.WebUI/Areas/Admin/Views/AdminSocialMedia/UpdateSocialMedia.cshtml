@@ -1,0 +1,59 @@
+﻿@model UpdateSocialMediaDto
+@{
+    ViewData["Title"] = "UpdateSocialMedia";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            Swal.fire({
+                title: 'İşlem Tamamlandı!',
+                text: 'Sosyal medya bilgisi güncellendi',
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Sosyal Medya Hesabını Güncelle</h4>
+                        <form asp-action="UpdateSocialMedia" method="post">
+                            <input type="hidden" asp-for="SocialMediaID" />
+                            <div class="form-group">
+                                <label asp-for="Name">Sosyal Medya Adı</label>
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Sosyal medya hesabının adı" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Url">URL</label>
+                                <input type="text" class="form-control" asp-for="Url" placeholder="Sosyal medya hesabının URL'si" />
+                                <span asp-validation-for="Url" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Icon">İkon</label>
+                                <input type="text" class="form-control" asp-for="Icon" placeholder="Sosyal medya ikonu" />
+                                <span asp-validation-for="Icon" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Hesabı Güncelle</button>
+                            <a href="/Admin/AdminSocialMedia/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

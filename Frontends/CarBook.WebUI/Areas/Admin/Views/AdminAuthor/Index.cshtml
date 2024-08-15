@@ -1,0 +1,104 @@
+﻿@model List<ResultAuthorDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            swal({
+                title: "Bu yazarı silmek istediğinize emin misiniz?",
+                text: "Sildiğiniz takdirde veriler tamamen kaybolacak!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "İptal",
+                        value: null,
+                        visible: true,
+                        className: "btn btn-secondary",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Sil",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-danger",
+                        closeModal: false
+                    }
+                },
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: url,
+                            method: 'POST',
+                            success: function () {
+                                swal("Özellik Kaydı Silindi!", {
+                                    icon: "success",
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function () {
+                                swal("Hata!", "Silme işlemi başarısız oldu.", "error");
+                            }
+                        });
+                    }
+                });
+        });
+    });
+</script>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Yazar Listesi</h4>
+                        <p class="card-subtitle mb-4">Yazarları listeleme ve düzenleme.</p>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Yazar Adı</th>
+                                        <th>Yazar Görseli</th>
+                                        <th>Yazarın Blogları</th>
+                                        <th>Sil</th>
+                                        <th>Güncelle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        count++;
+                                        <tr>
+                                            <th scope="row">@count</th>
+                                            <td>
+                                                <img src="@item.ImageUrl" width="50" height="50" style="border-radius: 50%; margin-right:10px" />
+                                                @item.Name
+                                            </td>
+                                            <td><a href="/Admin/AdminAuthor/ViewBlogs/@item.AuthorID" class="btn btn-outline-dark">Yazarın Blogları</a></td>
+                                            <td><a href="/Admin/AdminAuthor/RemoveAuthor/@item.AuthorID" class="btn btn-outline-danger btn-sm btn-delete">Sil</a></td>
+                                            <td><a href="/Admin/AdminAuthor/UpdateAuthor/@item.AuthorID" class="btn btn-outline-success">Güncelle</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="/Admin/AdminAuthor/CreateAuthor/" class="btn btn-outline-primary mt-4">Yeni Yazar Oluştur</a>
+                        <a href="/Admin/AdminAuthor/Index" class="btn btn-outline-secondary mt-4">İptal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

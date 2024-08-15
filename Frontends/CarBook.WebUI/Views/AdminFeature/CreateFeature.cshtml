@@ -1,9 +1,29 @@
 ﻿@model CreateFeatureDto
 
 @{
-    ViewData["Title"] = "CreateFeature";
+    ViewData["Title"] = "Yeni Özellik Ekle";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
+
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            Swal.fire({
+                title: 'İşlem Tamamlandı!',
+                text: 'Yeni özellik eklendi',
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>
 
 <div class="page-content">
     <div class="container-fluid">
@@ -12,13 +32,16 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Yeni Özellik Girişi</h4>
+                        <p class="card-subtitle mb-4">Özelliğin adını girerek "Kaydet" butonuna tıklayarak yeni özelliği ekleyebilirsiniz.</p>
                         <form asp-action="CreateFeature" method="post">
                             <div class="form-group">
                                 <label asp-for="Name">Özellik Adı</label>
-                                <input type="text" class="form-control" asp-for="Name" placeholder="Özellik Girişi Yapınız" />
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Özellik adı giriniz" />
+                                <small id="nameHelp" class="form-text text-muted">Özelliğin adını girin.</small>
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <button type="submit" class="btn btn-primary waves-effect waves-light">Özelliği Kaydet</button>
+                            <a href="/AdminFeature/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
                         </form>
                     </div>
                 </div>

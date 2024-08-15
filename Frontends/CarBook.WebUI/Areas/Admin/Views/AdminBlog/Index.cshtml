@@ -1,0 +1,102 @@
+﻿@model List<ResultBlogDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            swal({
+                title: "Bu blogu kaldırmak istediğinize emin misiniz?",
+                text: "Sildiğiniz takdirde veriler tamamen kaybolacak!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "İptal",
+                        value: null,
+                        visible: true,
+                        className: "btn btn-secondary",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Kaldır",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-danger",
+                        closeModal: false
+                    }
+                },
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: url,
+                            method: 'POST',
+                            success: function () {
+                                swal("Özellik Kaydı Silindi!", {
+                                    icon: "success",
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function () {
+                                swal("Hata!", "Silme işlemi başarısız oldu.", "error");
+                            }
+                        });
+                    }
+                });
+        });
+    });
+</script>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Blog İşlemleri</h4>
+                        <p class="card-subtitle mb-4">Blog alanını düzenleme.</p>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Başlık</th>
+                                        <th>Yazar</th>
+                                        <th>Kategori</th>
+                                        <th>Blog'a Git</th>
+                                        <th>Yorumlar</th>
+                                        <th>Yayından Kaldır</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        count++;
+                                        <tr>
+                                            <th scope="row">@count</th>
+                                            <td>@item.Title</td>
+                                            <td>@item.AuthorName</td>
+                                            <td>@item.CategoryName</td>
+                                            <td><a href="/Blog/BlogDetail/@item.BlogID" class="btn btn-outline-dark">Blog'a Git</a></td>
+                                            <td><a href="/Admin/AdminComment/Index/@item.BlogID" class="btn btn-outline-warning">Yorumlar</a></td>
+                                            <td><a href="/Admin/AdminBlog/RemoveBlog/@item.BlogID" class="btn btn-outline-danger btn-sm btn-delete">Kaldır</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,29 @@
 ﻿@model UpdateFeatureDto
+
 @{
-    ViewData["Title"] = "UpdateFeature";
+    ViewData["Title"] = "Özellik Güncelleme";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
+
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            Swal.fire({
+                title: 'İşlem Tamamlandı!',
+                text: 'Özellik güncellendi',
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>
 
 <div class="page-content">
     <div class="container-fluid">
@@ -15,9 +36,11 @@
                             <input type="hidden" asp-for="FeatureID" />
                             <div class="form-group">
                                 <label asp-for="Name">Özellik Adı</label>
-                                <input type="text" class="form-control" asp-for="Name" placeholder="Özellik Güncellemesi Yapınız" />
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Güncellemek istediğiniz özelliğin adını girin" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <button type="submit" class="btn btn-primary waves-effect waves-light">Özelliği Güncelle</button>
+                            <a href="/AdminFeature/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
                         </form>
                     </div>
                 </div>

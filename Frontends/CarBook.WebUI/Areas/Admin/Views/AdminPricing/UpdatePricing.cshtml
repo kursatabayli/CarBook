@@ -1,0 +1,30 @@
+﻿@model UpdatePricingDto
+
+@{
+    ViewData["Title"] = "UpdatePricing";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Periyot Güncelleme Sayfası</h4>
+                        <form asp-action="UpdatePricing" method="post">
+                            <input type="hidden" asp-for="PricingID" />
+                            <div class="form-group">
+                                <label asp-for="Name">Periyot Adı</label>
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Periyot Adını Giriniz" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Periyodu Güncelle</button>
+                            <a href="/Admin/AdminPricing/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

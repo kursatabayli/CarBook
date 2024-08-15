@@ -1,0 +1,55 @@
+﻿@model CreateAuthorDto
+
+@{
+    ViewData["Title"] = "CreateAuthor";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            Swal.fire({
+                title: 'İşlem Tamamlandı!',
+                text: 'Yeni yazar eklendi',
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Yeni Yazar Oluşturma</h4>
+                        <form asp-action="CreateAuthor" method="post">
+                            <div class="form-group">
+                                <label asp-for="Name">Yazar Adı</label>
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Ad Soyad Girişi" />
+                                <span asp-validation-for="Name" class="text-danger"></span>  
+                                <label asp-for="Description">Yazar Adı</label>
+                                <input type="text" class="form-control" asp-for="Description" placeholder="Açıklama Girişi Yapınız" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <label asp-for="ImageUrl">Yazar Görseli</label>
+                                <input type="text" class="form-control" asp-for="ImageUrl" placeholder="Yazarın Görselini Ekleyiniz" />
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Yazarı Kaydet</button>
+                            <a href="/Admin/AdminAuthor/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

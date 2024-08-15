@@ -8,13 +8,14 @@ namespace CarBook.Dto.CarPricingWithCarsDtos
 {
     public class ResultCarPricingWithCarsDto
     {
-        public int CarPricingID { get; set; }
-        public int CarID { get; set; }
-        public int PricingID { get; set; }
-        public string PricingName { get; set; }
-        public string BrandName { get; set; }
-        public string Model { get; set; }
-        public string CoverImageUrl { get; set; }
-        public decimal Amount { get; set; }
-    }
+		public int CarPricingID { get; set; }
+		public int CarID { get; set; }
+		public string BrandName { get; set; }
+		public string Model { get; set; }
+		public string CoverImageUrl { get; set; }
+		public decimal DailyPrice { get; set; }
+		public decimal WeeklyPrice { get; set; }
+		public decimal MonthlyPrice { get; set; }
+
+	}
 }

@@ -1,9 +1,28 @@
 ﻿@model CreateBrandDto
 
 @{
-    ViewData["Title"] = "CreateBrand";
+    ViewData["Title"] = "Marka Ekleme";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            Swal.fire({
+                title: 'İşlem Tamamlandı!',
+                text: 'Yeni marka eklendi',
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>
 
 <div class="page-content">
     <div class="container-fluid">
@@ -11,14 +30,15 @@
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Yeni Marka Girişi</h4>
+                        <h4 class="card-title">Marka Ekleme</h4>
                         <form asp-action="CreateBrand" method="post">
                             <div class="form-group">
                                 <label asp-for="Name">Marka Adı</label>
-                                <input type="text" class="form-control" asp-for="Name" placeholder="Marka Girişi Yapınız" />
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Marka adını girin" />
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">Özelliği Kaydet</button>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Marka Ekle</button>
+                            <a href="/Admin/Brand/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
                         </form>
                     </div>
                 </div>

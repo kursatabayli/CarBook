@@ -1,0 +1,99 @@
+﻿@model List<ResultCommentDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            swal({
+                title: "Bu yorumu kaldırmak istediğinize emin misiniz?",
+                text: "Sildiğiniz takdirde veriler tamamen kaybolacak!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "İptal",
+                        value: null,
+                        visible: true,
+                        className: "btn btn-secondary",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Kaldır",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-danger",
+                        closeModal: false
+                    }
+                },
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: url,
+                            method: 'POST',
+                            success: function () {
+                                swal("Özellik Kaydı Silindi!", {
+                                    icon: "success",
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function () {
+                                swal("Hata!", "Silme işlemi başarısız oldu.", "error");
+                            }
+                        });
+                    }
+                });
+        });
+    });
+</script>
+
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Yorum Listesi - BlogID: @ViewBag.v</h4>
+                        <p class="card-subtitle mb-4">Blogların yorumlarını listeleme, kaldırma veya aktif etme sayfası.</p>
+
+                        @if (!Model.Any())
+                        {
+                            <div class="alert alert-info" role="alert">
+                                <p><i>Bu blog için herhangi bir yorum bulunamadı.</i></p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card">
+                                            <h5 class="card-header">Yorum - @count</h5>
+                                            <div class="card-body">
+                                                <h6 class="card-title">@item.Name</h6>
+                                                <p class="card-text">@item.CommentText</p>
+                                                <a href="#" class="btn btn-outline-danger btn-sm btn-delete">Yorumu Kaldır</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

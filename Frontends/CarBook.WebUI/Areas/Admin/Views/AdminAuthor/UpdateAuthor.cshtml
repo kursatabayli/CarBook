@@ -1,0 +1,58 @@
+﻿@model UpdateAuthorDto
+@{
+    ViewData["Title"] = "UpdateAuthor";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            Swal.fire({
+                title: 'İşlem Tamamlandı!',
+                text: 'Yazar bilgisi güncellendi',
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Yazar Güncelleme</h4>
+                        <form asp-action="UpdateAuthor" method="post">
+                            <input type="hidden" asp-for="AuthorID" />
+                            <div class="form-group">
+                                <label asp-for="Name">Yazar Adı</label>
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Ad Soyad" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description">Yazar Açıklaması</label>
+                                <textarea class="form-control" asp-for="Description" placeholder="Açıklama Giriniz"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageUrl">Yazar Görseli</label>
+                                <input type="text" class="form-control" asp-for="ImageUrl" placeholder="Görsel URL'sini Ekleyiniz" />
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Güncelle</button>
+                            <a href="/Admin/AdminAuthor/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

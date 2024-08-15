@@ -1,0 +1,64 @@
+﻿@model CreateBannerDto
+
+@{
+    ViewData["Title"] = "CreateBanner";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            Swal.fire({
+                title: 'İşlem Tamamlandı!',
+                text: 'Yeni banner eklendi',
+                icon: 'success',
+                showConfirmButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.off('submit').submit();
+                }
+            });
+        });
+    });
+</script>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Yeni Banner Girişi</h4>
+                        <form asp-action="CreateBanner" method="post">
+                            <div class="form-group">
+                                <label asp-for="Title">Başlık</label>
+                                <input type="text" class="form-control" asp-for="Title" placeholder="Başlık Girişi Yapınız" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description">Açıklama</label>
+                                <input type="text" class="form-control" asp-for="Description" placeholder="Açıklama Girişi Yapınız" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="VideoUrl">Video URL</label>
+                                <input type="text" class="form-control" asp-for="VideoUrl" placeholder="Video Url Girişi Yapınız" />
+                                <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="VideoDescription">Video Açıklaması</label>
+                                <input type="text" class="form-control" asp-for="VideoDescription" placeholder="Video Açıklama Girişi Yapınız" />
+                                <span asp-validation-for="VideoDescription" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Banner Ekle</button>
+                            <a href="/Admin/AdminBanner/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
