@@ -1,6 +1,6 @@
-﻿@model CreateCarDto
+﻿@model UpdateCarDto
 @{
-    ViewData["Title"] = "CreateCar";
+    ViewData["Title"] = "UpdateCar";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
@@ -11,13 +11,14 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <h4 class="card-title">Yeni Araç Girişi</h4>
-                        <p class="card-subtitle mb-4">Araç ile ilgili bilgileri eksiksiz doldurmanız önemlidir. Veri girişinden sonra kaydet butonuna tıklayarak işlemi tamamlayabilirsiniz.</p>
+                        <h4 class="card-title">Araç Güncelleme Sayfası</h4>
+                        <p class="card-subtitle mb-4">Araç ile ilgili bilgileri eksiksiz doldurmanız önemlidir. Veri girişinden sonra kaydet butonuna tıklayarak güncelleme işlemini tamamlayabilirsiniz.</p>
 
-                        <form asp-action="CreateCar" method="post">
+                        <form asp-action="UpdateCar" method="post">
+                            <input type="hidden" asp-for="CarID" />
                             <div class="form-group">
                                 <label asp-for="BrandID">Marka</label>
-                                @Html.DropDownListFor(x => x.BrandID, (List<SelectListItem>)ViewBag.BrandValues, new { @class = "form-control", id = "BrandID" })
+                                @Html.DropDownListFor(x => x.BrandID, (List<SelectListItem>)ViewBag.BrandValues, new { @class = "form-control" })
                                 <small id="brandHelp" class="form-text text-muted">Marka bilgisi seçiniz.</small>
                                 <span asp-validation-for="BrandID" class="text-danger"></span>
                             </div>
@@ -61,7 +62,7 @@
                                 <input type="text" class="form-control" asp-for="BigImageUrl" placeholder="Büyük fotoğraf URL'sini giriniz" />
                                 <span asp-validation-for="BigImageUrl" class="text-danger"></span>
                             </div>
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">Aracı Kaydet</button>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Aracı Güncelle</button>
                         </form>
 
                     </div>
