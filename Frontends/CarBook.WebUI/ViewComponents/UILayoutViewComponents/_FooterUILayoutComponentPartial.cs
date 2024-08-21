@@ -4,8 +4,8 @@ using Newtonsoft.Json;
 
 namespace CarBook.WebUI.ViewComponents.UILayoutViewComponents
 {
-	public class _FooterUILayoutComponentPartial : ViewComponent
-	{
+    public class _FooterUILayoutComponentPartial : ViewComponent
+    {
         private readonly IHttpClientFactory _httpClientFactory;
 
         public _FooterUILayoutComponentPartial(IHttpClientFactory httpClientFactory)

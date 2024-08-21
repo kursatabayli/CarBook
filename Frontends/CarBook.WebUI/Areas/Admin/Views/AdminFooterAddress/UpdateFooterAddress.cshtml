@@ -2,28 +2,8 @@
 
 @{
     ViewData["Title"] = "UpdateFooterAddress";
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
-
-<script>
-    $(document).ready(function () {
-        $('form').on('submit', function (e) {
-            e.preventDefault();
-            var form = $(this);
-
-            Swal.fire({
-                title: 'İşlem Tamamlandı!',
-                text: 'İletişim bilgisi güncellendi',
-                icon: 'success',
-                showConfirmButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.off('submit').submit();
-                }
-            });
-        });
-    });
-</script>
 
 <div class="page-content">
     <div class="container-fluid">
@@ -32,7 +12,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">İletişim Bilgileri Güncelleme</h4>
-                        <form asp-action="UpdateFooterAddress" method="post">
+                        <form data-action-type="update" asp-action="UpdateFooterAddress" method="post">
                             <input type="hidden" asp-for="FooterAddressID" />
                             <div class="form-group">
                                 <label asp-for="Address">Adres</label>

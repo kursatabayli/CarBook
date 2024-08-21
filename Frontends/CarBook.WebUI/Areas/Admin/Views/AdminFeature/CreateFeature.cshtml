@@ -1,0 +1,32 @@
+﻿@model CreateFeatureDto
+
+@{
+    ViewData["Title"] = "Yeni Özellik Ekle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Yeni Özellik Girişi</h4>
+                        <p class="card-subtitle mb-4">Özelliğin adını girerek "Kaydet" butonuna tıklayarak yeni özelliği ekleyebilirsiniz.</p>
+                        <form data-action-type="create" asp-action="CreateFeature" method="post">
+                            <div class="form-group">
+                                <label asp-for="Name">Özellik Adı</label>
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Özellik adı giriniz" />
+                                <small id="nameHelp" class="form-text text-muted">Özelliğin adını girin.</small>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Özelliği Kaydet</button>
+                            <a href="/AdminFeature/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -448,7 +448,10 @@ namespace CarBook.Persistence.Migrations
 
                     b.HasKey("FeatureID");
 
-                    b.ToTable("Features");
+                    b.ToTable("Features", t =>
+                        {
+                            t.HasTrigger("trg_InsertCarFeature");
+                        });
                 });
 
             modelBuilder.Entity("CarBook.Domain.Entities.FooterAddress", b =>

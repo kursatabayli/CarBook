@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace CarBook.WebUI.Controllers
+namespace CarBook.WebUI.Areas.Default.Controllers
 {
     public class ReservationController : Controller
     {

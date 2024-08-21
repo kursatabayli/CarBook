@@ -1,28 +1,9 @@
 ﻿@model UpdateSocialMediaDto
 @{
     ViewData["Title"] = "UpdateSocialMedia";
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
 
-<script>
-    $(document).ready(function () {
-        $('form').on('submit', function (e) {
-            e.preventDefault();
-            var form = $(this);
-
-            Swal.fire({
-                title: 'İşlem Tamamlandı!',
-                text: 'Sosyal medya bilgisi güncellendi',
-                icon: 'success',
-                showConfirmButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.off('submit').submit();
-                }
-            });
-        });
-    });
-</script>
 
 <div class="page-content">
     <div class="container-fluid">
@@ -31,7 +12,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Sosyal Medya Hesabını Güncelle</h4>
-                        <form asp-action="UpdateSocialMedia" method="post">
+                        <form data-action-type="update" asp-action="UpdateSocialMedia" method="post">
                             <input type="hidden" asp-for="SocialMediaID" />
                             <div class="form-group">
                                 <label asp-for="Name">Sosyal Medya Adı</label>

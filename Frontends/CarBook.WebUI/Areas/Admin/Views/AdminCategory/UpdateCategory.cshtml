@@ -1,28 +1,8 @@
 ﻿@model UpdateCategoryDto
 @{
     ViewData["Title"] = "UpdateCategory";
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
-
-<script>
-     $(document).ready(function () {
-         $('form').on('submit', function (e) {
-             e.preventDefault();
-             var form = $(this);
-
-             Swal.fire({
-                 title: 'İşlem Tamamlandı!',
-                 text: 'Kategori bilgisi güncellendi',
-                 icon: 'success',
-                 showConfirmButton: true,
-             }).then((result) => {
-                 if (result.isConfirmed) {
-                     form.off('submit').submit();
-                 }
-             });
-         });
-     });
-</script>
 
 <div class="page-content">
     <div class="container-fluid">
@@ -31,7 +11,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Kategori Güncelleme Sayfası</h4>
-                        <form asp-action="UpdateCategory" method="post">
+                        <form data-action-type="update" asp-action="UpdateCategory" method="post">
                             <input type="hidden" asp-for="CategoryID" />
                             <div class="form-group">
                                 <label asp-for="Name">Kategori Adı</label>

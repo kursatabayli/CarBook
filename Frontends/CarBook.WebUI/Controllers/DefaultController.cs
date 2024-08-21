@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CarBook.WebUI.Controllers
+namespace CarBook.WebUI.Areas.Default.Controllers
 {
     public class DefaultController : Controller
     {

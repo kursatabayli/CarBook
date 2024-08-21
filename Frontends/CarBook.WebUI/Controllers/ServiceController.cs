@@ -2,16 +2,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace CarBook.WebUI.Controllers
+namespace CarBook.WebUI.Areas.Default.Controllers
 {
-	public class ServiceController : Controller
-	{
+    public class ServiceController : Controller
+    {
 
         public IActionResult Index()
-		{
+        {
             ViewBag.v1 = "Hizmetler";
             ViewBag.v2 = "Hizmetlerimiz";
             return View();
-		}
-	}
+        }
+    }
 }

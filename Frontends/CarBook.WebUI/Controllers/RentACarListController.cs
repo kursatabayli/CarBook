@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace CarBook.WebUI.Controllers
+namespace CarBook.WebUI.Areas.Default.Controllers
 {
     public class RentACarListController : Controller
     {

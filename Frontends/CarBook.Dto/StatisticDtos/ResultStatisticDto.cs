@@ -10,6 +10,8 @@ namespace CarBook.Dto.StatisticDtos
     {
         public int CarCount { get; set; }
         public int LocationCount { get; set; }
+        public int BrandCount { get; set; }
+        public decimal D_AvgCarR_Price { get; set; }
         public int  TestimonialsCount { get; set; }
 
     }

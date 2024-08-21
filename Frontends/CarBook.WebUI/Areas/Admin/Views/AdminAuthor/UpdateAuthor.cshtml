@@ -1,27 +1,9 @@
 ﻿@model UpdateAuthorDto
 @{
     ViewData["Title"] = "UpdateAuthor";
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
-<script>
-    $(document).ready(function () {
-        $('form').on('submit', function (e) {
-            e.preventDefault();
-            var form = $(this);
 
-            Swal.fire({
-                title: 'İşlem Tamamlandı!',
-                text: 'Yazar bilgisi güncellendi',
-                icon: 'success',
-                showConfirmButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.off('submit').submit();
-                }
-            });
-        });
-    });
-</script>
 
 <div class="page-content">
     <div class="container-fluid">
@@ -30,7 +12,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Yazar Güncelleme</h4>
-                        <form asp-action="UpdateAuthor" method="post">
+                        <form data-action-type="update" asp-action="UpdateAuthor" method="post">
                             <input type="hidden" asp-for="AuthorID" />
                             <div class="form-group">
                                 <label asp-for="Name">Yazar Adı</label>

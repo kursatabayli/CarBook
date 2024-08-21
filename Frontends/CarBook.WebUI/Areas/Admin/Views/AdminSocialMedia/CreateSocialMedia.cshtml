@@ -2,28 +2,8 @@
 
 @{
     ViewData["Title"] = "CreateSocialMedia";
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
-
-<script>
-    $(document).ready(function () {
-        $('form').on('submit', function (e) {
-            e.preventDefault();
-            var form = $(this);
-
-            Swal.fire({
-                title: 'İşlem Tamamlandı!',
-                text: 'Yeni sosyal medya eklendi',
-                icon: 'success',
-                showConfirmButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.off('submit').submit();
-                }
-            });
-        });
-    });
-</script>
 
 <div class="page-content">
     <div class="container-fluid">
@@ -32,7 +12,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Yeni Sosyal Medya Ekleme</h4>
-                        <form asp-action="CreateSocialMedia" method="post">
+                        <form data-action-type="create" asp-action="CreateSocialMedia" method="post">
                             <div class="form-group">
                                 <label asp-for="Name">Sosyal Medya</label>
                                 <input type="text" class="form-control" asp-for="Name" placeholder="Hesap Adı Girişi" />

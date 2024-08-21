@@ -2,59 +2,9 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
     int count = 0;
 }
-
-<script>
-    $(document).ready(function () {
-        $('.btn-delete').click(function (e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-
-            swal({
-                title: "Bu kategoriyi silmek istediğinize emin misiniz?",
-                text: "Sildiğiniz takdirde veriler tamamen kaybolacak!",
-                icon: "warning",
-                buttons: {
-                    cancel: {
-                        text: "İptal",
-                        value: null,
-                        visible: true,
-                        className: "btn btn-secondary",
-                        closeModal: true,
-                    },
-                    confirm: {
-                        text: "Sil",
-                        value: true,
-                        visible: true,
-                        className: "btn btn-danger",
-                        closeModal: false
-                    }
-                },
-                dangerMode: true,
-            })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        $.ajax({
-                            url: url,
-                            method: 'POST',
-                            success: function () {
-                                swal("Özellik Kaydı Silindi!", {
-                                    icon: "success",
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            },
-                            error: function () {
-                                swal("Hata!", "Silme işlemi başarısız oldu.", "error");
-                            }
-                        });
-                    }
-                });
-        });
-    });
-</script>
 
 
 <div class="page-content">

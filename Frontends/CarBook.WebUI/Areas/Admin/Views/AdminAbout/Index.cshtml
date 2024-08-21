@@ -2,59 +2,8 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/AdminLayout/Index.cshtml";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
-
-<script>
-    $(document).ready(function () {
-        $('.btn-delete').click(function (e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-
-            swal({
-                title: "Bu hakkımda bilgisini silmek istediğinize emin misiniz?",
-                text: "Sildiğiniz takdirde veriler tamamen kaybolacak!",
-                icon: "warning",
-                buttons: {
-                    cancel: {
-                        text: "İptal",
-                        value: null,
-                        visible: true,
-                        className: "btn btn-secondary",
-                        closeModal: true,
-                    },
-                    confirm: {
-                        text: "Sil",
-                        value: true,
-                        visible: true,
-                        className: "btn btn-danger",
-                        closeModal: false
-                    }
-                },
-                dangerMode: true,
-            })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        $.ajax({
-                            url: url,
-                            method: 'POST',
-                            success: function () {
-                                swal("Özellik Kaydı Silindi!", {
-                                    icon: "success",
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            },
-                            error: function () {
-                                swal("Hata!", "Silme işlemi başarısız oldu.", "error");
-                            }
-                        });
-                    }
-                });
-        });
-    });
-</script>
-
 
 <div class="page-content">
     <div class="container-fluid">
@@ -65,15 +14,15 @@
                         <h4 class="card-title">Hakkımızda Alanı</h4>
                         <p class="card-subtitle mb-4">Ana sayfanın About alanını düzenleme.</p>
 
-                        @if (Model.Count == 0)
-                        {
+                            @if (Model.Count == 0)
+                            {
                             <div class="alert alert-danger at-3" role="alert">
                                 <p><i>Daha önce eklenen herhangi bir Hakkımızda bilgisi bulunamadı. <b>Bilgi Ekle</b> butonunu kullanarak yeni bir Hakkımızda bilgisi ekleyebilirsiniz</i></p>
                                 <a href="/Admin/AdminAbout/CreateAbout/" class="btn btn-outline-primary">Bilgi Ekle</a>
                             </div>
-                        }
-                        else
-                        {
+                            }
+                            else
+                            {
                             <div class="table-responsive">
                                 <table class="table mb-0">
                                     <thead>
@@ -86,8 +35,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model)
-                                        {
+                                            @foreach (var item in Model)
+                                            {
                                             <tr>
                                                 <td>@item.Title</td>
                                                 <td>@item.Description</td>
@@ -95,11 +44,11 @@
                                                 <td><a href="/Admin/AdminAbout/RemoveAbout/@item.AboutID" class="btn btn-outline-danger btn-sm btn-delete">Sil</a></td>
                                                 <td><a href="/Admin/AdminAbout/UpdateAbout/@item.AboutID" class="btn btn-outline-success">Güncelle</a></td>
                                             </tr>
-                                        }
+                                            }
                                     </tbody>
                                 </table>
                             </div>
-                        }
+                            }
                     </div>
                 </div>
             </div>

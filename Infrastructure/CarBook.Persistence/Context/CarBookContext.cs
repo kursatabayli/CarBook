@@ -47,6 +47,13 @@ namespace CarBook.Persistence.Context
 				.WithMany(y => y.DropOffReservation)
 				.HasForeignKey(z => z.DropOffLocationID)
 				.OnDelete(DeleteBehavior.ClientSetNull);
+
+            modelBuilder.Entity<Feature>()
+                .ToTable(tb => tb.HasTrigger("trg_InsertCarFeature"));
+			
+			modelBuilder.Entity<Car>()
+                .ToTable(tb => tb.HasTrigger("trg_InsertCarFeature"));
+
         }
 
     }

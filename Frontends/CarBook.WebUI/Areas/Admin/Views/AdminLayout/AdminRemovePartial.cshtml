@@ -1,0 +1,36 @@
+﻿<script>
+    $(document).ready(function () {
+        function setupDeleteButtons() {
+            $('.btn-delete').click(function (e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                Swal.fire({
+                    title: `Bu veriyi silmek istediğinize emin misiniz?`,
+                    text: "Sildiğiniz takdirde veriler tamamen kaybolacak!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sil",
+                    cancelButtonText: "İptal",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            method: 'DELETE',
+                            success: function () {
+                                Swal.fire('Silindi!', `Veri kaydı başarıyla silindi.`, 'success')
+                                    .then(() => {
+                                        location.reload();
+                                    });
+                            },
+                            error: function () {
+                                Swal.fire('Hata!', 'Silme işlemi sırasında bir hata oluştu.', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        }
+        setupDeleteButtons();
+    });
+</script>
