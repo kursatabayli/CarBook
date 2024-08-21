@@ -8,6 +8,7 @@ namespace CarBook.WebUI.Areas.Default.Controllers
         {
             ViewBag.v1 = "Hakkımızda";
             ViewBag.v2 = "Hakkımızda";
+            ViewBag.url = "/About/Index/";
             return View();
         }
     }

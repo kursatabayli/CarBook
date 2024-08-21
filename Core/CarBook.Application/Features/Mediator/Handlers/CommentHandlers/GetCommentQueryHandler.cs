@@ -30,6 +30,8 @@ namespace CarBook.Application.Features.Mediator.Handlers.CommentHandlers
                 CommentText = x.CommentText,
                 CreatedDate = x.CreatedDate,
                 BlogID = x.BlogID,
+                Email = x.Email,
+                IsActive = x.IsActive,
             }).ToList();
         }
     }

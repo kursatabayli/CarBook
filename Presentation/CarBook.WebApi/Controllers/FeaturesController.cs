@@ -28,26 +28,6 @@ namespace CarBook.WebApi.Controllers
 		{
 			var values = await _mediator.Send(new GetFeatureByIdQuery(id));
 			return Ok(values);
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> CreateFeature(CreateFeatureCommand command)
-		{
-			await _mediator.Send(command);
-			return Ok("Özellik Başarıyla Eklendi");
-		}
-
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> RemoveFeature(int id)
-		{
-			await _mediator.Send(new RemoveFeatureCommand(id));
-			return Ok("Özellik Başarıyla Silindi");
-		}
-		[HttpPut]
-		public async Task<IActionResult> UpdateFeature(UpdateFeatureCommand command)
-		{
-			await _mediator.Send(command);
-			return Ok("Özellik Başarıyla Güncellendi");
-		}
+		}	
 	}
 }

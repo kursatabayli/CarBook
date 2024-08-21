@@ -17,7 +17,8 @@ namespace CarBook.WebUI.Areas.Default.Controllers
         public IActionResult Index()
         {
             ViewBag.v1 = "İletişim";
-            ViewBag.v2 = "Bize Yazın";
+            ViewBag.v2 = "Bize Yazın"; 
+            ViewBag.url = "/Contact/Index/";
             return View();
         }
         [HttpPost]

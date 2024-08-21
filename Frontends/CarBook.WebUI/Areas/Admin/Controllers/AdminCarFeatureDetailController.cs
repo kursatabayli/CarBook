@@ -42,13 +42,13 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
                 if (item.Available)
                 {
                     var client = _httpClientFactory.CreateClient();
-                    await client.GetAsync("https://localhost:7278/api/CarFeatures/MakeitTrue?id=" + item.CarFeatureID);
+                    await client.GetAsync("https://localhost:7278/api/AdminCarFeatures/MakeitTrue?id=" + item.CarFeatureID);
 
                 }
                 else
                 {                    
                      var client = _httpClientFactory.CreateClient();
-                    await client.GetAsync("https://localhost:7278/api/CarFeatures/MakeitFalse?id=" + item.CarFeatureID);
+                    await client.GetAsync("https://localhost:7278/api/AdminCarFeatures/MakeitFalse?id=" + item.CarFeatureID);
                 }
 
             }

@@ -29,25 +29,5 @@ namespace CarBook.WebApi.Controllers
 			var values = await _mediator.Send(new GetFooterAddressByIdQuery(id));
 			return Ok(values);
 		}
-
-		[HttpPost]
-		public async Task<IActionResult> CreateFooterAddress(CreateFooterAddressCommand command)
-		{
-			await _mediator.Send(command);
-			return Ok("Adres Başarıyla Eklendi");
-		}
-
-		[HttpDelete]
-		public async Task<IActionResult> RemoveFooterAddress(int id)
-		{
-			await _mediator.Send(new RemoveFooterAddressCommand(id));
-			return Ok("Adres Başarıyla Silindi");
-		}
-		[HttpPut]
-		public async Task<IActionResult> UpdateFooterAddress(UpdateFooterAddressCommand command)
-		{
-			await _mediator.Send(command);
-			return Ok("Adres Başarıyla Güncellendi");
-		}
 	}
 }

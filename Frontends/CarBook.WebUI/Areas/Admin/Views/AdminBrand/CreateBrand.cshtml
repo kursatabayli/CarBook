@@ -5,22 +5,24 @@
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
 
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Marka Ekleme</h4>
-                        <form data-action-type="create" asp-action="CreateBrand" method="post">
-                            <div class="form-group">
-                                <label asp-for="Name">Marka Adı</label>
-                                <input type="text" class="form-control" asp-for="Name" placeholder="Marka adını girin" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
-                            </div>
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">Marka Ekle</button>
-                            <a href="/AdminBrand/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
-                        </form>
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Marka Ekleme</h4>
+                            <form data-action-type="create" asp-action="CreateBrand" method="post">
+                                <div class="form-group">
+                                    <label asp-for="Name">Marka Adı</label>
+                                    <input type="text" class="form-control" asp-for="Name" placeholder="Marka adını girin" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Marka Ekle</button>
+                                <a href="/Admin/AdminBrand/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

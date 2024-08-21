@@ -10,7 +10,9 @@ namespace CarBook.Persistence.Context
 			optionsBuilder.UseSqlServer("Server=HP\\SQLEXPRESS;initial Catalog=CarBookDb;integrated Security=true;TrustServerCertificate=True");
 		}
 		public DbSet<About> Abouts { get; set; }
-		public DbSet<Banner> Banners { get; set; }
+        public DbSet<AppRole> AppRoles { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<Banner> Banners { get; set; }
 		public DbSet<Brand> Brands { get; set; }
 		public DbSet<Car> Cars { get; set; }
 		public DbSet<CarDescription> CarDescriptions { get; set; }
@@ -34,6 +36,8 @@ namespace CarBook.Persistence.Context
 		public DbSet<CarTransmission> CarTransmissions  { get; set; }
 		public DbSet<RentACar> RentACars { get; set; }
 		public DbSet<Reservation> Reservations { get; set; }
+		public DbSet<Review> Reviews { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 			modelBuilder.Entity<Reservation>()

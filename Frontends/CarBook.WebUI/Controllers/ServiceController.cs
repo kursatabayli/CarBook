@@ -11,6 +11,7 @@ namespace CarBook.WebUI.Areas.Default.Controllers
         {
             ViewBag.v1 = "Hizmetler";
             ViewBag.v2 = "Hizmetlerimiz";
+            ViewBag.url = "/Service/Index/";
             return View();
         }
     }

@@ -25,6 +25,7 @@ namespace CarBook.WebUI.Areas.Default.Controllers
 
             ViewBag.v1 = "Araç Kiralama";
             ViewBag.v2 = "Araç Rezervasyon Formu";
+            ViewBag.url = $"/RentACarList?pickUpLocation={id}";
             ViewBag.v3 = id;
 
             var carResponse = await client.GetAsync($"https://localhost:7278/api/Cars/GetCarDetailsById/{id}");

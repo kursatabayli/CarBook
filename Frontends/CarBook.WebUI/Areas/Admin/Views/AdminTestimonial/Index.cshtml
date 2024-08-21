@@ -6,42 +6,44 @@
     int count = 0;
 }
 
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Referanslar Alanı</h4>
-                        <p class="card-subtitle mb-4">Müşteriler tarafından firmaya yapılan yorumlar.</p>
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Müşteri Adı</th>
-                                        <th>Başlık</th>
-                                        <th>Yorum</th>
-                                        <th>Sil</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        count++;
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Referanslar Alanı</h4>
+                            <p class="card-subtitle mb-4">Müşteriler tarafından firmaya yapılan yorumlar.</p>
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
                                         <tr>
-                                            <th scope="row">@count</th>
-                                            <td>
-                                                <img src="@item.ImageUrl" width="50" height="50" style="border-radius: 50%; margin-right:10px" />
-                                                @item.Name
-                                            </td>
-                                            <td>@item.Title</td>
-                                            <td>@item.Comment</td>
-                                            <td><a href="/Admin/AdminTestimonial/RemoveTestimonial/@item.TestimonialID" class="btn btn-outline-danger btn-sm btn-delete">Sil</a></td>
+                                            <th>#</th>
+                                            <th>Müşteri Adı</th>
+                                            <th>Başlık</th>
+                                            <th>Yorum</th>
+                                            <th>Sil</th>
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            count++;
+                                            <tr>
+                                                <th scope="row">@count</th>
+                                                <td>
+                                                    <img src="@item.ImageUrl" width="50" height="50" style="border-radius: 50%; margin-right:10px" />
+                                                    @item.Name
+                                                </td>
+                                                <td>@item.Title</td>
+                                                <td>@item.Comment</td>
+                                                <td><a href="/Admin/AdminTestimonial/RemoveTestimonial/@item.TestimonialID" class="btn btn-outline-danger btn-sm btn-delete">Sil</a></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

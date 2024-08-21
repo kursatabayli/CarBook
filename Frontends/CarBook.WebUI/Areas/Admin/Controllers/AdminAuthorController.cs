@@ -1,6 +1,7 @@
 ﻿using CarBook.Dto.AuthorDtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -19,13 +20,18 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7278/api/Authors");
-            if (responseMessage.IsSuccessStatusCode)
+            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
+            if (token != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultAuthorDto>>(jsonData);
-                return View(values);
+                var client = _httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var responseMessage = await client.GetAsync("https://localhost:7278/api/Authors");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                    var values = JsonConvert.DeserializeObject<List<ResultAuthorDto>>(jsonData);
+                    return View(values);
+                }
             }
             return View();
         }
@@ -45,7 +51,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createAuthorDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/Authors/", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminAuthors/", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "AdminAuthor", new { area = "Admin" });
@@ -57,7 +63,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> RemoveAuthor(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/Authors?id=" + id);
+            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminAuthors?id=" + id);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "AdminAuthor", new { area = "Admin" });
@@ -70,7 +76,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> UpdateAuthor(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/Authors/{id}");
+            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminAuthors/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -88,7 +94,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(updateAuthorDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/Authors/", stringContent);
+            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminAuthors/", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "AdminAuthor", new { area = "Admin" });

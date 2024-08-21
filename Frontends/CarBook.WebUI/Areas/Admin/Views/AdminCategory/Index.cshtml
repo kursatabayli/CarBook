@@ -6,51 +6,52 @@
     int count = 0;
 }
 
-
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Blog Kategori Listesi</h4>
-                        <p class="card-subtitle mb-4">Kategorileri listeleme ve düzenleme.</p>
-                        @if (Model.Count == 0)
-                        {
-                            <div class="alert alert-danger at-3" role="alert">
-                                <p><i>Daha önce eklenen herhangi bir kategori <b>bulunamadı.</b> Kategori girişi butonunu kullanarak yeni kategori ekleyebilirsiniz.</i></p>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Kategori Adı</th>
-                                            <th>Kategoriye Ait Bloglar</th>
-                                            <th>Sil</th>
-                                            <th>Güncelle</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            count++;
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Blog Kategori Listesi</h4>
+                            <p class="card-subtitle mb-4">Kategorileri listeleme ve düzenleme.</p>
+                            @if (Model.Count == 0)
+                            {
+                                <div class="alert alert-danger at-3" role="alert">
+                                    <p><i>Daha önce eklenen herhangi bir kategori <b>bulunamadı.</b> Kategori girişi butonunu kullanarak yeni kategori ekleyebilirsiniz.</i></p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <thead>
                                             <tr>
-                                                <th scope="row">@count</th>
-                                                <td>@item.Name</td>
-                                                <td><a href="/Admin/AdminCategory/CategoryBlogs/@item.CategoryID" class="btn btn-outline-dark">Blogları Gör</a></td>
-                                                <td><a href="/Admin/AdminCategory/RemoveCategory/@item.CategoryID" class="btn btn-outline-danger btn-sm btn-delete">Sil</a></td>
-                                                <td><a href="/Admin/AdminCategory/UpdateCategory/@item.CategoryID" class="btn btn-outline-success">Güncelle</a></td>
+                                                <th>#</th>
+                                                <th>Kategori Adı</th>
+                                                <th>Kategoriye Ait Bloglar</th>
+                                                <th>Sil</th>
+                                                <th>Güncelle</th>
                                             </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        }
-                        <a href="/Admin/AdminCategory/CreateCategory/" class="btn btn-outline-primary">Yeni Kategori Girişi</a>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                count++;
+                                                <tr>
+                                                    <th scope="row">@count</th>
+                                                    <td>@item.Name</td>
+                                                    <td><a href="/Admin/AdminCategory/CategoryBlogs/@item.CategoryID" class="btn btn-outline-dark">Blogları Gör</a></td>
+                                                    <td><a href="/Admin/AdminCategory/RemoveCategory/@item.CategoryID" class="btn btn-outline-danger btn-sm btn-delete">Sil</a></td>
+                                                    <td><a href="/Admin/AdminCategory/UpdateCategory/@item.CategoryID" class="btn btn-outline-success">Güncelle</a></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            <a href="/Admin/AdminCategory/CreateCategory/" class="btn btn-outline-primary">Yeni Kategori Girişi</a>
+                        </div>
                     </div>
                 </div>
             </div>

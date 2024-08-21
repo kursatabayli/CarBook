@@ -29,33 +29,5 @@ namespace CarBook.WebApi.Controllers
             var values = await _mediator.Send(new GetTagCloudByIdQuery(id));
             return Ok(values);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateTagCloud(CreateTagCloudCommand command)
-        {
-            await _mediator.Send(command);
-            return Ok("Etiket Başarıyla Eklendi");
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> RemoveTagCloud(int id)
-        {
-            await _mediator.Send(new RemoveTagCloudCommand(id));
-            return Ok("Etiket Başarıyla Silindi");
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateTagCloud(UpdateTagCloudCommand command)
-        {
-            await _mediator.Send(command);
-            return Ok("Etiket Başarıyla Güncellendi");
-        }
-
-        [HttpGet("GetTagCloudByBlogId")]
-        public async Task<IActionResult> GetTagCloudByBlogId(int id)
-        {
-            var values = await _mediator.Send(new GetTagCloudByBlogIdQuery(id));
-            return Ok(values);
-        }
     }
 }

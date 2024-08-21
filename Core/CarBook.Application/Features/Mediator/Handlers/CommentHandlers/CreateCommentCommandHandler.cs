@@ -25,8 +25,10 @@ namespace CarBook.Application.Features.Mediator.Handlers.CommentHandlers
             {
                 Name = request.Name,
                 CommentText = request.CommentText,
-                CreatedDate = DateTime.UtcNow,
+                CreatedDate = DateTime.UtcNow.ToLocalTime(),
                 BlogID = request.BlogID,
+                Email = request.Email,
+                IsActive = request.IsActive,
             });
         }
     }

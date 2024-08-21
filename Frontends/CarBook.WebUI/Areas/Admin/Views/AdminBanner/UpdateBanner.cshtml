@@ -4,38 +4,45 @@
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
 
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Banner Güncelleme Sayfası</h4>
-                        <form data-action-type="update" asp-action="UpdateBanner" method="post">
-                            <input type="hidden" asp-for="BannerID" />
-                            <div class="form-group">
-                                <label asp-for="Title">Başlık</label>
-                                <input type="text" class="form-control" asp-for="Title" />
-                                <span asp-validation-for="Title" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Description">Açıklama</label>
-                                <input type="text" class="form-control" asp-for="Description" />
-                                <span asp-validation-for="Description" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="VideoUrl">Video URL</label>
-                                <input type="text" class="form-control" asp-for="VideoUrl" />
-                                <span asp-validation-for="VideoUrl" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="VideoDescription">Video Açıklaması</label>
-                                <input type="text" class="form-control" asp-for="VideoDescription" />
-                                <span asp-validation-for="VideoDescription" class="text-danger"></span>
-                            </div>
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">Banner Güncelle</button>
-                            <a href="/Admin/AdminBanner/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
-                        </form>
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Banner Güncelleme Sayfası</h4>
+                            <form data-action-type="update" asp-action="UpdateBanner" method="post">
+                                <input type="hidden" asp-for="BannerID" />
+                                <div class="form-group">
+                                    <label asp-for="Title">Başlık</label>
+                                    <input type="text" class="form-control" asp-for="Title" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BannerImageUrl">Banner Görseli</label>
+                                    <input type="text" class="form-control" asp-for="BannerImageUrl" placeholder="Banner Görseli Ekleyiniz" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Description">Açıklama</label>
+                                    <input type="text" class="form-control" asp-for="Description" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="VideoUrl">Video URL</label>
+                                    <input type="text" class="form-control" asp-for="VideoUrl" />
+                                    <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="VideoDescription">Video Açıklaması</label>
+                                    <input type="text" class="form-control" asp-for="VideoDescription" />
+                                    <span asp-validation-for="VideoDescription" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Banner Güncelle</button>
+                                <a href="/Admin/AdminBanner/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

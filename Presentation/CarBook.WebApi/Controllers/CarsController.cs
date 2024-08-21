@@ -33,26 +33,6 @@ namespace CarBook.WebApi.Controllers
             return Ok(values);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateCar(CreateCarCommand command)
-        {
-            await _mediator.Send(command);
-            return Ok("Araç Bilgisi Eklendi");
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveCar(int id)
-        {
-            await _mediator.Send(new RemoveCarCommand(id));
-            return Ok("Araç Bilgisi Silindi");
-        }
-        [HttpPut]
-        public async Task<IActionResult> UpdateCar(UpdateCarCommand command)
-        {
-            await _mediator.Send(command);
-            return Ok("Araç Bilgisi Güncellendi");
-        }
-
         [HttpGet("GetLast5CarsWithBrand")]
         public async Task<IActionResult> GetLast5CarsWithBrand()
         {
