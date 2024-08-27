@@ -1,0 +1,70 @@
+﻿@model List<ResultReviewsByCarIDDto>
+
+
+<div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
+    <div class="row">
+        <div class="col-md-7">
+            <h3 class="head">@Model.Count Değerlendirme</h3>
+            @foreach (var item in Model)
+            {
+                <div class="review d-flex">
+                    <div class="user-img" style="background-image: url(@item.CustomerImage)"></div>
+                    <div class="desc">
+                        <h4>
+                            <span class="text-left">@item.CustomerName</span>
+                            <span class="text-right">@item.ReviewDate</span>
+                        </h4>
+                        <p class="star">
+                            <span>
+                                @for (int i = 1; i <= item.RaytingValue; i++)
+                                {
+                                    <i class="ion-ios-star"></i>
+                                }
+                                @for (int i = item.RaytingValue + 1; i <= 5; i++)
+                                {
+                                    <i class="ion-ios-star-outline"></i>
+                                }
+                            </span>
+
+                            <span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
+                        </p>
+                        <p>@item.Comment</p>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-5">
+            <div class="rating-wrap">
+                <h3 class="head">Give a Review</h3>
+                <div class="wrap">
+                    @{
+                        var totalReviews = Model.Count;
+                        var ratingsGrouped = Model.GroupBy(r => r.RaytingValue)
+                        .Select(g => new { Rating = g.Key, Count = g.Count() })
+                        .OrderByDescending(g => g.Rating)
+                        .ToList();
+                    }
+
+                    @foreach (var rating in ratingsGrouped)
+                    {
+                        var percentage = (double)rating.Count / totalReviews * 100;
+                        <p class="star">
+                            <span style="font-size: smaller;">
+                                @for (int i = 0; i < rating.Rating; i++)
+                                {
+                                    <i class="ion-ios-star"></i>
+                                }
+                                @for (int i = rating.Rating; i < 5; i++)
+                                {
+                                    <i class="ion-ios-star-outline"></i>
+                                }
+                                (@percentage.ToString("0")%)
+                            </span>
+                            <span style="font-size: smaller;">@rating.Count Değerlendirme</span>
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,43 +3,51 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
-    int count = 0;
+    int count = 1;
 }
 
+<!-- Plugins css -->
+<link href="/Admin/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
+<link href="/Admin/plugins/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
+<link href="/Admin/plugins/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
+<link href="/Admin/plugins/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
 
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Gelen Mesajlar</h4>
-                        <p class="card-subtitle mb-4">İletişim kısmından gelen mesajlar.</p>
-                        <table id="basic-datatable" class="table dt-responsive nowrap">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>İsim</th>
-                                    <th>Konu</th>
-                                    <th>Email</th>
-                                    <th>Tarih</th>
-                                    <th>Mesaj</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i=0;i<Model.Count;i++)
-                                {
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Gelen Mesajlar</h4>
+                            <p class="card-subtitle mb-4">İletişim kısmından gelen mesajlar.</p>
+                            <table id="basic-datatable" class="table dt-responsive nowrap">
+                                <thead>
                                     <tr>
-                                        <td>@i</td>
-                                        <td>@Model[i].Name</td>
-                                        <td>@Model[i].Subject</td>
-                                        <td>@Model[i].Email</td>
-                                        <td>@Model[i].SendDate.ToShortDateString()</td>
-                                        <td>@Model[i].Message</td>
+                                        <th>#</th>
+                                        <th>İsim</th>
+                                        <th>Konu</th>
+                                        <th>Email</th>
+                                        <th>Tarih</th>
+                                        <th>Mesaj</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@count</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Subject</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.SendDate.ToString("dd.MM.yyyy")</td>
+                                            <td>@item.Message</td>
+                                        </tr>
+                                        count++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

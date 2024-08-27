@@ -21,6 +21,9 @@ namespace CarBook.Persistence.Repositories.CarReporsitories
             .Include(y => y.CarFuel)
             .Include(z => z.CarTransmission)
             .Include(q => q.CarLuggage)
+            .Include(t=>t.CarFeatures)
+            .ThenInclude(a=>a.Feature)
+            .Include(b=>b.CarDescriptions)
             .Where(c => c.CarID == id)
             .SingleOrDefaultAsync();
             return values;

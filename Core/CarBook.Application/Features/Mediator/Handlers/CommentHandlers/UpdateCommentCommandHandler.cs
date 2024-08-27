@@ -25,6 +25,8 @@ namespace CarBook.Application.Features.Mediator.Handlers.CommentHandlers
             values.CommentText = request.CommentText;
             values.CreatedDate = request.CreatedDate;
             values.BlogID = request.BlogID;
+            values.Email = request.Email;
+            values.IsActive = request.IsActive;
             await _repository.UpdateAsync(values);
         }
     }

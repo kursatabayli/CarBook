@@ -17,9 +17,6 @@ namespace CarBook.WebUI.Areas.Default.Controllers
         {
             ViewBag.v1 = "Araç Kirala";
 
-            //filterRentACarDto.LocaitonID = int.Parse(pickUpLocation.ToString());
-            //filterRentACarDto.Avaliable = true;
-
             locationID = pickUpLocation;
 
             ViewBag.pickUpLocation = pickUpLocation;

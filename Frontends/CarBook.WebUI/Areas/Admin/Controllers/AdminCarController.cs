@@ -3,6 +3,7 @@ using CarBook.Dto.CarDtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -21,13 +22,18 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7278/api/Cars/CarsListWithBrandAndOtherFeatures");
-            if (responseMessage.IsSuccessStatusCode)
+            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
+            if (token != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultCarWithBrandsDto>>(jsonData);
-                return View(values);
+                var client = _httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var responseMessage = await client.GetAsync("https://localhost:7278/api/Cars/CarsListWithBrandAndOtherFeatures");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                    var values = JsonConvert.DeserializeObject<List<ResultCarWithBrandsDto>>(jsonData);
+                    return View(values);
+                }
             }
             return View();
         }
@@ -92,7 +98,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createCarDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/Cars/", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminCars/", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
@@ -104,7 +110,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> RemoveCar(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/Cars/{id}");
+            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminCars/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
@@ -163,7 +169,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
                                                        }).ToList();
             ViewBag.TransmissionValues = transmissionValues;
 
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/Cars/{id}");
+            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminCars/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -182,7 +188,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(updateCarDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/Cars/", stringContent);
+            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminCars/", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "AdminCar", new { area = "Admin" });

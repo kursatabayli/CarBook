@@ -29,25 +29,5 @@ namespace CarBook.WebApi.Controllers
 			var values = await _mediator.Send(new GetPricingByIdQuery(id));
 			return Ok(values);
 		}
-
-		[HttpPost]
-		public async Task<IActionResult> CreatePricing(CreatePricingCommand command)
-		{
-			await _mediator.Send(command);
-			return Ok("Fiyat Bilgisi Eklendi");
-		}
-
-		[HttpDelete]
-		public async Task<IActionResult> RemovePricing(int id)
-		{
-			await _mediator.Send(new RemovePricingCommand(id));
-			return Ok("Fiyat Bilgisi Silindi");
-		}
-		[HttpPut]
-		public async Task<IActionResult> UpdatePricing(UpdatePricingCommand command)
-		{
-			await _mediator.Send(command);
-			return Ok("Fiyat Bilgisi Güncellendi");
-		}
 	}
 }

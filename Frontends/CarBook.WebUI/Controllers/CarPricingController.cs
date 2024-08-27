@@ -20,6 +20,7 @@ namespace CarBook.WebUI.Areas.Default.Controllers
         {
             ViewBag.v1 = "Araç Fiyatları";
             ViewBag.v2 = "Paketler";
+            ViewBag.url = "/CarPricing/Index/";
             var client = _httpClientFactory.CreateClient();
             var priceResponse = await client.GetAsync($"https://localhost:7278/api/CarPricings/GetCarPricingWithDetails/");
             if (priceResponse.IsSuccessStatusCode)

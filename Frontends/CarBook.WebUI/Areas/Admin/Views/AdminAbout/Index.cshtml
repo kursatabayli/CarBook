@@ -5,50 +5,52 @@
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
 
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Hakkımızda Alanı</h4>
-                        <p class="card-subtitle mb-4">Ana sayfanın About alanını düzenleme.</p>
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Hakkımızda Alanı</h4>
+                            <p class="card-subtitle mb-4">Ana sayfanın About alanını düzenleme.</p>
 
                             @if (Model.Count == 0)
                             {
-                            <div class="alert alert-danger at-3" role="alert">
-                                <p><i>Daha önce eklenen herhangi bir Hakkımızda bilgisi bulunamadı. <b>Bilgi Ekle</b> butonunu kullanarak yeni bir Hakkımızda bilgisi ekleyebilirsiniz</i></p>
-                                <a href="/Admin/AdminAbout/CreateAbout/" class="btn btn-outline-primary">Bilgi Ekle</a>
-                            </div>
+                                <div class="alert alert-danger at-3" role="alert">
+                                    <p><i>Daha önce eklenen herhangi bir Hakkımızda bilgisi bulunamadı. <b>Bilgi Ekle</b> butonunu kullanarak yeni bir Hakkımızda bilgisi ekleyebilirsiniz</i></p>
+                                    <a href="/Admin/AdminAbout/CreateAbout/" class="btn btn-outline-primary">Bilgi Ekle</a>
+                                </div>
                             }
                             else
                             {
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Başlık</th>
-                                            <th>Açıklama</th>
-                                            <th>Resim URL</th>
-                                            <th>Sil</th>
-                                            <th>Güncelle</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Başlık</th>
+                                                <th>Açıklama</th>
+                                                <th>Resim URL</th>
+                                                <th>Sil</th>
+                                                <th>Güncelle</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             @foreach (var item in Model)
                                             {
-                                            <tr>
-                                                <td>@item.Title</td>
-                                                <td>@item.Description</td>
-                                                <td>@item.ImageUrl</td>
-                                                <td><a href="/Admin/AdminAbout/RemoveAbout/@item.AboutID" class="btn btn-outline-danger btn-sm btn-delete">Sil</a></td>
-                                                <td><a href="/Admin/AdminAbout/UpdateAbout/@item.AboutID" class="btn btn-outline-success">Güncelle</a></td>
-                                            </tr>
+                                                <tr>
+                                                    <td>@item.Title</td>
+                                                    <td>@item.Description</td>
+                                                    <td>@item.ImageUrl</td>
+                                                    <td><a href="/Admin/AdminAbout/RemoveAbout/@item.AboutID" class="btn btn-outline-danger btn-sm btn-delete">Sil</a></td>
+                                                    <td><a href="/Admin/AdminAbout/UpdateAbout/@item.AboutID" class="btn btn-outline-success">Güncelle</a></td>
+                                                </tr>
                                             }
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </tbody>
+                                    </table>
+                                </div>
                             }
+                        </div>
                     </div>
                 </div>
             </div>

@@ -36,18 +36,5 @@ namespace CarBook.WebApi.Controllers
 			await _mediator.Send(command);
 			return Ok("Referans Bilgisi Eklendi");
 		}
-
-		[HttpDelete]
-		public async Task<IActionResult> RemoveTestimonial(int id)
-		{
-			await _mediator.Send(new RemoveTestimonialCommand(id));
-			return Ok("Referans Bilgisi Silindi");
-		}
-		[HttpPut]
-		public async Task<IActionResult> UpdateTestimonial(UpdateTestimonialCommand command)
-		{
-			await _mediator.Send(command);
-			return Ok("Referans Bilgisi Güncellendi");
-		}
 	}
 }

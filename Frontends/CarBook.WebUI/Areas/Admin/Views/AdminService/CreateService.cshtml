@@ -5,32 +5,34 @@
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
 
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Yeni Hizmet Oluşturma</h4>
-                        <form data-action-type="create" asp-action="CreateService" method="post">
-                            <div class="form-group">
-                                <label asp-for="Title">Hizmet Adı</label>
-                                <input type="text" class="form-control" asp-for="Title" placeholder="Hizmet Girişi" />
-                                <span asp-validation-for="Title" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Description">Hizmet Açıklaması</label>
-                                <input type="text" class="form-control" asp-for="Description" placeholder="Açıklama Girişi" />
-                                <span asp-validation-for="Description" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="IconUrl">Görsel URL</label>
-                                <input type="text" class="form-control" asp-for="IconUrl" placeholder="Görsel Girişi" />
-                                <span asp-validation-for="IconUrl" class="text-danger"></span>
-                            </div>
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">Hizmeti Kaydet</button>
-                            <a href="/Admin/AdminService/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
-                        </form>
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Yeni Hizmet Oluşturma</h4>
+                            <form data-action-type="create" asp-action="CreateService" method="post">
+                                <div class="form-group">
+                                    <label asp-for="Title">Hizmet Adı</label>
+                                    <input type="text" class="form-control" asp-for="Title" placeholder="Hizmet Girişi" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Description">Hizmet Açıklaması</label>
+                                    <input type="text" class="form-control" asp-for="Description" placeholder="Açıklama Girişi" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="IconUrl">Görsel URL</label>
+                                    <input type="text" class="form-control" asp-for="IconUrl" placeholder="Görsel Girişi" />
+                                    <span asp-validation-for="IconUrl" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Hizmeti Kaydet</button>
+                                <a href="/Admin/AdminService/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

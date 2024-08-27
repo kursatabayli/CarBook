@@ -1,0 +1,19 @@
+﻿@model ResultCarDetailDto
+
+<div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
+    <div class="row">
+        @if (Model.Available != null && Model.FeatureName != null && Model.Available.Count == Model.FeatureName.Count)
+        {
+            for (int i = 0; i < Model.FeatureName.Count; i++)
+            {
+                <div class="col-md-4">
+                    <ul class="features">
+                        <li class="@(Model.Available[i] ? "check" : "remove")">
+                            <span class="ion-ios-checkmark"></span>@Model.FeatureName[i]
+                        </li>
+                    </ul>
+                </div>
+            }
+        }
+    </div>
+</div>

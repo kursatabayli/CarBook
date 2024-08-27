@@ -19,10 +19,8 @@ namespace CarBook.Domain.Entities
         public int CarID { get; set; }
         public Car Car { get; set; }
 
-
         [Column(TypeName = "Date")]
         public DateTime BirthDate { get; set; }
-
 
         [Column(TypeName = "Date")]
         public DateTime DriverLicenseYear { get; set; }

@@ -29,25 +29,5 @@ namespace CarBook.WebApi.Controllers
             var values = await _mediator.Send(new GetAuthorByIdQuery(id));
             return Ok(values);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateAuthor(CreateAuthorCommand command)
-        {
-            await _mediator.Send(command);
-            return Ok("Yazar Başarıyla Eklendi");
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> RemoveAuthor(int id)
-        {
-            await _mediator.Send(new RemoveAuthorCommand(id));
-            return Ok("Yazar Başarıyla Silindi");
-        }
-        [HttpPut]
-        public async Task<IActionResult> UpdateAuthor(UpdateAuthorCommand command)
-        {
-            await _mediator.Send(command);
-            return Ok("Yazar Başarıyla Güncellendi");
-        }
     }
 }

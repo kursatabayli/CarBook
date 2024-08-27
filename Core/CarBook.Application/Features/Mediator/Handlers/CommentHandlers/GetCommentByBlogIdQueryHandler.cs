@@ -31,6 +31,8 @@ namespace CarBook.Application.Features.Mediator.Handlers.CommentHandlers
                 Name = x.Name,
                 CommentText = x.CommentText,
                 CreatedDate = x.CreatedDate,
+                Email = x.Email,
+                IsActive = x.IsActive,
             }).ToList();
         }
     }

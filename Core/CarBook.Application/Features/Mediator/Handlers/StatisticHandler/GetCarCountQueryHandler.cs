@@ -1,5 +1,4 @@
-﻿using CarBook.Application.Features.CQRS.Queries.AboutQueries;
-using CarBook.Application.Features.Mediator.Queries.StatisticQuery;
+﻿using CarBook.Application.Features.Mediator.Queries.StatisticQuery;
 using CarBook.Application.Features.Mediator.Results.StatisticResults;
 using CarBook.Application.Interfaces.CarInterfaces;
 using CarBook.Application.Interfaces.StatisticInterfaces;

@@ -9,19 +9,18 @@
 
 <body>
 
-
     <div id="layout-wrapper">
-       
+
         @await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminNavbarPartial.cshtml")
 
         @await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminSidebarPartial.cshtml")
 
-        <div class="main-content">
-            @RenderBody()
-        </div>
+        @RenderBody()
+
         @await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminFooterPartial.cshtml")
 
     </div>
+
     @await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminScriptPartial.cshtml")
 
 </body>

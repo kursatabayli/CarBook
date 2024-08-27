@@ -18,6 +18,7 @@ namespace CarBook.WebUI.Areas.Default.Controllers
         {
             ViewBag.v1 = "Arabalar";
             ViewBag.v2 = "Filomuz";
+            ViewBag.url = "/Car/Index/";
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7278/api/CarPricings/GetCarPricingWithDetails");
             if (responseMessage.IsSuccessStatusCode)
@@ -29,6 +30,14 @@ namespace CarBook.WebUI.Areas.Default.Controllers
             return View();
         }
 
+        public async Task<IActionResult> CarDetail(int id)
+        {
+            ViewBag.v1 = "Arabalar";
+            ViewBag.v2 = "Araç Detayları";
+            ViewBag.url = "/Car/Index/";
+            ViewBag.carid = id;
+            return View();
+        }
     }
 
 }

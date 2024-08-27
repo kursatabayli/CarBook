@@ -7,26 +7,43 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Views\AdminStatistics\**" />
+    <Compile Remove="Views\Register\**" />
+    <Compile Remove="wwwroot\carbook-master\**" />
+    <Compile Remove="wwwroot\lib\**" />
+    <Content Remove="Areas\Admin\Views\AdminStatistics\**" />
+    <Content Remove="Views\Register\**" />
+    <Content Remove="wwwroot\carbook-master\**" />
+    <Content Remove="wwwroot\lib\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\AdminStatistics\**" />
+    <EmbeddedResource Remove="Views\Register\**" />
+    <EmbeddedResource Remove="wwwroot\carbook-master\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
+    <None Remove="Areas\Admin\Views\AdminStatistics\**" />
+    <None Remove="Views\Register\**" />
+    <None Remove="wwwroot\carbook-master\**" />
+    <None Remove="wwwroot\lib\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Areas\Admin\Controllers\AdminStatisticsController.cs" />
+    <Compile Remove="Controllers\RegisterController.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\carbook-master\.DS_Store" />
-    <None Include="wwwroot\carbook-master\css\.DS_Store" />
-    <None Include="wwwroot\carbook-master\css\bootstrap\.DS_Store" />
-    <None Include="wwwroot\carbook-master\css\css\.DS_Store" />
-    <None Include="wwwroot\carbook-master\fonts\.DS_Store" />
-    <None Include="wwwroot\carbook-master\fonts\flaticon\.DS_Store" />
-    <None Include="wwwroot\carbook-master\fonts\flaticon\font\.DS_Store" />
-    <None Include="wwwroot\carbook-master\fonts\ionicons\fonts\.DS_Store" />
-    <None Include="wwwroot\carbook-master\images\.DS_Store" />
-    <None Include="wwwroot\carbook-master\js\.DS_Store" />
-    <None Include="wwwroot\carbook-master\scss\.DS_Store" />
-    <None Include="wwwroot\carbook-master\scss\bootstrap\.DS_Store" />
-    <None Include="wwwroot\images\frontend-images\.DS_Store" />
+    <None Include="wwwroot\Site\css\.DS_Store" />
+    <None Include="wwwroot\Site\css\bootstrap\.DS_Store" />
+    <None Include="wwwroot\Site\css\css\.DS_Store" />
+    <None Include="wwwroot\Site\icons\.DS_Store" />
+    <None Include="wwwroot\Site\icons\flaticon\.DS_Store" />
+    <None Include="wwwroot\Site\icons\flaticon\font\.DS_Store" />
+    <None Include="wwwroot\Site\icons\ionicons\fonts\.DS_Store" />
+    <None Include="wwwroot\Site\images\.DS_Store" />
+    <None Include="wwwroot\Site\js\.DS_Store" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
   </ItemGroup>
 
