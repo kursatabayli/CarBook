@@ -1,4 +1,5 @@
 ﻿using CarBook.Dto.CarPricingWithCarsDtos;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -6,26 +7,18 @@ namespace CarBook.WebUI.Areas.Admin.ViewComponents.DashboardComponents
 {
     public class _AdminDashboardCarPricingListComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultCarPricingWithCarsDto> _apiService;
 
-        public _AdminDashboardCarPricingListComponentPartial(IHttpClientFactory httpClientFactory)
+        public _AdminDashboardCarPricingListComponentPartial(IApiAdminService<ResultCarPricingWithCarsDto> apiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
         }
 
         [HttpGet]
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = _httpClientFactory.CreateClient();
-            var priceResponse = await client.GetAsync($"https://localhost:7278/api/CarPricings/GetCarPricingWithDetails/");
-            if (priceResponse.IsSuccessStatusCode)
-            {
-                var responseData = await priceResponse.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultCarPricingWithCarsDto>>(responseData);
-                return View(values);
-            }
-
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/CarPricings/GetCarPricingWithDetails/");
+            return View(values);
 
         }
     }

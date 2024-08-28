@@ -17,7 +17,7 @@ namespace CarBook.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -47,23 +47,6 @@ namespace CarBook.Persistence.Migrations
                     b.ToTable("Abouts");
                 });
 
-            modelBuilder.Entity("CarBook.Domain.Entities.AppRole", b =>
-                {
-                    b.Property<int>("AppRoleID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppRoleID"));
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AppRoleID");
-
-                    b.ToTable("AppRoles");
-                });
-
             modelBuilder.Entity("CarBook.Domain.Entities.AppUser", b =>
                 {
                     b.Property<int>("AppUserID")
@@ -71,9 +54,6 @@ namespace CarBook.Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppUserID"));
-
-                    b.Property<int>("AppRoleID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -92,8 +72,6 @@ namespace CarBook.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AppUserID");
-
-                    b.HasIndex("AppRoleID");
 
                     b.ToTable("AppUsers");
                 });
@@ -261,8 +239,10 @@ namespace CarBook.Persistence.Migrations
 
                     b.ToTable("Cars", t =>
                         {
-                            t.HasTrigger("trg_InsertCarFeature");
+                            t.HasTrigger("trg_AfterInsertCar");
                         });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("CarBook.Domain.Entities.CarDescription", b =>
@@ -515,9 +495,10 @@ namespace CarBook.Persistence.Migrations
 
                     b.ToTable("Features", t =>
                         {
-                            t.HasTrigger("trg_InsertCarFeature")
-                                .HasDatabaseName("trg_InsertCarFeature1");
+                            t.HasTrigger("trg_AfterInsertFeature");
                         });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("CarBook.Domain.Entities.FooterAddress", b =>
@@ -686,7 +667,6 @@ namespace CarBook.Persistence.Migrations
                         .HasColumnType("Date");
 
                     b.Property<int?>("DropOffLocationID")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -702,7 +682,6 @@ namespace CarBook.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PickUpLocationID")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -859,17 +838,6 @@ namespace CarBook.Persistence.Migrations
                     b.HasKey("TestimonialID");
 
                     b.ToTable("Testimonials");
-                });
-
-            modelBuilder.Entity("CarBook.Domain.Entities.AppUser", b =>
-                {
-                    b.HasOne("CarBook.Domain.Entities.AppRole", "AppRole")
-                        .WithMany("AppUsers")
-                        .HasForeignKey("AppRoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppRole");
                 });
 
             modelBuilder.Entity("CarBook.Domain.Entities.Blog", b =>
@@ -1034,13 +1002,11 @@ namespace CarBook.Persistence.Migrations
 
                     b.HasOne("CarBook.Domain.Entities.Location", "DropOffLocation")
                         .WithMany("DropOffReservation")
-                        .HasForeignKey("DropOffLocationID")
-                        .IsRequired();
+                        .HasForeignKey("DropOffLocationID");
 
                     b.HasOne("CarBook.Domain.Entities.Location", "PickUpLocation")
                         .WithMany("PickUpReservation")
-                        .HasForeignKey("PickUpLocationID")
-                        .IsRequired();
+                        .HasForeignKey("PickUpLocationID");
 
                     b.Navigation("Car");
 
@@ -1069,11 +1035,6 @@ namespace CarBook.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Blog");
-                });
-
-            modelBuilder.Entity("CarBook.Domain.Entities.AppRole", b =>
-                {
-                    b.Navigation("AppUsers");
                 });
 
             modelBuilder.Entity("CarBook.Domain.Entities.Author", b =>

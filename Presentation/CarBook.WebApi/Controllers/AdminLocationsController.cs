@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.LocationCommands;
-using CarBook.Application.Features.Mediator.Queries.LocationQueries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarBook.WebApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminLocationsController : ControllerBase
@@ -26,7 +25,7 @@ namespace CarBook.WebApi.Controllers
             return Ok("Konum Başarıyla Eklendi");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveLocation(int id)
         {
             await _mediator.Send(new RemoveLocationCommand(id));

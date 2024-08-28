@@ -31,20 +31,21 @@ using CarBook.Application.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
 {
-    opt.RequireHttpsMetadata = false;
-    opt.TokenValidationParameters = new TokenValidationParameters
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidAudience = JwtTokenDefaults.ValidAudience,
         ValidIssuer = JwtTokenDefaults.ValidIssuer,
-        ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key)),
+        ValidAudience = JwtTokenDefaults.ValidAudience,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-
+        ClockSkew = TimeSpan.Zero,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key))
     };
 });
+
 
 // Add services to the container.
 builder.Services.AddScoped<CarBookContext>();

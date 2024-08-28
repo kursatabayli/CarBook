@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.AuthorCommands;
-using CarBook.Application.Features.Mediator.Queries.AuthorQueries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarBook.WebApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminAuthorsController : ControllerBase
@@ -26,7 +25,7 @@ namespace CarBook.WebApi.Controllers
             return Ok("Yazar Başarıyla Eklendi");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveAuthor(int id)
         {
             await _mediator.Send(new RemoveAuthorCommand(id));

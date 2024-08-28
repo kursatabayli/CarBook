@@ -1,7 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.CarPricingCommands;
-using CarBook.Application.Features.Mediator.Handlers.CarPricingHandlers;
-using CarBook.Application.Features.Mediator.Queries.CarPricingQueries;
-using CarBook.Application.Features.Mediator.Queries.RentACarQueries;
+﻿using CarBook.Application.Features.Mediator.Queries.CarPricingQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

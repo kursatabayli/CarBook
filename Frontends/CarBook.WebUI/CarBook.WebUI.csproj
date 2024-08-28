@@ -9,29 +9,33 @@
   <ItemGroup>
     <Compile Remove="Areas\Admin\Views\AdminStatistics\**" />
     <Compile Remove="Views\Register\**" />
-    <Compile Remove="wwwroot\Admin\plugins\**" />
-    <Compile Remove="wwwroot\carbook-master\**" />
-    <Compile Remove="wwwroot\lib\**" />
     <Content Remove="Areas\Admin\Views\AdminStatistics\**" />
     <Content Remove="Views\Register\**" />
-    <Content Remove="wwwroot\Admin\plugins\**" />
-    <Content Remove="wwwroot\carbook-master\**" />
-    <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\AdminStatistics\**" />
     <EmbeddedResource Remove="Views\Register\**" />
-    <EmbeddedResource Remove="wwwroot\Admin\plugins\**" />
-    <EmbeddedResource Remove="wwwroot\carbook-master\**" />
-    <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="Areas\Admin\Views\AdminStatistics\**" />
     <None Remove="Views\Register\**" />
-    <None Remove="wwwroot\Admin\plugins\**" />
-    <None Remove="wwwroot\carbook-master\**" />
-    <None Remove="wwwroot\lib\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Areas\Admin\Controllers\AdminStatisticsController.cs" />
     <Compile Remove="Controllers\RegisterController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CarBook.Application\CarBook.Application.csproj" />
+    <ProjectReference Include="..\CarBook.Dto\CarBook.Dto.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\CarBook\Data\" />
+    <Folder Include="Areas\CarBook\Models\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,17 +49,46 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CarBook.Dto\CarBook.Dto.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
+    <Content Update="wwwroot\Admin\css\bootstrap.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Admin\css\bootstrap.min.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Admin\css\icons.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Admin\css\icons.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Admin\css\icons.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Admin\css\icons.min.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Admin\css\theme.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Admin\css\theme.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Admin\css\theme.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\Admin\css\theme.min.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

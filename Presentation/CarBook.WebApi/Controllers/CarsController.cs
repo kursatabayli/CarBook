@@ -1,5 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.CarCommands;
-using CarBook.Application.Features.Mediator.Queries.CarQueries;
+﻿using CarBook.Application.Features.Mediator.Queries.CarQueries;
 using CarBook.Application.Features.Mediator.Queries.FuelQueries;
 using CarBook.Application.Features.Mediator.Queries.LuggageQueries;
 using CarBook.Application.Features.Mediator.Queries.TransmissionQueries;

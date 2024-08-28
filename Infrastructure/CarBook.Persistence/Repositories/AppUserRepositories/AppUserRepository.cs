@@ -21,7 +21,7 @@ namespace CarBook.Persistence.Repositories.AppUserRepositories
         }
         public async Task<AppUser> GetByFilterAsync(Expression<Func<AppUser, bool>> filter)
         {
-            var values = await _context.AppUsers.Include(x=>x.AppRole).Where(filter).FirstOrDefaultAsync();
+            var values = await _context.AppUsers.Where(filter).FirstOrDefaultAsync();
             return values;
         }
     }

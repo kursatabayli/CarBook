@@ -1,0 +1,32 @@
+﻿@model UpdateTagCloudDto
+
+@{
+    ViewData["Title"] = "UpdateTagCloud";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Etiket Güncelleme Sayfası</h4>
+                            <form data-action-type="update" asp-action="UpdateTagCloud" method="post">
+                                <input type="hidden" asp-for="TagCloudId" />
+                                <div class="form-group">
+                                    <label asp-for="Title">Etiket Adı</label>
+                                    <input type="text" class="form-control" asp-for="Title" placeholder="Etiket Adını Giriniz" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Etiketu Güncelle</button>
+                                <a href="/Admin/AdminTagCloud/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

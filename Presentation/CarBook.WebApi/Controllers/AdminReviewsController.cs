@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.ReviewCommands;
-using CarBook.Application.Features.Mediator.Queries.ReviewQueries;
 using CarBook.Application.Validators.ReviewValidators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarBook.WebApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminReviewsController : ControllerBase
@@ -20,7 +19,7 @@ namespace CarBook.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveReview(int id)
         {
             await _mediator.Send(new RemoveReviewCommand(id));

@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.CategoryCommands;
-using CarBook.Application.Features.Mediator.Queries.CategoryQueries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarBook.WebApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminCategoriesController : ControllerBase
@@ -26,7 +25,7 @@ namespace CarBook.WebApi.Controllers
             return Ok("Kategori Bilgisi Eklendi");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveCategory(int id)
         {
             await _mediator.Send(new RemoveCategoryCommand(id));

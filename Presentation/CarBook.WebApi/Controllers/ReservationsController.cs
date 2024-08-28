@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.ReservationCommands;
-using CarBook.Application.Features.Mediator.Queries.ReservationQueries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "CarDetail";
+	Layout = "~/Areas/CarBook/Views/Shared/_Layout.cshtml";
+}
+@await Component.InvokeAsync("_MainCoverUILayoutComponentPartial")
+
+<section class="ftco-section ftco-car-details">
+	<div class="container">
+
+		@await Component.InvokeAsync("_CarDetailMainCarFeatureComponentPartial", new {id=ViewBag.carid})
+
+		<div class="row">
+			<div class="col-md-12 pills">
+				<div class="bd-example bd-example-tabs">
+
+					@await Component.InvokeAsync("_CarDetailFooterComponentPartial")
+
+					<div class="tab-content" id="pills-tabContent">
+
+						@await Component.InvokeAsync("_CarDetailFooterCarFeatureComponentPartial", new { id = ViewBag.carid })
+
+						@await Component.InvokeAsync("_CarDetailFooterCarDescriptionComponentPartial", new { id = ViewBag.carid })
+
+						@await Component.InvokeAsync("_CarDetailCommentByCarIdComponentPartial", new { id = ViewBag.carid })
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

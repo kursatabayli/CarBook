@@ -3,44 +3,42 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminLocation")]
+    
     public class AdminLocationController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultLocationDto> _apiService;
+        private readonly IApiAdminService<CreateLocationDto> _createApiService;
+        private readonly IApiAdminService<UpdateLocationDto> _updateApiService;
 
-        public AdminLocationController(IHttpClientFactory httpClientFactory)
+        public AdminLocationController(
+            IApiAdminService<ResultLocationDto> apiService,
+            IApiAdminService<CreateLocationDto> createApiService,
+            IApiAdminService<UpdateLocationDto> updateApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
+            _createApiService = createApiService;
+            _updateApiService = updateApiService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/Locations");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultLocationDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/Locations");
+            return View(values);
+
         }
 
         [HttpGet]
         [Route("CreateLocation")]
         public IActionResult CreateLocation()
         {
-
             return View();
         }
 
@@ -48,25 +46,21 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("CreateLocation")]
         public async Task<IActionResult> CreateLocation(CreateLocationDto createLocationDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createLocationDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminLocations/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var success = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminLocations/", createLocationDto);
+            if (success)
             {
-                return RedirectToAction("Index", "AdminLocation", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(createLocationDto);
         }
 
         [Route("RemoveLocation/{id}")]
         public async Task<IActionResult> RemoveLocation(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminLocations?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
+            var success = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminLocations/{id}");
+            if (success)
             {
-                return RedirectToAction("Index", "AdminLocation", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
             return View();
         }
@@ -75,31 +69,24 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("UpdateLocation/{id}")]
         public async Task<IActionResult> UpdateLocation(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminLocations/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Locations/{id}");
+            if (value != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateLocationDto>(jsonData);
-                return View(values);
-
+                return View(value);
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [Route("UpdateLocation/{id}")]
         public async Task<IActionResult> UpdateLocation(UpdateLocationDto updateLocationDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateLocationDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminLocations/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var success = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminLocations/", updateLocationDto);
+            if (success)
             {
-                return RedirectToAction("Index", "AdminLocation", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(updateLocationDto);
         }
     }
 }

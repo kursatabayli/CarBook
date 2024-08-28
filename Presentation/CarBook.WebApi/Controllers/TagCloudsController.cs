@@ -1,5 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.TagCloudCommands;
-using CarBook.Application.Features.Mediator.Queries.TagCloudQueries;
+﻿using CarBook.Application.Features.Mediator.Queries.TagCloudQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +26,13 @@ namespace CarBook.WebApi.Controllers
         public async Task<IActionResult> GetTagCloud(int id)
         {
             var values = await _mediator.Send(new GetTagCloudByIdQuery(id));
+            return Ok(values);
+        }
+
+        [HttpGet("GetTagCloudByBlogId/{id}")]
+        public async Task<IActionResult> GetTagCloudByBlogId(int id)
+        {
+            var values = await _mediator.Send(new GetTagCloudByBlogIdQuery(id));
             return Ok(values);
         }
     }

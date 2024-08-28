@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Queries.StatisticQuery;
-using CarBook.Application.Features.Mediator.Results.StatisticResults;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -13,8 +13,6 @@ namespace CarBook.Domain.Entities
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public int AppRoleID { get; set; }
-        public AppRole AppRole { get; set; }
 
     }
 }

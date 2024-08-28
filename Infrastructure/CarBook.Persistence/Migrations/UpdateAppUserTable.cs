@@ -9,7 +9,7 @@ namespace CarBook.Infrastructure.Migrations
             // Yeni alanları ekle
             migrationBuilder.AddColumn<string>(
                 name: "Name",
-                table: "AppUsers",
+                table: "Users",
                 type: "nvarchar(max)",
                 nullable: true);
 

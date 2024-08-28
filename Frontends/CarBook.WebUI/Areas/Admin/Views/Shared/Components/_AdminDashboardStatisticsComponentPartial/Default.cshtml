@@ -13,7 +13,17 @@
                         </h2>
                     </div>
                     <div class="col-4 text-right">
-                        <span class="text-white-50">@ViewBag.carCountRandom% <i class="mdi mdi-arrow-up"></i></span>
+                        <span class="text-white-50">
+                            @ViewBag.carCountRandom%
+                            @if (@ViewBag.carCountRandom >= 50)
+                            {
+                                <i class="mdi mdi-arrow-up"></i>
+                            }
+                            else
+                            {
+                                <i class="mdi mdi-arrow-down"></i>
+                            }
+                        </span>
                     </div>
                 </div>
 
@@ -38,7 +48,17 @@
                         </h2>
                     </div>
                     <div class="col-4 text-right">
-                        <span class="text-white-50">@ViewBag.brandCountRandom% <i class="mdi mdi-arrow-down"></i></span>
+                        <span class="text-white-50">
+                            @ViewBag.brandCountRandom%
+                            @if (@ViewBag.brandCountRandom >= 50)
+                            {
+                                <i class="mdi mdi-arrow-up"></i>
+                            }
+                            else
+                            {
+                                <i class="mdi mdi-arrow-down"></i>
+                            }
+                        </span>
                     </div>
                 </div>
 
@@ -63,7 +83,17 @@
                         </h2>
                     </div>
                     <div class="col-4 text-right">
-                        <span class="text-white-50">@ViewBag.locationCountRandom% <i class="mdi mdi-arrow-up"></i></span>
+                        <span class="text-white-50">
+                            @ViewBag.locationCountRandom%
+                            @if (@ViewBag.locationCountRandom >= 50)
+                            {
+                                <i class="mdi mdi-arrow-up"></i>
+                            }
+                            else
+                            {
+                                <i class="mdi mdi-arrow-down"></i>
+                            }
+                        </span>
                     </div>
                 </div>
 
@@ -78,7 +108,7 @@
         <div class="card bg-info border-info">
             <div class="card-body">
                 <div class="mb-4">
-                    <span class="badge badge-soft-light float-right">Kiralam Ücreti</span>
+                    <span class="badge badge-soft-light float-right">Kiralama Ücreti</span>
                     <h5 class="card-title mb-0 text-white">Günlük Ortalama Kiralama</h5>
                 </div>
                 <div class="row d-flex align-items-center mb-4">
@@ -88,7 +118,17 @@
                         </h2>
                     </div>
                     <div class="col-4 text-right">
-                        <span class="text-white-50">@ViewBag.d_AvgCarR_Price_Random% <i class="mdi mdi-arrow-down"></i></span>
+                        <span class="text-white-50">
+                            @ViewBag.d_AvgCarR_Price_Random%
+                            @if (@ViewBag.d_AvgCarR_Price_Random >= 50)
+                            {
+                                <i class="mdi mdi-arrow-up"></i>
+                            }
+                            else
+                            {
+                                <i class="mdi mdi-arrow-down"></i>
+                            }
+                        </span>
                     </div>
                 </div>
 

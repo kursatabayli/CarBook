@@ -3,44 +3,41 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminAuthor")]
+    
     public class AdminAuthorController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultAuthorDto> _apiService;
+        private readonly IApiAdminService<CreateAuthorDto> _createApiService;
+        private readonly IApiAdminService<UpdateAuthorDto> _updateApiService;
 
-        public AdminAuthorController(IHttpClientFactory httpClientFactory)
+        public AdminAuthorController(
+            IApiAdminService<ResultAuthorDto> apiService,
+            IApiAdminService<CreateAuthorDto> createApiService,
+            IApiAdminService<UpdateAuthorDto> updateApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
+            _createApiService = createApiService;
+            _updateApiService = updateApiService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/Authors");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultAuthorDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/Authors");
+            return View(values);
         }
 
         [HttpGet]
         [Route("CreateAuthor")]
         public IActionResult CreateAuthor()
         {
-
             return View();
         }
 
@@ -48,58 +45,44 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("CreateAuthor")]
         public async Task<IActionResult> CreateAuthor(CreateAuthorDto createAuthorDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createAuthorDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminAuthors/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminAuthors/", createAuthorDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminAuthor", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(createAuthorDto);
         }
 
         [Route("RemoveAuthor/{id}")]
         public async Task<IActionResult> RemoveAuthor(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminAuthors?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "AdminAuthor", new { area = "Admin" });
-            }
-            return View();
+            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminAuthors/{id}");
+            return RedirectToAction("Index");
+
         }
 
         [HttpGet]
         [Route("UpdateAuthor/{id}")]
         public async Task<IActionResult> UpdateAuthor(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminAuthors/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Authors/{id}");
+            if (value != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateAuthorDto>(jsonData);
-                return View(values);
-
+                return View(value);
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [Route("UpdateAuthor/{id}")]
         public async Task<IActionResult> UpdateAuthor(UpdateAuthorDto updateAuthorDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateAuthorDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminAuthors/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminAuthors/", updateAuthorDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminAuthor", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(updateAuthorDto);
         }
     }
 }

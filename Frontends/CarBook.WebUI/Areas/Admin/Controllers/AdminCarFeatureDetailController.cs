@@ -2,60 +2,55 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminCarFeatureDetail")]
+    
     public class AdminCarFeatureDetailController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultCarFeatureDetailDto> _apiService;
 
-        public AdminCarFeatureDetailController(IHttpClientFactory httpClientFactory)
+        public AdminCarFeatureDetailController(IApiAdminService<ResultCarFeatureDetailDto> apiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
         }
 
-        [Route("Index/{id}")]
-
         [HttpGet]
+        [Route("Index/{id}")]
         public async Task<IActionResult> Index(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/CarFeatures/GetCarFeatureDetail/{id}");
-
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultCarFeatureDetailDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _apiService.GetListAsync($"https://localhost:7278/api/CarFeatures/GetCarFeatureDetail/{id}");
+            return View(values);
         }
 
         [HttpPost]
         [Route("Index/{id}")]
-        public async Task<IActionResult> Index(List<ResultCarFeatureDetailDto> resultCarFeatureDetailDto)
+        public async Task<IActionResult> Index(int id, List<ResultCarFeatureDetailDto> resultCarFeatureDetailDto)
         {
-            foreach (var item in resultCarFeatureDetailDto)
+            var currentValues = await _apiService.GetListAsync($"https://localhost:7278/api/CarFeatures/GetCarFeatureDetail/{id}");
+
+            if (currentValues != null)
             {
-                if (item.Available)
+                foreach (var item in resultCarFeatureDetailDto)
                 {
-                    var client = _httpClientFactory.CreateClient();
-                    await client.GetAsync("https://localhost:7278/api/AdminCarFeatures/MakeitTrue?id=" + item.CarFeatureID);
+                    var currentItem = currentValues.FirstOrDefault(x => x.CarFeatureID == item.CarFeatureID);
 
-                }
-                else
-                {                    
-                     var client = _httpClientFactory.CreateClient();
-                    await client.GetAsync("https://localhost:7278/api/AdminCarFeatures/MakeitFalse?id=" + item.CarFeatureID);
-                }
+                    if (currentItem != null && currentItem.Available != item.Available)
+                    {
+                        string url = item.Available
+                            ? $"https://localhost:7278/api/AdminCarFeatures/MakeitTrue/{item.CarFeatureID}"
+                            : $"https://localhost:7278/api/AdminCarFeatures/MakeitFalse/{item.CarFeatureID}";
 
+                        await _apiService.GetSingleAsync(url);
+                    }
+                }
             }
-            return RedirectToAction("Index", "AdminCar");
-
+            return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
         }
-
-
     }
 }

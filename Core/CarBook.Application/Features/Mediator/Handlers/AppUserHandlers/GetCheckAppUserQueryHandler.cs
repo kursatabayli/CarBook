@@ -32,7 +32,6 @@ namespace CarBook.Application.Features.Mediator.Handlers.AppUserHandlers
                 values.IsExist = true;                
                 values.Email = request.Email;
                 values.LastName = request.Password;
-                values.Role = user.AppRole.RoleName;
                 values.AppUserID = user.AppUserID;
 
             }

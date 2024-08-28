@@ -1,5 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.BrandCommands;
-using CarBook.Application.Features.Mediator.Queries.BrandQueries;
+﻿using CarBook.Application.Features.Mediator.Queries.BrandQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

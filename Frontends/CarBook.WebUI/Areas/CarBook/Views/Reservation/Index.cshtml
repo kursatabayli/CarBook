@@ -1,0 +1,104 @@
+﻿@model CreateReservationDto
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/CarBook/Views/Shared/_Layout.cshtml";
+}
+@await Component.InvokeAsync("_MainCoverUILayoutComponentPartial")
+
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            var birthDate = new Date($('#birthdate').val());
+            var driverLicenseYear = new Date($('#date').val());
+            var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var driverLicenseAge = today.getFullYear() - driverLicenseYear.getFullYear();
+
+            var showAlert = false;
+            var alertText = '';
+
+            switch (true) {
+                case (age < 20):
+                    showAlert = true;
+                    alertText = '20 yaşından küçük bireyler araç kiralayamaz.';
+                    break;
+
+                case (driverLicenseAge < 2):
+                    showAlert = true;
+                    alertText = '2 yılı dolmamış ehliyet sahipleri araç kiralayamaz.';
+                    break;
+            }
+           
+
+            if (showAlert) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Geçersiz Bilgi!',
+                    text: alertText,
+                    icon: 'error',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+        });
+    });
+</script>
+
+
+<div class="col-md-12 block-9 mb-md-5">
+    <form class="bg-light p-5 contact-form" method="post">
+        <h3 class="alert alert-success">Araç Rezervasyon Formu</h3>
+        <br />
+        <div class="form-group">
+            <label for="phone">Adınız:</label>
+            <input type="text" asp-for="Name" class="form-control" placeholder="Adınız"/>
+        </div>
+        <div class="form-group">
+            <label for="phone">Soyadınız:</label>
+            <input type="text" asp-for="SurName" class="form-control" placeholder="Soyadınız" />
+        </div>
+        <div class="form-group">
+            <label for="phone">Mail Adresiniz:</label>
+            <input type="email" asp-for="Email" class="form-control" placeholder="Mail Adresiniz" />
+        </div>
+        <div class="form-group">
+            <label for="phone">Telefon Numaranız:</label>
+            <input type="text" asp-for="Phone" id="phone" class="form-control" placeholder="XXX-XXX-XX-XX" />
+        </div>
+        <div class="form-group">
+            <label for="birthdate">Doğum Tarihiniz:</label>
+            <input type="date" asp-for="BirthDate" id="birthdate" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="date">Ehliyet Yılınız:</label>
+            <input type="date" asp-for="DriverLicenseYear" id="date" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="PickUpLocationID" class="label">Aracı Teslim Almak İstediğiniz Lokasyon:</label>
+            @Html.DropDownList("PickUpLocationID",
+                     (List<SelectListItem>)ViewBag.LocationValues,
+                     "Aracı Teslim Almak İstediğiniz Lokasyon",
+                     new { @class = "form-control firstdropdown" }) 
+        </div>        
+        <div class="form-group">
+            <label for="DropOffLocationID" class="label">Aracı Teslim Etmek İstediğiniz Lokasyon:</label>
+            @Html.DropDownList("DropOffLocationID", 
+                     (List<SelectListItem>)ViewBag.LocationValues,
+                     "Aracı Teslim Etmek İstediğiniz Lokasyon",
+                     new { @class = "form-control firstdropdown" }) 
+        </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="CarID" value="@ViewBag.v3" />
+            <label for="text">Rezerve Edilen Araç:</label>
+            <input type="text" class="form-control" readonly value="@ViewBag.CarBrand @ViewBag.CarModel" />
+        </div>
+        <div class="form-group">
+            <textarea cols="30" asp-for="Description" rows="7" class="form-control" placeholder="Acentamıza Mesajınız"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Rezervasyonu Tamamla" class="btn btn-primary py-3 px-5" />
+        </div>
+    </form>
+</div>
+
+

@@ -1,22 +1,20 @@
-﻿<div class="menu-overlay"></div>
-
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-2.1.4/b-3.1.1/b-colvis-3.1.1/b-html5-3.1.1/b-print-3.1.1/r-3.0.2/sp-2.3.2/datatables.min.js"></script>
+﻿<script src="~/Admin/js/jquery-3.7.1.min.js"></script>
 
 <script src="~/Admin/js/bootstrap.bundle.min.js"></script>
 <script src="~/Admin/js/metismenu.min.js"></script>
-<script src="~/Admin/js/waves.js"></script>
 <script src="~/Admin/js/simplebar.min.js"></script>
-<script src="~/Admin/js/theme.js"></script>
+
+<script src="~/Admin/js/datatables.min.js"></script>
 <script src="~/Admin/js/chart.js"></script>
+
 <script src="~/Admin/js/morris.min.js"></script>
 <script src="~/Admin/js/raphael.min.js"></script>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Admin/js/waves.js"></script>
+<script src="~/Admin/js/sweetalert2.min.js"></script>
 
+<script src="~/Admin/js/theme.js"></script>
 
 @await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminDatatablePartial.cshtml")
-
 @await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminRemovePartial.cshtml")
 @await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminCreateOrUpdatePartial.cshtml")
