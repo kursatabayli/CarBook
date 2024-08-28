@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.ContactCommands;
-using CarBook.Application.Features.Mediator.Queries.ContactQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

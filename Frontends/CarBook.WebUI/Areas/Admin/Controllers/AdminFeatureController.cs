@@ -1,42 +1,36 @@
-﻿using CarBook.Dto.BrandDtos;
-using CarBook.Dto.CarDtos;
-using CarBook.Dto.FeatureDtos;
+﻿using CarBook.Dto.FeatureDtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminFeature")]
+    
     public class AdminFeatureController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultFeatureDto> _apiService;
+        private readonly IApiAdminService<CreateFeatureDto> _createApiService;
+        private readonly IApiAdminService<UpdateFeatureDto> _updateApiService;
 
-        public AdminFeatureController(IHttpClientFactory httpClientFactory)
+        public AdminFeatureController(IApiAdminService<ResultFeatureDto> apiService, IApiAdminService<CreateFeatureDto> createApiService, IApiAdminService<UpdateFeatureDto> updateApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
+            _createApiService = createApiService;
+            _updateApiService = updateApiService;
         }
 
+        [HttpGet]
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/Features");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultFeatureDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/Features");
+            return View(values);
         }
 
         [HttpGet]
@@ -51,27 +45,19 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("CreateFeature")]
         public async Task<IActionResult> CreateFeature(CreateFeatureDto createFeatureDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createFeatureDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminFeatures/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminFeatures/", createFeatureDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminFeature", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(createFeatureDto);
         }
 
         [Route("RemoveFeature/{id}")]
         public async Task<IActionResult> RemoveFeature(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminFeatures/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "AdminFeature", new { area = "Admin" });
-            }
-            return View();
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminFeatures/{id}");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -79,16 +65,12 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
         public async Task<IActionResult> UpdateFeature(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminFeatures/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Features/{id}");
+            if (value != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateFeatureDto>(jsonData);
-                return View(values);
-
+                return View(value);
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -96,15 +78,12 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
         public async Task<IActionResult> UpdateFeature(UpdateFeatureDto updateFeatureDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateFeatureDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminFeatures/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminFeatures/", updateFeatureDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminFeature", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(updateFeatureDto);
         }
     }
 }

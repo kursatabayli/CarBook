@@ -3,39 +3,35 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminBrand")]
+    
     public class AdminBrandController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultBrandDto> _apiService;
+        private readonly IApiAdminService<CreateBrandDto> _createApiService;
+        private readonly IApiAdminService<UpdateBrandDto> _updateApiService;
 
-        public AdminBrandController(IHttpClientFactory httpClientFactory)
+        public AdminBrandController(
+            IApiAdminService<ResultBrandDto> apiService,
+            IApiAdminService<CreateBrandDto> createApiService,
+            IApiAdminService<UpdateBrandDto> updateApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
+            _createApiService = createApiService;
+            _updateApiService = updateApiService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                ViewBag.x = "Marka";
-                ViewBag.x2 = "Marka";
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/Brands");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultGetBrandsDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/Brands/");
+            return View(values);
         }
 
         [HttpGet]
@@ -50,58 +46,44 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("CreateBrand")]
         public async Task<IActionResult> CreateBrand(CreateBrandDto createBrandDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createBrandDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminBrands/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminBrands/", createBrandDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminBrand", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(createBrandDto);
         }
 
         [Route("RemoveBrand/{id}")]
         public async Task<IActionResult> RemoveBrand(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminBrands?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "AdminBrand", new { area = "Admin" });
-            }
-            return View();
+            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBrands/{id}");
+            return RedirectToAction("Index");
+
         }
 
         [HttpGet]
         [Route("UpdateBrand/{id}")]
         public async Task<IActionResult> UpdateBrand(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminBrands/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Brands/{id}");
+            if (value != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateBrandDto>(jsonData);
-                return View(values);
-
+                return View(value);
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [Route("UpdateBrand/{id}")]
         public async Task<IActionResult> UpdateBrand(UpdateBrandDto updateBrandDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateBrandDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminBrands/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminBrands/", updateBrandDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminBrand", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(updateBrandDto);
         }
     }
 }

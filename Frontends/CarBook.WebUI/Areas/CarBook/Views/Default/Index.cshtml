@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/CarBook/Views/Shared/_Layout.cshtml";
+}
+
+
+@await Component.InvokeAsync("_DefaultCoverUILayoutComponentPartial")
+
+@await Component.InvokeAsync("_RentACarFilterComponentPartial")
+
+@await Component.InvokeAsync("_DefaultRandom5CarsComponentPartial")
+
+@await Component.InvokeAsync("_AboutUsComponentPartial")
+
+@await Component.InvokeAsync("_DefaultRandom4ServicesComponentPartial")
+
+@await Component.InvokeAsync("_TestimonialComponentPartial")
+
+@await Component.InvokeAsync("_GetLast3BlogsWithAuthorsComponentPartial")
+
+@await Component.InvokeAsync("_DefaultStatisticsComponentPartial")
+
+
+<style>
+    .request-form .form-control {
+        background: #1089FF !important;
+        color: white;
+    }
+</style>

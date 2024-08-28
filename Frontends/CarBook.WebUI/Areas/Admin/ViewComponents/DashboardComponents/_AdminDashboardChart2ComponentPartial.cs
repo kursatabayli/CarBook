@@ -28,7 +28,7 @@ namespace CarBook.WebUI.Areas.Admin.ViewComponents.DashboardComponents
 
             var brandResponse = await client.GetAsync("https://localhost:7278/api/Brands");
             var brandJson = await brandResponse.Content.ReadAsStringAsync();
-            var brands = JsonConvert.DeserializeObject<List<ResultGetBrandsDto>>(brandJson);
+            var brands = JsonConvert.DeserializeObject<List<ResultBrandDto>>(brandJson);
             int brandCount = brands.Count;
             ViewBag.BrandCount = brandCount;
 

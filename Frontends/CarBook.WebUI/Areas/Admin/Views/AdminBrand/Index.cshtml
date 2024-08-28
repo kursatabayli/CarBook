@@ -1,4 +1,4 @@
-﻿@model List<ResultGetBrandsDto>
+﻿@model List<ResultBrandDto>
 
 @{
     ViewData["Title"] = "Marka Listesi";
@@ -19,9 +19,6 @@
                             {
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <p><i>Daha önce eklenen herhangi bir marka <b>bulunamadı.</b> Yeni marka eklemek için "Yeni Marka Girişi" butonunu kullanabilirsiniz.</i></p>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
                                 </div>
                             }
                             else
@@ -53,7 +50,7 @@
                                     </table>
                                 </div>
                             }
-                            <a href="/AdminBrand/CreateBrand/" class="btn btn-outline-primary">Yeni Marka Girişi</a>
+                            <a href="/Admin/AdminBrand/CreateBrand/" class="btn btn-outline-primary">Yeni Marka Girişi</a>
                         </div>
                     </div>
                 </div>

@@ -25,26 +25,29 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using CarBook.Application.Interfaces.AppUserInterfaces;
-using CarBook.Persistence.Repositories.AppUserRepositories;
+using CarBook.Application.Interfaces.UserInterfaces;
+using CarBook.Persistence.Repositories.UserRepositories;
 using CarBook.Application.Tools;
+using CarBook.Application.Interfaces.ReservationInterfaces;
+using CarBook.Persistence.Repositories.ReservationRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
 {
-    opt.RequireHttpsMetadata = false;
-    opt.TokenValidationParameters = new TokenValidationParameters
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidAudience = JwtTokenDefaults.ValidAudience,
         ValidIssuer = JwtTokenDefaults.ValidIssuer,
-        ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key)),
+        ValidAudience = JwtTokenDefaults.ValidAudience,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-
+        ClockSkew = TimeSpan.Zero,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key))
     };
 });
+
 
 // Add services to the container.
 builder.Services.AddScoped<CarBookContext>();
@@ -58,7 +61,8 @@ builder.Services.AddScoped(typeof(IStatisticRepository), typeof(StatisticReposit
 builder.Services.AddScoped(typeof(ICarPricingRepository), typeof(CarPricingRepository));
 builder.Services.AddScoped(typeof(ICarFeatureRepository), typeof(CarFeatureRepository));
 builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
-builder.Services.AddScoped(typeof(IAppUserRepository), typeof(AppUserRepository));
+builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+builder.Services.AddScoped(typeof(IReservationRepository), typeof(ReservationRepository));
 
 
 //api

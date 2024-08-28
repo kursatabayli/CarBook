@@ -3,37 +3,35 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminCategory")]
+    
     public class AdminCategoryController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultCategoryDto> _apiService;
+        private readonly IApiAdminService<CreateCategoryDto> _createApiService;
+        private readonly IApiAdminService<UpdateCategoryDto> _updateApiService;
 
-        public AdminCategoryController(IHttpClientFactory httpClientFactory)
+        public AdminCategoryController(
+            IApiAdminService<ResultCategoryDto> apiService,
+            IApiAdminService<CreateCategoryDto> createApiService,
+            IApiAdminService<UpdateCategoryDto> updateApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
+            _createApiService = createApiService;
+            _updateApiService = updateApiService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/Categories");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/Categories/");
+            return View(values);
         }
 
         [HttpGet]
@@ -43,63 +41,47 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
             return View();
         }
-
+        
         [HttpPost]
         [Route("CreateCategory")]
         public async Task<IActionResult> CreateCategory(CreateCategoryDto createCategoryDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createCategoryDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminCategories/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminCategories/", createCategoryDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminCategory", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(createCategoryDto);
         }
-
+        
         [Route("RemoveCategory/{id}")]
         public async Task<IActionResult> RemoveCategory(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminCategories?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "AdminCategory", new { area = "Admin" });
-            }
-            return View();
+            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminCategories/{id}");
+            return RedirectToAction("Index");
         }
-
         [HttpGet]
         [Route("UpdateCategory/{id}")]
         public async Task<IActionResult> UpdateCategory(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminCategories/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Categories/{id}");
+            if (value != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateCategoryDto>(jsonData);
-                return View(values);
-
+                return View(value);
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [Route("UpdateCategory/{id}")]
         public async Task<IActionResult> UpdateCategory(UpdateCategoryDto updateCategoryDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateCategoryDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminCategories/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminCategories/", updateCategoryDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminCategory", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(updateCategoryDto);
         }
     }
 }

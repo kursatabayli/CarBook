@@ -1,0 +1,71 @@
+﻿@model CreateReservationDto
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/CarBook/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 block-9 mb-md-5">
+    <form action="/CarBook/Reservation/Index/" method="post" class="bg-light p-5 contact-form">
+        <h3 class="alert alert-success">Araç Rezervasyon Formu</h3>
+        <br />
+        <div class="form-group">
+            <label for="Name">Adınız:</label>
+            <input type="text" asp-for="Name" class="form-control" placeholder="Adınız" required />
+        </div>
+        <div class="form-group">
+            <label for="SurName">Soyadınız:</label>
+            <input type="text" asp-for="SurName" class="form-control" placeholder="Soyadınız" required />
+        </div>
+        <div class="form-group">
+            <label for="Email">Mail Adresiniz:</label>
+            <input type="email" asp-for="Email" class="form-control" placeholder="Mail Adresiniz" required />
+        </div>
+        <div class="form-group">
+            <label for="Phone">Telefon Numaranız:</label>
+            <input type="text" asp-for="Phone" id="phone" class="form-control" placeholder="XXX-XXX-XX-XX" required />
+        </div>
+        <div class="form-group">
+            <label for="BirthDate">Doğum Tarihiniz:</label>
+            <input type="date" asp-for="BirthDate" id="birthdate" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="DriverLicenseYear">Ehliyet Yılınız:</label>
+            <input type="date" asp-for="DriverLicenseYear" id="driverlicensedate" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="PickUpLocationID" class="label">Aracı Teslim Almak İstediğiniz Lokasyon:</label>
+            <input type="text" class="form-control" readonly value="@ViewBag.PickUpLocation" />
+            <input type="hidden" asp-for="PickUpLocationID" value="@ViewBag.PickUpLocationID" />
+        </div>        
+        <div class="form-group">
+            <label for="DropOffLocationID" class="label">Aracı Teslim Etmek İstediğiniz Lokasyon:</label>
+            <input type="text" class="form-control" readonly value="@ViewBag.DropOffLocation" />
+            <input type="hidden" asp-for="DropOffLocationID" value="@ViewBag.DropOffLocationID" />
+        </div>
+        <div class="form-group">
+            <label for="PickUpDate">Teslim Alma Tarihi ve Saati:</label>
+            <input type="text" class="form-control" readonly value="@ViewBag.PickUpDate @ViewBag.PickUpTime" />
+            <input type="hidden" asp-for="PickUpDate" value="@ViewBag.PickUpDate" />
+            <input type="hidden" asp-for="PickUpTime" value="@ViewBag.PickUpTime" />
+        </div>
+        <div class="form-group">
+            <label for="DropOffDate">Teslim Etme Tarihi ve Saati:</label>
+            <input type="text" class="form-control" readonly value="@ViewBag.DropOffDate @ViewBag.DropOffTime" />
+            <input type="hidden" asp-for="DropOffDate" value="@ViewBag.DropOffDate" />
+            <input type="hidden" asp-for="DropOffTime" value="@ViewBag.DropOffTime" />
+        </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="CarID" value="@ViewBag.v3" />
+            <label for="CarID">Rezerve Edilen Araç:</label>
+            <input type="text" class="form-control" readonly value="@ViewBag.CarBrand @ViewBag.CarModel" />
+        </div>
+        <div class="form-group">
+            <textarea cols="30" asp-for="Description" rows="7" class="form-control" placeholder="Acentamıza Mesajınız"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Rezervasyonu Tamamla" class="btn btn-primary py-3 px-5" />
+        </div>
+    </form>
+</div>
+

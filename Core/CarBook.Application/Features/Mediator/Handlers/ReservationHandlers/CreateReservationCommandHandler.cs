@@ -33,6 +33,10 @@ namespace CarBook.Application.Features.Mediator.Handlers.ReservationHandlers
                 DriverLicenseYear = request.DriverLicenseYear,
                 PickUpLocationID = request.PickUpLocationID,
                 DropOffLocationID = request.DropOffLocationID,
+                PickUpDate = request.PickUpDate,
+                DropOffDate = request.DropOffDate,
+                PickUpTime = request.PickUpTime,
+                DropOffTime = request.DropOffTime,
                 Status = "Rezervasyon Alındı"
             });
         }

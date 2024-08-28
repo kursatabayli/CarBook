@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.TestimonialCommands;
-using CarBook.Application.Features.Mediator.Queries.TestimonialQueries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarBook.WebApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminTestimonialsController : ControllerBase
@@ -19,7 +18,7 @@ namespace CarBook.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveTestimonial(int id)
         {
             await _mediator.Send(new RemoveTestimonialCommand(id));

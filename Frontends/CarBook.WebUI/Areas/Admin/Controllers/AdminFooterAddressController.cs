@@ -3,37 +3,32 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminFooterAddress")]
+    
     public class AdminFooterAddressController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultFooterAddressDto> _apiService;
+        private readonly IApiAdminService<CreateFooterAddressDto> _createApiService;
+        private readonly IApiAdminService<UpdateFooterAddressDto> _updateApiService;
 
-        public AdminFooterAddressController(IHttpClientFactory httpClientFactory)
+        public AdminFooterAddressController(IApiAdminService<ResultFooterAddressDto> apiService, IApiAdminService<CreateFooterAddressDto> createApiService, IApiAdminService<UpdateFooterAddressDto> updateApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
+            _createApiService = createApiService;
+            _updateApiService = updateApiService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/FooterAddresses");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultFooterAddressDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/FooterAddresses/");
+            return View(values);
         }
 
         [HttpGet]
@@ -48,58 +43,43 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("CreateFooterAddress")]
         public async Task<IActionResult> CreateFooterAddress(CreateFooterAddressDto createFooterAddressDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createFooterAddressDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminFooterAddresses/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminFooterAddresses/", createFooterAddressDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminFooterAddress", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(createFooterAddressDto);
         }
 
         [Route("RemoveFooterAddress/{id}")]
         public async Task<IActionResult> RemoveFooterAddress(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminFooterAddresses?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "AdminFooterAddress", new { area = "Admin" });
-            }
-            return View();
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminFooterAddresses/{id}");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         [Route("UpdateFooterAddress/{id}")]
         public async Task<IActionResult> UpdateFooterAddress(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminFooterAddresses/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/FooterAddresses/{id}");
+            if (value != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateFooterAddressDto>(jsonData);
-                return View(values);
-
+                return View(value);
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [Route("UpdateFooterAddress/{id}")]
         public async Task<IActionResult> UpdateFooterAddress(UpdateFooterAddressDto updateFooterAddressDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateFooterAddressDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminFooterAddresses/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminFooterAddresses/", updateFooterAddressDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminFooterAddress", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(updateFooterAddressDto);
         }
     }
 }

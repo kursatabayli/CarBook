@@ -11,6 +11,6 @@ namespace CarBook.Application.Tools
         public const string ValidAudience = "https://localhost";
         public const string ValidIssuer = "https://localhost";
         public const string Key = "CarBookCarBookCarBookCarBook0000";
-        public const int Expire = 3;
+        public const int ExpireMinutes = 30;
     }
 }

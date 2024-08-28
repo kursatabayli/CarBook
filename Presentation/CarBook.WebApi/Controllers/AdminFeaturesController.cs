@@ -1,5 +1,4 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.FeatureCommands;
-using CarBook.Application.Features.Mediator.Queries.FeatureQueries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarBook.WebApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminFeaturesController : ControllerBase

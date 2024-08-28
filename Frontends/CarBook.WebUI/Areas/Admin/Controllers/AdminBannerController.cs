@@ -3,39 +3,34 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
     [Route("Admin/AdminBanner")]
+    
     public class AdminBannerController : Controller
     {
 
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultBannerDto> _apiService;
+        private readonly IApiAdminService<CreateBannerDto> _createApiService; 
+        private readonly IApiAdminService<UpdateBannerDto> _updateApiService;
 
-        public AdminBannerController(IHttpClientFactory httpClientFactory)
+        public AdminBannerController(IApiAdminService<ResultBannerDto> apiService, IApiAdminService<CreateBannerDto> createApiService, IApiAdminService<UpdateBannerDto> updateApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
+            _createApiService = createApiService;
+            _updateApiService = updateApiService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/Banners");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultBannerDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/Banners/");
+            return View(values);
         }
 
         [HttpGet]
@@ -45,63 +40,48 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
             return View();
         }
-
         [HttpPost]
         [Route("CreateBanner")]
         public async Task<IActionResult> CreateBanner(CreateBannerDto createBannerDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createBannerDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminBanners/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "AdminBanner", new { area = "Admin" });
-            }
-            return View();
+            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminBanners/", createBannerDto);
+            return RedirectToAction("Index");
+
         }
 
         [Route("RemoveBanner/{id}")]
         public async Task<IActionResult> RemoveBanner(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminBanners?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBanners/{id}");
+            if (value)
             {
-                return RedirectToAction("Index", "AdminBanner", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
             return View();
         }
-
+       
         [HttpGet]
         [Route("UpdateBanner/{id}")]
         public async Task<IActionResult> UpdateBanner(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminBanners/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Banners/{id}");
+            if (value != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateBannerDto>(jsonData);
-                return View(values);
-
+                return View(value);
             }
-            return View();
+            return RedirectToAction("Index");
         }
-
+        
         [HttpPost]
         [Route("UpdateBanner/{id}")]
         public async Task<IActionResult> UpdateBanner(UpdateBannerDto updateBannerDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateBannerDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminBanners/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminBanners/", updateBannerDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminBanner", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(updateBannerDto);
         }
     }
 }

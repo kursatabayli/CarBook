@@ -1,7 +1,5 @@
-﻿using CarBook.Application.Features.Mediator.Commands.LocationCommands;
-using CarBook.Application.Features.Mediator.Queries.LocationQueries;
+﻿using CarBook.Application.Features.Mediator.Queries.LocationQueries;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarBook.WebApi.Controllers

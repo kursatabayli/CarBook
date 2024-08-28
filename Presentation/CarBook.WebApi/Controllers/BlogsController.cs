@@ -58,7 +58,7 @@ namespace CarBook.WebApi.Controllers
             return Ok(values);
         }
 
-        [HttpGet("GetAuthorByBlogIdList")]
+        [HttpGet("GetAuthorByBlogIdList/{id}")]
         public async Task<IActionResult> GetAuthorByBlogIdList(int id)
         {
             var values = await _mediator.Send(new GetBlogAuthorByIdQuery(id));

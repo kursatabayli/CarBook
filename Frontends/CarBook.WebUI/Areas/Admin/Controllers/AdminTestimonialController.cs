@@ -3,39 +3,34 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminTestimonial")]
+    
     public class AdminTestimonialController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultTestimonialDto> _apiService;
 
-        public AdminTestimonialController(IHttpClientFactory httpClientFactory)
+        public AdminTestimonialController(IApiAdminService<ResultTestimonialDto> apiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/Testimonials/");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultTestimonialDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/Testimonials/");
+            return View(values);
         }
-
-
+        [Route("RemoveTestimonial/{id}")]
+        public async Task<IActionResult> RemoveTestimonial(int id)
+        {
+            var success = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminTestimonials/{id}");
+            return RedirectToAction("Index");
+        }
     }
 }

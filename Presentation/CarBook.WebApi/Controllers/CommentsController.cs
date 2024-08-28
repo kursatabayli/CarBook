@@ -37,7 +37,7 @@ namespace CarBook.WebApi.Controllers
             return Ok("Yorum Başarıyla Eklendi");
         }
 
-        [HttpGet("CommentByBlogId")]
+        [HttpGet("CommentByBlogId/{id}")]
         public async Task<IActionResult> CommentByBlogId(int id)
         {
             var values = await _mediator.Send(new GetCommentByBlogIdQuery(id));

@@ -31,6 +31,7 @@ namespace CarBook.Application.Features.Mediator.Handlers.CarPricingHandlers
 					PricingName = g.First().Pricing.Name,
 					BrandAndModel = g.First().Car.Brand.Name + " " + g.First().Car.Model,
 					CoverImageUrl = g.First().Car.CoverImageUrl,
+					Amount = g.First().Amount,
 					DailyPrice = g.Where(x => x.PricingID == 1).Select(x => x.Amount).FirstOrDefault(),
 					WeeklyPrice = g.Where(x => x.PricingID == 2).Select(x => x.Amount).FirstOrDefault(),
 					MonthlyPrice = g.Where(x => x.PricingID == 3).Select(x => x.Amount).FirstOrDefault()

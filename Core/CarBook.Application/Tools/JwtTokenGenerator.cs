@@ -1,5 +1,5 @@
 ﻿using CarBook.Application.Dtos;
-using CarBook.Application.Features.Mediator.Results.AppUserResults;
+using CarBook.Application.Features.Mediator.Results.UserResults;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -13,34 +13,35 @@ namespace CarBook.Application.Tools
 {
     public class JwtTokenGenerator
     {
-        public static TokenResponseDto GenerateToken(GetCheckAppUserQueryResult result)
+        public static TokenResponseDto GenerateToken(GetCheckUserQueryResult result)
         {
             var claims = new List<Claim>();
-            if(!string.IsNullOrWhiteSpace(result.Role))
-            claims.Add(new Claim(ClaimTypes.Role, result.Role));
 
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, result.AppUserID.ToString()));
 
-            if(!string.IsNullOrWhiteSpace(result.Email))
-                claims.Add(new Claim("Email", result.Email));
+            if (!string.IsNullOrWhiteSpace(result.Email))
+                claims.Add(new Claim(ClaimTypes.Email, result.Email));
+
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, result.UserID.ToString()));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key));
+            var signinCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var signinCredentials = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
+            var expireDate = DateTime.UtcNow.AddMinutes(JwtTokenDefaults.ExpireMinutes);
 
-            var expireDate = DateTime.UtcNow.AddDays(JwtTokenDefaults.Expire);
-
-            JwtSecurityToken token = new JwtSecurityToken(issuer: JwtTokenDefaults.ValidIssuer,
-                                                          audience: JwtTokenDefaults.ValidAudience,
-                                                          claims: claims,
-                                                          notBefore: DateTime.UtcNow,
-                                                          expires: expireDate,
-                                                          signingCredentials: signinCredentials);
+            JwtSecurityToken token = new JwtSecurityToken(
+                issuer: JwtTokenDefaults.ValidIssuer,
+                audience: JwtTokenDefaults.ValidAudience,
+                claims: claims,
+                notBefore: DateTime.UtcNow,
+                expires: expireDate,
+                signingCredentials: signinCredentials
+            );
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            var tokenString = tokenHandler.WriteToken(token);
 
-            return new TokenResponseDto(tokenHandler.WriteToken(token), expireDate);
-
+            return new TokenResponseDto(tokenString, expireDate);
         }
     }
+
 }

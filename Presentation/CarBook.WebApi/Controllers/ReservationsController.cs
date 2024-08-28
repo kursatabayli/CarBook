@@ -1,5 +1,6 @@
 ﻿using CarBook.Application.Features.Mediator.Commands.ReservationCommands;
 using CarBook.Application.Features.Mediator.Queries.ReservationQueries;
+using CarBook.Application.Features.Mediator.Results.ReservationResults;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,31 @@ namespace CarBook.WebApi.Controllers
         {
             await _mediator.Send(command);
             return Ok("Rezervasyon Başarıyla Oluşturuldu");
+        }
+
+        [HttpGet("GetAvailableCars")]
+        public async Task<ActionResult<List<GetAvailableCarsQueryResult>>> GetAvailableCars(
+            [FromQuery] DateTime pickUpDate,
+            [FromQuery] DateTime dropOffDate,
+            [FromQuery] TimeSpan pickUpTime,
+            [FromQuery] TimeSpan dropOffTime,
+            [FromQuery] int locationID)
+        {
+            var query = new GetAvailableCarsQuery
+            {
+                PickUpDate = pickUpDate,
+                DropOffDate = dropOffDate,
+                PickUpTime = pickUpTime,
+                DropOffTime = dropOffTime,
+                LocationID = locationID
+            };
+
+            var availableCars = await _mediator.Send(query);
+
+            if (availableCars == null || availableCars.Count == 0)
+                return NotFound("Belirtilen kriterlere göre müsait araç bulunamadı.");
+
+            return Ok(availableCars);
         }
     }
 }

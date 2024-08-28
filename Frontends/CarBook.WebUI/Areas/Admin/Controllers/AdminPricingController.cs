@@ -1,46 +1,41 @@
 ﻿using CarBook.Dto.PricingDtos;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
-using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminPricing")]
+    
     public class AdminPricingController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultPricingDto> _apiService;
+        private readonly IApiAdminService<CreatePricingDto> _createApiService;
+        private readonly IApiAdminService<UpdatePricingDto> _updateApiService;
 
-        public AdminPricingController(IHttpClientFactory httpClientFactory)
+        public AdminPricingController(
+            IApiAdminService<ResultPricingDto> apiService,
+            IApiAdminService<CreatePricingDto> createApiService,
+            IApiAdminService<UpdatePricingDto> updateApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
+            _createApiService = createApiService;
+            _updateApiService = updateApiService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/Pricings");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultPricingDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/Pricings");
+            return View(values);
+
         }
 
         [HttpGet]
         [Route("CreatePricing")]
         public IActionResult CreatePricing()
         {
-
             return View();
         }
 
@@ -48,25 +43,21 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("CreatePricing")]
         public async Task<IActionResult> CreatePricing(CreatePricingDto createPricingDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createPricingDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminPricings/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var success = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminPricings/", createPricingDto);
+            if (success)
             {
-                return RedirectToAction("Index", "AdminPricing", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(createPricingDto);
         }
 
         [Route("RemovePricing/{id}")]
         public async Task<IActionResult> RemovePricing(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminPricings?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
+            var success = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminPricings/{id}");
+            if (success)
             {
-                return RedirectToAction("Index", "AdminPricing", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
             return View();
         }
@@ -75,31 +66,24 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("UpdatePricing/{id}")]
         public async Task<IActionResult> UpdatePricing(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminPricings/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Pricings/{id}");
+            if (value != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdatePricingDto>(jsonData);
-                return View(values);
-
+                return View(value);
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [Route("UpdatePricing/{id}")]
         public async Task<IActionResult> UpdatePricing(UpdatePricingDto updatePricingDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updatePricingDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminPricings/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var success = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminPricings/", updatePricingDto);
+            if (success)
             {
-                return RedirectToAction("Index", "AdminPricing", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(updatePricingDto);
         }
     }
 }

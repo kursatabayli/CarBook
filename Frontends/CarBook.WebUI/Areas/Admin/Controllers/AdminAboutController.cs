@@ -3,44 +3,41 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/AdminAbout")]
+    
     public class AdminAboutController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiAdminService<ResultAboutDto> _apiService;
+        private readonly IApiAdminService<CreateAboutDto> _createApiService;
+        private readonly IApiAdminService<UpdateAboutDto> _updateApiService;
 
-        public AdminAboutController(IHttpClientFactory httpClientFactory)
+        public AdminAboutController(
+            IApiAdminService<ResultAboutDto> apiService,
+            IApiAdminService<CreateAboutDto> createApiService,
+            IApiAdminService<UpdateAboutDto> updateApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _apiService = apiService;
+            _createApiService = createApiService;
+            _updateApiService = updateApiService;
         }
 
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
-            var token = User.Claims.FirstOrDefault(x=>x.Type == "carbooktoken")?.Value;
-            if (token != null)
-            {
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var responseMessage = await client.GetAsync("https://localhost:7278/api/Abouts");
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultAboutDto>>(jsonData);
-                    return View(values);
-                }
-            }
-            return View();
+            var values = await _apiService.GetListAsync("https://localhost:7278/api/Abouts/");
+            return View(values);
         }
 
         [HttpGet]
         [Route("CreateAbout")]
         public IActionResult CreateAbout()
         {
-
             return View();
         }
 
@@ -48,13 +45,10 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("CreateAbout")]
         public async Task<IActionResult> CreateAbout(CreateAboutDto createAboutDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createAboutDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7278/api/AdminAbouts/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminAbouts/", createAboutDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminAbout", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
             return View();
         }
@@ -62,44 +56,33 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("RemoveAbout/{id}")]
         public async Task<IActionResult> RemoveAbout(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7278/api/AdminAbouts?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "AdminAbout", new { area = "Admin" });
-            }
-            return View();
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminAbouts/{id}");
+            return RedirectToAction("Index");
+
         }
 
         [HttpGet]
         [Route("UpdateAbout/{id}")]
         public async Task<IActionResult> UpdateAbout(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7278/api/AdminAbouts/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Abouts/{id}");
+            if (value != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateAboutDto>(jsonData);
-                return View(values);
-
+                return View(value);
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [Route("UpdateAbout/{id}")]
         public async Task<IActionResult> UpdateAbout(UpdateAboutDto updateAboutDto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateAboutDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7278/api/AdminAbouts/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminAbouts/", updateAboutDto);
+            if (value)
             {
-                return RedirectToAction("Index", "AdminAbout", new { area = "Admin" });
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(updateAboutDto);
         }
     }
 }

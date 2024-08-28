@@ -2,8 +2,10 @@ using CarBook.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace CarBook.WebUI.Areas.Default.Controllers
+namespace CarBook.WebUI.Controllers
 {
+    [Area("CarBook")]
+    [Route("CarBook/[controller]")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,16 +15,19 @@ namespace CarBook.WebUI.Areas.Default.Controllers
             _logger = logger;
         }
 
+        [HttpGet("Index")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet("Privacy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
+        [HttpGet("Error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

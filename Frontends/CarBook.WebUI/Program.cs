@@ -1,3 +1,7 @@
+using CarBook.WebUI.Areas.Admin.Services.Implementations;
+using CarBook.WebUI.Areas.CarBook.Services.Implementations;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Areas.CarBook.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,14 +14,17 @@ builder.Services.AddHttpClient();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddCookie(JwtBearerDefaults.AuthenticationScheme, opt =>
     {
-        opt.LoginPath = "/Login/Index/";
-        opt.LogoutPath = "/Logout/Index/";
-        opt.AccessDeniedPath = "/Pages/AccessDenied";
-        opt.Cookie.SameSite = SameSiteMode.Strict;
-        opt.Cookie.HttpOnly = true;
-        opt.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-        opt.Cookie.Name = "CarBookJwt";
-    });
+            opt.LoginPath = "/Admin/AdminLogin/Index/";
+            opt.LogoutPath = "/Admin/AdminLogin/Logout/";
+            opt.Cookie.SameSite = SameSiteMode.Strict;
+            opt.Cookie.HttpOnly = true;
+            opt.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            opt.Cookie.Name = "CarBookJwt";
+        });
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped(typeof(IApiAdminService<>), typeof(ApiAdminService<>));
+builder.Services.AddScoped(typeof(IApiCarBookService<>), typeof(ApiCarBookService<>));
 
 var app = builder.Build();
 
