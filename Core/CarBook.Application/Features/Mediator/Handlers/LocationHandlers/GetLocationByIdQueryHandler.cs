@@ -22,6 +22,7 @@ namespace CarBook.Application.Features.Mediator.Handlers.LocationHandlers
 			{
 				LocationID = values.LocationID,
 				Name = values.Name,
+				Maps = values.Maps,
 			};
 		}
 	}

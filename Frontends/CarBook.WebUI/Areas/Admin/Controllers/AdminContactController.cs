@@ -31,6 +31,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
                 {
                     var jsonData = await responseMessage.Content.ReadAsStringAsync();
                     var values = JsonConvert.DeserializeObject<List<ResultContactDto>>(jsonData);
+                    values.Reverse();
                     return View(values);
                 }
             }

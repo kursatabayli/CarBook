@@ -10,6 +10,7 @@ namespace CarBook.Dto.LocationDtos
     {
         public int LocationID { get; set; }
         public string Name { get; set; }
+        public string Maps { get; set; }
 
     }
 }

@@ -17,6 +17,7 @@ namespace CarBook.Application.Features.Mediator.Handlers.LocationHandlers
 		{
 			var values = await _repository.GetByIdAsync(request.LocationID);
 			values.Name = request.Name;
+			values.Maps = request.Maps;
 			await _repository.UpdateAsync(values);
 		}
 	}
