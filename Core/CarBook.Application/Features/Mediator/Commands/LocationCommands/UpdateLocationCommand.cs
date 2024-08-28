@@ -6,5 +6,6 @@ namespace CarBook.Application.Features.Mediator.Commands.LocationCommands
 	{
 		public int LocationID { get; set; }
 		public string Name { get; set; }
-	}
+		public string Maps { get; set; }
+    }
 }

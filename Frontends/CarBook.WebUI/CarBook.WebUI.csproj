@@ -9,18 +9,22 @@
   <ItemGroup>
     <Compile Remove="Areas\Admin\Views\AdminStatistics\**" />
     <Compile Remove="Views\Register\**" />
+    <Compile Remove="wwwroot\Admin\plugins\**" />
     <Compile Remove="wwwroot\carbook-master\**" />
     <Compile Remove="wwwroot\lib\**" />
     <Content Remove="Areas\Admin\Views\AdminStatistics\**" />
     <Content Remove="Views\Register\**" />
+    <Content Remove="wwwroot\Admin\plugins\**" />
     <Content Remove="wwwroot\carbook-master\**" />
     <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\AdminStatistics\**" />
     <EmbeddedResource Remove="Views\Register\**" />
+    <EmbeddedResource Remove="wwwroot\Admin\plugins\**" />
     <EmbeddedResource Remove="wwwroot\carbook-master\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="Areas\Admin\Views\AdminStatistics\**" />
     <None Remove="Views\Register\**" />
+    <None Remove="wwwroot\Admin\plugins\**" />
     <None Remove="wwwroot\carbook-master\**" />
     <None Remove="wwwroot\lib\**" />
   </ItemGroup>
@@ -32,8 +36,6 @@
 
   <ItemGroup>
     <None Include="wwwroot\Site\css\.DS_Store" />
-    <None Include="wwwroot\Site\css\bootstrap\.DS_Store" />
-    <None Include="wwwroot\Site\css\css\.DS_Store" />
     <None Include="wwwroot\Site\icons\.DS_Store" />
     <None Include="wwwroot\Site\icons\flaticon\.DS_Store" />
     <None Include="wwwroot\Site\icons\flaticon\font\.DS_Store" />
@@ -54,7 +56,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="wwwroot\Admin\plugins\datatables\" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,7 @@
 ﻿<div class="menu-overlay"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-2.1.4/b-3.1.1/b-colvis-3.1.1/b-html5-3.1.1/b-print-3.1.1/r-3.0.2/sp-2.3.2/datatables.min.js"></script>
-
 
 <script src="~/Admin/js/bootstrap.bundle.min.js"></script>
 <script src="~/Admin/js/metismenu.min.js"></script>
@@ -12,54 +9,14 @@
 <script src="~/Admin/js/simplebar.min.js"></script>
 <script src="~/Admin/js/theme.js"></script>
 <script src="~/Admin/js/chart.js"></script>
+<script src="~/Admin/js/morris.min.js"></script>
+<script src="~/Admin/js/raphael.min.js"></script>
 
-<!-- Morris Js-->
-<script src="~/Admin/plugins/morris-js/morris.min.js"></script>
-<!-- Raphael Js-->
-<script src="~/Admin/plugins/raphael/raphael.min.js"></script>
-
-<!-- DataTables Initialization -->
-<script>
-    function format(d) {
-        return `<table cellpadding="10" cellspacing="0" border="0" style="width: 100%;">
-                        <tr>
-                            <th>Mesaj:</th>
-                            <td>${d[6]}</td>
-                        </tr>
-                    </table>`;
-    }
-
-    $(document).ready(function () {
-        var table = $('#basic-datatable').DataTable({
-            "columnDefs": [
-                {
-                    "targets": 6, // Mesaj sütununu gizler
-                    "visible": false
-                }
-            ],
-            "order": [[1, 'asc']]
-        });
-
-        $('#basic-datatable tbody').on('click', 'td.details-control', function () {
-            var tr = $(this).closest('tr');
-            var row = table.row(tr);
-
-            if (row.child.isShown()) {
-                row.child.hide();
-                tr.removeClass('shown');
-            } else {
-                row.child(format(row.data())).show();
-                tr.addClass('shown');
-            }
-        });
-    });
-</script>
-
-
-
-<!-- SweetAlert -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+@await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminDatatablePartial.cshtml")
 
 @await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminRemovePartial.cshtml")
 @await Html.PartialAsync("/Areas/Admin/Views/AdminLayout/AdminCreateOrUpdatePartial.cshtml")

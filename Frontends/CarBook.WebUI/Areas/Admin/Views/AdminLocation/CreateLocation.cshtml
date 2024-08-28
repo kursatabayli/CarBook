@@ -19,6 +19,11 @@
                                     <input type="text" class="form-control" asp-for="Name" placeholder="Lokasyon Girişi" />
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
+                                <div class="form-group">
+                                    <label asp-for="Maps">Lokasyon Url</label>
+                                    <input type="text" class="form-control" asp-for="Maps" placeholder="Lokasyon Url" />
+                                    <span asp-validation-for="Maps" class="text-danger"></span>
+                                </div>
                                 <button type="submit" class="btn btn-primary waves-effect waves-light">Lokasyonu Kaydet</button>
                                 <a href="/Admin/AdminLocation/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
                             </form>

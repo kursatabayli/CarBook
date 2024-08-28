@@ -19,6 +19,7 @@ namespace CarBook.Application.Features.Mediator.Handlers.LocationHandlers
 			await _repository.CreateAsync(new Location
 			{
 				Name = request.Name,
+				Maps = request.Maps,
 			});
 		}
 	}

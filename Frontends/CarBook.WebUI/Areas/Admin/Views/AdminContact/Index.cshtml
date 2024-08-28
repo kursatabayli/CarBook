@@ -15,10 +15,9 @@
                         <div class="card-body">
                             <h4 class="card-title">Gelen Mesajlar</h4>
                             <p class="card-subtitle mb-4">İletişim kısmından gelen mesajlar.</p>
-                            <table id="basic-datatable" class="table dt-responsive nowrap">
+                            <table id="basic-datatable" class="table table-centered table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th></th>
                                         <th>#</th>
                                         <th>İsim</th>
                                         <th>Konu</th>
@@ -29,14 +28,15 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-                                        <tr>
-                                            <td class="details-control"></td>
-                                            <td>@count</td>
+                                        <tr data-message="@item.Message">
+                                            <td>
+                                                @count
+                                                <button class="btn btn-link p-0 ml-2 expand-icon" style="font-size: 16px;"><i class="fas fa-plus-circle"></i></button>
+                                            </td>
                                             <td>@item.Name</td>
                                             <td>@item.Subject</td>
                                             <td>@item.Email</td>
                                             <td>@item.SendDate.ToString("dd.MM.yyyy HH:mm")</td>
-                                            <td>@item.Message</td>
                                         </tr>
                                         count++;
                                     }
