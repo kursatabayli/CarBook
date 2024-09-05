@@ -31,7 +31,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Eski şifre yanlış." });
             }
             var value = await _apiService.UpdateItemAsync($"https://localhost:7278/api/AdminUser/", updateUserDto);
-            return RedirectToAction("Index");
+            return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminSettings", new { area = "Admin" }) });
         }
 
     }

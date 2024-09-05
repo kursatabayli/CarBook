@@ -62,7 +62,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
                         };
 
                         await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProps);
-                        return RedirectToAction("Index", "AdminDashboard", new { area = "Admin" });
+                        return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminDashboard", new { area = "Admin" }) });
                     }
                 }
             }

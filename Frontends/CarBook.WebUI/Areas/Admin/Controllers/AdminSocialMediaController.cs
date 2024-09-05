@@ -48,7 +48,8 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminSocialMedias/", createSocialMediaDto);
             if (value)
             {
-                return RedirectToAction("Index");
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminSocialMedia", new { area = "Admin" }) });
+
             }
             return View(createSocialMediaDto);
         }
@@ -80,7 +81,8 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminSocialMedias/", updateSocialMediaDto);
             if (value)
             {
-                return RedirectToAction("Index");
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminSocialMedia", new { area = "Admin" }) });
+
             }
             return View(updateSocialMediaDto);
         }

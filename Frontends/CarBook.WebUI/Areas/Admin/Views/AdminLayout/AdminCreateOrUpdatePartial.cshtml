@@ -5,19 +5,19 @@
             var form = $(this);
             var actionType = form.data('action-type');
 
-            // Form verilerini serialize et
             var formData = form.serialize();
 
-            // AJAX isteği gönder
             $.ajax({
                 url: form.attr('action'),
                 type: form.attr('method'),
                 data: formData,
-                success: function (response) {
-                    // Sunucu yanıtını JSON formatında parse etme
-                    if (response.success || response.success == null) {  // JSON yanıtında success kontrolü
+                success: function (response) {                    
+                    if (response.success || response.success == null) {
                         var title = 'İşlem Tamamlandı!';
-                        var text = (actionType === 'create') ? 'Yeni veri eklendi' : 'Veriler güncellendi';
+                        if (actionType == 'create')
+                            var text = 'Yeni veri eklendi';
+                        else if (actionType == 'update')
+                            var text = 'Veriler güncellendi';
 
                         Swal.fire({
                             title: title,
@@ -26,7 +26,7 @@
                             showConfirmButton: true,
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                form.off('submit').submit(); // Sayfayı yeniden yükle
+                                window.location.href = response.redirectUrl;
                             }
                         });
                     } else {

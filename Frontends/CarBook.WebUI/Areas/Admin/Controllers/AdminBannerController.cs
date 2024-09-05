@@ -45,7 +45,8 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> CreateBanner(CreateBannerDto createBannerDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminBanners/", createBannerDto);
-            return RedirectToAction("Index");
+            return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminBanner", new { area = "Admin" }) });
+
 
         }
 
@@ -79,7 +80,8 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminBanners/", updateBannerDto);
             if (value)
             {
-                return RedirectToAction("Index");
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminBanner", new { area = "Admin" }) });
+
             }
             return View(updateBannerDto);
         }

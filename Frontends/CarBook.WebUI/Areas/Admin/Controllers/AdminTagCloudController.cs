@@ -48,7 +48,8 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminTagClouds/", createTagCloudDto);
             if (value)
             {
-                return RedirectToAction("Index");
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminTagCloud", new { area = "Admin" }) });
+
             }
             return View(createTagCloudDto);
         }
@@ -80,7 +81,8 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminTagClouds/", updateTagCloudDto);
             if (value)
             {
-                return RedirectToAction("Index");
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminTagCloud", new { area = "Admin" }) });
+
             }
             return View(updateTagCloudDto);
         }

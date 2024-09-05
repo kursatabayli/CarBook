@@ -48,7 +48,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminServices/", createServiceDto);
             if (value)
             {
-                return RedirectToAction("Index");
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminService", new { area = "Admin" }) });
             }
             return View(createServiceDto);
         }
@@ -80,7 +80,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminServices/", updateServiceDto);
             if (value)
             {
-                return RedirectToAction("Index");
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminService", new { area = "Admin" }) });
             }
             return View(updateServiceDto);
         }

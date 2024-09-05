@@ -50,7 +50,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
                     }
                 }
             }
-            return RedirectToAction("Index", "AdminCar", new { area = "Admin" });
+            return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminCar", new { area = "Admin" }) });
         }
     }
 }
