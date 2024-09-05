@@ -20,8 +20,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _apiService = apiService;
         }
 
-        [HttpGet]
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/AdminContacts/");

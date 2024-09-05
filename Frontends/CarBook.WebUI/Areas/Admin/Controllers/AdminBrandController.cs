@@ -27,23 +27,22 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Brands/");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateBrand")]
-        public IActionResult CreateBrand()
+        [HttpGet("CreateBrand")]
+        public async Task<IActionResult> CreateBrand()
         {
 
+            await _createApiService.GetEmpty();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreateBrand")]
+        [HttpPost("CreateBrand")]
         public async Task<IActionResult> CreateBrand(CreateBrandDto createBrandDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminBrands/", createBrandDto);
@@ -55,16 +54,15 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createBrandDto);
         }
 
-        [Route("RemoveBrand/{id}")]
+        [HttpDelete("RemoveBrand/{id}")]
         public async Task<IActionResult> RemoveBrand(int id)
         {
             var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBrands/{id}");
-            return RedirectToAction("Index");
+            return Ok();
 
         }
 
-        [HttpGet]
-        [Route("UpdateBrand/{id}")]
+        [HttpGet("UpdateBrand/{id}")]
         public async Task<IActionResult> UpdateBrand(int id)
         {
             var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Brands/{id}");
@@ -75,8 +73,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Route("UpdateBrand/{id}")]
+        [HttpPost("UpdateBrand/{id}")]
         public async Task<IActionResult> UpdateBrand(UpdateBrandDto updateBrandDto)
         {
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminBrands/", updateBrandDto);

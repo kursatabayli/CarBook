@@ -20,7 +20,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _apiService = apiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Blogs/GetAllBlogsWithAuthorsList");
@@ -28,11 +28,11 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         }
 
         
-        [Route("RemoveBlog/{id}")]
+        [HttpDelete("RemoveBlog/{id}")]
         public async Task<IActionResult> RemoveBlog(int id)
         {
-            var success = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBlogs/{id}");
-            return RedirectToAction("Index");
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBlogs/{id}");
+            return Ok();
 
         }
     }

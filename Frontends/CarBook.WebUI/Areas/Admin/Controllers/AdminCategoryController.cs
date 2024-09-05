@@ -27,23 +27,22 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Categories/");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateCategory")]
-        public IActionResult CreateCategory()
+        [HttpGet("CreateCategory")]
+        public async Task<IActionResult> CreateCategory()
         {
 
+            await _createApiService.GetEmpty();
             return View();
         }
-        
-        [HttpPost]
-        [Route("CreateCategory")]
+
+        [HttpPost("CreateCategory")]
         public async Task<IActionResult> CreateCategory(CreateCategoryDto createCategoryDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminCategories/", createCategoryDto);
@@ -55,14 +54,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createCategoryDto);
         }
         
-        [Route("RemoveCategory/{id}")]
+        [HttpDelete("RemoveCategory/{id}")]
         public async Task<IActionResult> RemoveCategory(int id)
         {
-            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminCategories/{id}");
-            return RedirectToAction("Index");
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminCategories/{id}");
+            return Ok();
         }
-        [HttpGet]
-        [Route("UpdateCategory/{id}")]
+
+        [HttpGet("UpdateCategory/{id}")]
         public async Task<IActionResult> UpdateCategory(int id)
         {
             var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Categories/{id}");
@@ -73,8 +72,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Route("UpdateCategory/{id}")]
+        [HttpPost("UpdateCategory/{id}")]
         public async Task<IActionResult> UpdateCategory(UpdateCategoryDto updateCategoryDto)
         {
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminCategories/", updateCategoryDto);

@@ -11,8 +11,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminDashboardController : Controller
     {
-        [HttpGet]
-        [Route("Index")]
+        [HttpGet("Index")]
         public IActionResult Index()
         {
             return View();

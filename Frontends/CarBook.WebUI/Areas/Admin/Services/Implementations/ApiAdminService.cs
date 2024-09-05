@@ -101,5 +101,10 @@ namespace CarBook.WebUI.Areas.Admin.Services.Implementations
             var responseMessage = await client.GetAsync(url);
             return responseMessage.IsSuccessStatusCode;
         }
+
+        public async Task GetEmpty()
+        {
+            var client = CreateClient();
+        }
     }
 }

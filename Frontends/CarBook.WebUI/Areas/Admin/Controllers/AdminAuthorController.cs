@@ -27,22 +27,21 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Authors");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateAuthor")]
-        public IActionResult CreateAuthor()
+        [HttpGet("CreateAuthor")]
+        public async Task<IActionResult> CreateAuthor()
         {
+            await _createApiService.GetEmpty();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreateAuthor")]
+        [HttpPost("CreateAuthor")]
         public async Task<IActionResult> CreateAuthor(CreateAuthorDto createAuthorDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminAuthors/", createAuthorDto);
@@ -53,16 +52,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createAuthorDto);
         }
 
-        [Route("RemoveAuthor/{id}")]
+        [HttpDelete("RemoveAuthor/{id}")]
         public async Task<IActionResult> RemoveAuthor(int id)
         {
-            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminAuthors/{id}");
-            return RedirectToAction("Index");
-
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminAuthors/{id}");
+            return Ok();
         }
 
-        [HttpGet]
-        [Route("UpdateAuthor/{id}")]
+        [HttpGet("UpdateAuthor/{id}")]
         public async Task<IActionResult> UpdateAuthor(int id)
         {
             var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Authors/{id}");
@@ -73,8 +70,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Route("UpdateAuthor/{id}")]
+        [HttpPost("UpdateAuthor/{id}")]
         public async Task<IActionResult> UpdateAuthor(UpdateAuthorDto updateAuthorDto)
         {
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminAuthors/", updateAuthorDto);

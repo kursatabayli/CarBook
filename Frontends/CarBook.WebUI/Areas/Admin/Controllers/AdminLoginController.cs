@@ -22,15 +22,13 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        [HttpGet]
-        [Route("Index")]
+        [HttpGet("Index")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpPost]
-        [Route("Index")]
+        [HttpPost("Index")]
         public async Task<IActionResult> Index(ResultLoginDto resultLoginDto)
         {
             var client = _httpClientFactory.CreateClient();
@@ -70,7 +68,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(resultLoginDto);
         }
 
-        [Route("Logout")]
+        [HttpGet("Logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);

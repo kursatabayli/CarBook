@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using Newtonsoft.Json.Linq;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -27,7 +28,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Locations");
@@ -35,19 +36,18 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
         }
 
-        [HttpGet]
-        [Route("CreateLocation")]
-        public IActionResult CreateLocation()
+        [HttpGet("CreateLocation")]
+        public async Task<IActionResult> CreateLocation()
         {
+            await _createApiService.GetEmpty();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreateLocation")]
+        [HttpPost("CreateLocation")]
         public async Task<IActionResult> CreateLocation(CreateLocationDto createLocationDto)
         {
-            var success = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminLocations/", createLocationDto);
-            if (success)
+            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminLocations/", createLocationDto);
+            if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminLocation", new { area = "Admin" }) });
 
@@ -55,19 +55,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createLocationDto);
         }
 
-        [Route("RemoveLocation/{id}")]
+        [HttpDelete("RemoveLocation/{id}")]
         public async Task<IActionResult> RemoveLocation(int id)
         {
-            var success = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminLocations/{id}");
-            if (success)
-            {
-                return RedirectToAction("Index");
-            }
-            return View();
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminLocations/{id}");
+            return Ok();
         }
 
-        [HttpGet]
-        [Route("UpdateLocation/{id}")]
+        [HttpGet("UpdateLocation/{id}")]
         public async Task<IActionResult> UpdateLocation(int id)
         {
             var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Locations/{id}");
@@ -78,12 +73,11 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Route("UpdateLocation/{id}")]
+        [HttpPost("UpdateLocation/{id}")]
         public async Task<IActionResult> UpdateLocation(UpdateLocationDto updateLocationDto)
         {
-            var success = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminLocations/", updateLocationDto);
-            if (success)
+            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminLocations/", updateLocationDto);
+            if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminLocation", new { area = "Admin" }) });
 

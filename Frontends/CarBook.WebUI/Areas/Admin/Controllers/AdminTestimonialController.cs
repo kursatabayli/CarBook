@@ -20,17 +20,18 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _apiService = apiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Testimonials/");
             return View(values);
         }
-        [Route("RemoveTestimonial/{id}")]
+
+        [HttpDelete("RemoveTestimonial/{id}")]
         public async Task<IActionResult> RemoveTestimonial(int id)
         {
-            var success = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminTestimonials/{id}");
-            return RedirectToAction("Index");
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminTestimonials/{id}");
+            return Ok();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Pricings");
@@ -32,19 +32,18 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
         }
 
-        [HttpGet]
-        [Route("CreatePricing")]
-        public IActionResult CreatePricing()
+        [HttpGet("CreatePricing")]
+        public async Task<IActionResult> CreatePricing()
         {
+            await _createApiService.GetEmpty();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreatePricing")]
+        [HttpPost("CreatePricing")]
         public async Task<IActionResult> CreatePricing(CreatePricingDto createPricingDto)
         {
-            var success = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminPricings/", createPricingDto);
-            if (success)
+            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminPricings/", createPricingDto);
+            if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminPricing", new { area = "Admin" }) });
 
@@ -52,15 +51,11 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createPricingDto);
         }
 
-        [Route("RemovePricing/{id}")]
+        [HttpDelete("RemovePricing/{id}")]
         public async Task<IActionResult> RemovePricing(int id)
         {
-            var success = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminPricings/{id}");
-            if (success)
-            {
-                return RedirectToAction("Index");
-            }
-            return View();
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminPricings/{id}");
+            return Ok();
         }
 
         [HttpGet]
@@ -79,8 +74,8 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("UpdatePricing/{id}")]
         public async Task<IActionResult> UpdatePricing(UpdatePricingDto updatePricingDto)
         {
-            var success = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminPricings/", updatePricingDto);
-            if (success)
+            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminPricings/", updatePricingDto);
+            if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminPricing", new { area = "Admin" }) });
 
