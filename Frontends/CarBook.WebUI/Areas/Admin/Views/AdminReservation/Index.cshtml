@@ -43,16 +43,16 @@
                                                 <strong>Teslim Etme Tarihi:</strong> @item.DropOffDate.ToShortDateString() - @item.DropOffTime.ToString(@"hh\:mm")<br>
                                                 <strong>Toplam Ücret:</strong> @item.Amount<br><br>
                                                 <strong>Müşteri Notu:</strong> @item.Description">
-                                                <td>
+                                            <td>
                                                 @count
-                                                    <button class="btn btn-link p-0 ml-2 expand-icon" style="font-size: 16px;"><i class="fas fa-plus-circle"></i></button>
-                                                </td>
-                                                <td>@item.Name @item.SurName</td>
-                                                <td>@item.Phone</td>
-                                                <td>@item.Email</td>
-                                                <td>@item.ReservationID</td>
-                                                <td>@item.Status</td>
-                                            </tr>
+                                                <button class="btn btn-link p-0 ml-2 expand-icon" style="font-size: 16px;"><i class="fas fa-plus-circle"></i></button>
+                                            </td>
+                                            <td>@item.Name @item.SurName</td>
+                                            <td>@item.Phone</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.ReservationID</td>
+                                            <td>@item.Status</td>
+                                        </tr>
                                         count++;
                                     }
                                 </tbody>
