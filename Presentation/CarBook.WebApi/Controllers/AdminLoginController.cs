@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.AppUserQueries;
+﻿using CarBook.Application.Features.Mediator.Queries.UserQueries;
 using CarBook.Application.Tools;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +19,7 @@ namespace CarBook.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(GetCheckAppUserQuery query)
+        public async Task<IActionResult> Index(GetCheckUserQuery query)
         {
             var values = await _mediator.Send(query);
             if(values.IsExist)

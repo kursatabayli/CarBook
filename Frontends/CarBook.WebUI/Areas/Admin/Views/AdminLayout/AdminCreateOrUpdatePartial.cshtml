@@ -5,22 +5,46 @@
             var form = $(this);
             var actionType = form.data('action-type');
 
-            var title, text;
-            title = 'İşlem Tamamlandı!';
-            if (actionType === 'create') {                
-                text = 'Yeni veri eklendi';
-            } else if (actionType === 'update') {
-                text = 'Veriler güncellendi';
-            }
+            // Form verilerini serialize et
+            var formData = form.serialize();
 
-            Swal.fire({
-                title: title,
-                text: text,
-                icon: 'success',
-                showConfirmButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.off('submit').submit();
+            // AJAX isteği gönder
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: formData,
+                success: function (response) {
+                    // Sunucu yanıtını JSON formatında parse etme
+                    if (response.success || response.success == null) {  // JSON yanıtında success kontrolü
+                        var title = 'İşlem Tamamlandı!';
+                        var text = (actionType === 'create') ? 'Yeni veri eklendi' : 'Veriler güncellendi';
+
+                        Swal.fire({
+                            title: title,
+                            text: text,
+                            icon: 'success',
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.off('submit').submit(); // Sayfayı yeniden yükle
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Başarısız!',
+                            text: response.message || 'İşlem gerçekleştirilemedi. Lütfen tekrar deneyin.',
+                            icon: 'error',
+                            confirmButtonText: 'Tamam'
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        title: 'Hata!',
+                        text: 'Sunucuyla iletişim kurulurken bir hata oluştu: ' + error,
+                        icon: 'error',
+                        confirmButtonText: 'Tamam'
+                    });
                 }
             });
         });

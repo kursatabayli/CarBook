@@ -1,0 +1,53 @@
+﻿@model List<ResultReservationDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    int count = 1;
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Rezervasyonlar</h4>
+                            <p class="card-subtitle mb-4">Rezervasyon listesi.</p>
+                            <table id="reservation-datatable" class="table table-centered table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Ad-Soyad</th>
+                                        <th>Telefon</th>
+                                        <th>Email</th>
+                                        <th>Rezervasyon Numarası</th>
+                                        <th>Durum</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr data-message="<strong>Ad-Soyad:</strong> @item.Name @item.SurName<br><strong>Telefon:</strong> @item.Phone<br><strong>Email:</strong> @item.Email<br><strong>Rezervasyon Numarası:</strong> @item.ReservationID<br><strong>Pickup Yeri ID:</strong> @item.PickUpLocationID<br><strong>DropOff Yeri ID:</strong> @item.DropOffLocationID<br><strong>Araba ID:</strong> @item.CarID<br><strong>Doğum Tarihi:</strong> @item.BirthDate.ToShortDateString()<br><strong>Ehliyet Yılı:</strong> @item.DriverLicenseYear.ToShortDateString()<br><strong>Pickup Tarihi:</strong> @item.PickUpDate.ToShortDateString()<br><strong>Pickup Saati:</strong> @item.PickUpTime<br><strong>DropOff Tarihi:</strong> @item.DropOffDate.ToShortDateString()<br><strong>DropOff Saati:</strong> @item.DropOffTime<br><br><strong>Müşteri Notu:</strong> @item.Description">
+                                            <td>
+                                                @count
+                                                <button class="btn btn-link p-0 ml-2 expand-icon" style="font-size: 16px;"><i class="fas fa-plus-circle"></i></button>
+                                            </td>
+                                            <td>@item.Name @item.SurName</td>
+                                            <td>@item.Phone</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.ReservationID</td>
+                                            <td>@item.Status</td>
+                                        </tr>
+                                        count++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

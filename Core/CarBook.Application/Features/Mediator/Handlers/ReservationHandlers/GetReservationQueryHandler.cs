@@ -34,7 +34,13 @@ namespace CarBook.Application.Features.Mediator.Handlers.ReservationHandlers
                 DriverLicenseYear = x.DriverLicenseYear,
                 CarID = x.CarID,
                 PickUpLocationID = x.PickUpLocationID,
-                DropOffLocationID = x.DropOffLocationID
+                DropOffLocationID = x.DropOffLocationID,
+                PickUpDate = x.PickUpDate,
+                DropOffDate = x.DropOffDate,
+                PickUpTime = x.PickUpTime,
+                DropOffTime = x.DropOffTime,
+                Description = x.Description,
+                Status = x.Status
             }).ToList();
         }
     }

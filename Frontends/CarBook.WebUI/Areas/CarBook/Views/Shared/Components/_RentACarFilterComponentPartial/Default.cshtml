@@ -1,42 +1,45 @@
-﻿@model ResultLocationDto
-
-<section class="ftco-section ftco-no-pt bg-light">
+﻿<section class="ftco-section ftco-no-pt bg-light">
     <div class="container">
         <div class="row no-gutters">
             <div class="col-md-12 featured-top">
                 <div class="row no-gutters">
                     <div class="col-md-4 d-flex align-items-center">
-                        <form action="/CarBook/RentACarList/ReservationInfos/" class="request-form ftco-animate bg-primary" method="post">
+                        <form action="/CarBook/Default/ReservationInfos" class="request-form ftco-animate bg-primary" method="post">
                             <h2>Yolculuğunuzu Planlayın</h2>
                             <div class="form-group">
-                                <label for="LocationID" class="label">Alış Yeri</label>
-                                @Html.DropDownListFor(x => x.LocationID, (List<SelectListItem>)ViewBag.LocationValues, new { @class = "form-control", id = "LocationID" })
+                                <label for="pickUpLocation" class="label">Alış Lokasyonu</label>
+                                @Html.DropDownList("pickUpLocation", (List<SelectListItem>)ViewBag.LocationValues, "Aracı Teslim Almak İstediğiniz Lokasyon", new { @class = "form-control firstdropdown", @required = "required" })
                             </div>
+
                             <div class="form-group">
-                                <label for="DropOffLocation" class="label">Bırakış Yeri</label>
-                                <input type="text" class="form-control" id="DropOffLocation" placeholder="Şehir, Havalimanı, İstasyon vb." />
+                                <label for="dropOffLocation" class="label">İade Lokasyonu</label>
+                                @Html.DropDownList("dropOffLocation", (List<SelectListItem>)ViewBag.LocationValues, "Aracı Teslim Etmek İstediğiniz Lokasyon", new { @class = "form-control firstdropdown", @required = "required" })
                             </div>
+
                             <div class="d-flex">
                                 <div class="form-group mr-2">
-                                    <label for="reservationDate" class="label">Alış Tarihi</label>
-                                    <input type="text" class="form-control" name="reservationDate" id="reservationDate" placeholder="Tarih" />
+                                    <label for="reservationDate" class="label">Rezervasyon Tarihi</label>
+                                    <input type="text" class="form-control datepicker" name="reservationDate" id="reservationDate" placeholder="Tarih" required />
                                 </div>
                                 <div class="form-group ml-2">
-                                    <label for="returnDate" class="label">Bırakış Tarihi</label>
-                                    <input type="text" class="form-control" name="returnDate" id="returnDate" placeholder="Tarih" />
+                                    <label for="reservationTime" class="label">Rezervasyon Saati</label>
+                                    <input type="text" class="form-control timepicker" name="reservationTime" id="reservationTime" placeholder="Saat" required>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="reservationTime" class="label">Rezervasyon Saati</label>
-                                <input type="text" class="form-control" name="reservationTime" id="reservationTime" placeholder="Saat" />
+
+                            <div class="d-flex">
+                                <div class="form-group mr-2">
+                                    <label for="returnDate" class="label">İade Tarihi</label>
+                                    <input type="text" class="form-control datepicker" name="returnDate" id="returnDate" placeholder="Tarih" required />
+                                </div>
+                                <div class="form-group ml-2">
+                                    <label for="returnTime" class="label">İade Saati</label>
+                                    <input type="text" class="form-control timepicker" name="returnTime" id="returnTime" placeholder="Saat" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="returnTime" class="label">İade Saati</label>
-                                <input type="text" class="form-control" name="returnTime" id="returnTime" placeholder="Saat" />
-                            </div>
+
                             <div class="form-group">
                                 <button type="submit" class="btn btn-secondary py-3 px-4">Hemen Araç Kiralayın</button>
-                                @* <input type="submit" value="Hemen Araç Kiralayın" class="btn btn-secondary py-3 px-4" /> *@
                             </div>
                         </form>
                     </div>
@@ -50,7 +53,7 @@
                                             <span class="flaticon-route"></span>
                                         </div>
                                         <div class="text w-100">
-                                            <h3 class="heading mb-2">Alış Yerini Seçin</h3>
+                                            <h3 class="heading mb-2">Rezervasyon Lokasyonunu Seçin</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -75,7 +78,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p><a href="#" class="btn btn-primary py-3 px-4">Şimdi Kirala</a></p>
+                            <p><a href="/CarBook/CarPricing/Index/" class="btn btn-primary py-3 px-4">Göz At</a></p>
                         </div>
                     </div>
                 </div>

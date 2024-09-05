@@ -14,32 +14,24 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
     [Route("CarBook/[controller]")]
     public class DefaultController : Controller
     {
-        private readonly IApiCarBookService<ResultLocationDto> _apiService;
 
-        public DefaultController(IApiCarBookService<ResultLocationDto> apiService)
+        [HttpGet("Index")]
+        public IActionResult Index()
         {
-            _apiService = apiService;
+            return View();
         }
 
         [HttpPost("ReservationInfos")]
         public IActionResult ReservationInfos(string reservationTime, string returnTime, string reservationDate, string returnDate, string pickUpLocation, string dropOffLocation)
         {
+            ViewBag.pickUpLocation = pickUpLocation;
+            ViewBag.dropOffLocation = dropOffLocation;
+            ViewBag.reservationDate = reservationDate;
+            ViewBag.reservationTime = reservationTime;
+            ViewBag.returnDate = returnDate;
+            ViewBag.returnTime = returnTime;
+
             return RedirectToAction("Index", "RentACarList", new { reservationTime, returnTime, reservationDate, returnDate, pickUpLocation, dropOffLocation });
-        }
-
-        [HttpGet("Index")]
-        public async Task<IActionResult> Index()
-        {
-            var locationValues = await _apiService.GetListAsync("https://localhost:7278/api/Locations");
-
-            var location = locationValues.Select(x => new SelectListItem
-            {
-                Text = x.Name,
-                Value = x.LocationID.ToString()
-            }).ToList();
-
-            ViewBag.LocationValues = location;
-            return View();
         }
     }
 }

@@ -6,10 +6,10 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarBook.Application.Interfaces.AppUserInterfaces
+namespace CarBook.Application.Interfaces.UserInterfaces
 {
-    public interface IAppUserRepository
+    public interface IUserRepository
     {
-        Task<AppUser> GetByFilterAsync(Expression<Func<AppUser, bool>> filter);
+        Task<User> GetByFilterAsync(Expression<Func<User, bool>> filter);
     }
 }

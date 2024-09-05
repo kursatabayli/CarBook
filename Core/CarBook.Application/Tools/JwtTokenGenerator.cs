@@ -1,5 +1,5 @@
 ﻿using CarBook.Application.Dtos;
-using CarBook.Application.Features.Mediator.Results.AppUserResults;
+using CarBook.Application.Features.Mediator.Results.UserResults;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace CarBook.Application.Tools
 {
     public class JwtTokenGenerator
     {
-        public static TokenResponseDto GenerateToken(GetCheckAppUserQueryResult result)
+        public static TokenResponseDto GenerateToken(GetCheckUserQueryResult result)
         {
             var claims = new List<Claim>();
 
@@ -21,7 +21,7 @@ namespace CarBook.Application.Tools
             if (!string.IsNullOrWhiteSpace(result.Email))
                 claims.Add(new Claim(ClaimTypes.Email, result.Email));
 
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, result.AppUserID.ToString()));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, result.UserID.ToString()));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key));
             var signinCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

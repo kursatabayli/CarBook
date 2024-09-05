@@ -15,7 +15,6 @@ namespace CarBook.Persistence.Context
         }
 
         public DbSet<About> Abouts { get; set; }
-        public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Banner> Banners { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Car> Cars { get; set; }
@@ -41,7 +40,7 @@ namespace CarBook.Persistence.Context
         public DbSet<RentACar> RentACars { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Review> Reviews { get; set; }
-
+        public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -84,12 +83,6 @@ namespace CarBook.Persistence.Context
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Car>()
-                .HasMany(c => c.RentACarProcesses)
-                .WithOne(cd => cd.Car)
-                .HasForeignKey(cd => cd.CarID)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Car>()
                 .HasMany(c => c.Reservations)
                 .WithOne(cd => cd.Car)
                 .HasForeignKey(cd => cd.CarID)
@@ -99,6 +92,18 @@ namespace CarBook.Persistence.Context
                 .HasMany(c => c.Reviews)
                 .WithOne(cd => cd.Car)
                 .HasForeignKey(cd => cd.CarID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Blog>()
+                .HasMany(x => x.Comments)
+                .WithOne(y => y.Blog)
+                .HasForeignKey(z => z.BlogID)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            modelBuilder.Entity<Blog>()
+                .HasMany(x => x.Tags)
+                .WithOne(y => y.Blog)
+                .HasForeignKey(z => z.BlogID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Feature>()

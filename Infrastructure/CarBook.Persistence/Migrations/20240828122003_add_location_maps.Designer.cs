@@ -67,13 +67,13 @@ namespace CarBook.Persistence.Migrations
                     b.ToTable("AppRoles");
                 });
 
-            modelBuilder.Entity("CarBook.Domain.Entities.AppUser", b =>
+            modelBuilder.Entity("CarBook.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("AppUserID")
+                    b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppUserID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
 
                     b.Property<int>("AppRoleID")
                         .HasColumnType("int");
@@ -94,11 +94,11 @@ namespace CarBook.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AppUserID");
+                    b.HasKey("UserID");
 
                     b.HasIndex("AppRoleID");
 
-                    b.ToTable("AppUsers");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CarBook.Domain.Entities.Author", b =>
@@ -864,10 +864,10 @@ namespace CarBook.Persistence.Migrations
                     b.ToTable("Testimonials");
                 });
 
-            modelBuilder.Entity("CarBook.Domain.Entities.AppUser", b =>
+            modelBuilder.Entity("CarBook.Domain.Entities.User", b =>
                 {
                     b.HasOne("CarBook.Domain.Entities.AppRole", "AppRole")
-                        .WithMany("AppUsers")
+                        .WithMany("Users")
                         .HasForeignKey("AppRoleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1076,7 +1076,7 @@ namespace CarBook.Persistence.Migrations
 
             modelBuilder.Entity("CarBook.Domain.Entities.AppRole", b =>
                 {
-                    b.Navigation("AppUsers");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("CarBook.Domain.Entities.Author", b =>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CarBook.Dto.ReservationDtos;
+using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
 {
@@ -6,9 +8,19 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     [Route("Admin/AdminReservation")]
     public class AdminReservationController : Controller
     {
-        public IActionResult Index()
+        private readonly IApiAdminService<ResultReservationDto> _apiAdminService;
+
+        public AdminReservationController(IApiAdminService<ResultReservationDto> apiAdminService)
         {
-            return View();
+            _apiAdminService = apiAdminService;
+        }
+
+        [HttpGet]
+        [Route("Index")]
+        public async Task<IActionResult> Index()
+        {
+            var values = await _apiAdminService.GetListAsync("https://localhost:7278/api/AdminReservations/");
+            return View(values);
         }
     }
 }

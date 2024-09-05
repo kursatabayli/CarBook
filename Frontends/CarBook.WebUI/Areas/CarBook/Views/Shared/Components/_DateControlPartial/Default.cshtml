@@ -1,0 +1,38 @@
+﻿<script>
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            var birthDate = new Date($('#birthdate').val());
+            var driverLicenseYear = new Date($('#driverlicensedate').val());
+            var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var driverLicenseAge = today.getFullYear() - driverLicenseYear.getFullYear();
+
+            var showAlert = false;
+            var alertText = '';
+
+            switch (true) {
+                case (age < 20):
+                    showAlert = true;
+                    alertText = '20 yaşından küçük bireyler araç kiralayamaz.';
+                    break;
+
+                case (driverLicenseAge < 2):
+                    showAlert = true;
+                    alertText = '2 yılı dolmamış ehliyet sahipleri araç kiralayamaz.';
+                    break;
+            }
+
+
+            if (showAlert) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Geçersiz Bilgi!',
+                    text: alertText,
+                    icon: 'error',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+        });
+    });
+
+</script>

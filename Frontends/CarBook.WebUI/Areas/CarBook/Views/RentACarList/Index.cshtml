@@ -4,7 +4,6 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/CarBook/Views/Shared/_Layout.cshtml";
 }
-@await Component.InvokeAsync("_MainCoverUILayoutComponentPartial")
 
 <section class="ftco-section bg-light">
     <div class="container">
@@ -22,7 +21,7 @@
                                 <p class="price ml-auto">@item.Amount<span>/Günlük</span></p>
                             </div>
                             <p class="d-flex mb-0 d-block">
-                                <a href="/CarBook/Reservation/Index/@item.CarID" class="btn btn-primary py-2 mr-1">Hemen Kirala</a>
+                                <a href="/CarBook/RentACarList/PrepareReservation?carId=@item.CarID&reservationTime=@ViewBag.reservationTime&returnTime=@ViewBag.returnTime&reservationDate=@ViewBag.reservationDate&returnDate=@ViewBag.returnDate&pickUpLocation=@ViewBag.pickUpLocation&dropOffLocation=@ViewBag.dropOffLocation" class="btn btn-primary py-2 mr-1">Hemen Kirala</a>
                                 <a href="/CarBook/Car/CarDetail/@item.CarID" class="btn btn-secondary py-2 ml-1">Detaylar</a>
                             </p>
                         </div>
@@ -32,13 +31,3 @@
         </div>
     </div>
 </section>
-
-
-
-@* <h1>Rezervasyon Detayları</h1>
-<p>Alış Lokasyonu: @ViewBag.pickUpLocation</p>
-<p>Bırakma Lokasyonu: @ViewBag.dropOffLocation</p>
-<p>Alış Tarihi: @ViewBag.reservationDate</p>
-<p>Alış Saati: @ViewBag.reservationTime</p>
-<p>Bırakış Tarihi: @ViewBag.returnDate</p>
-<p>Bırakış Saati: @ViewBag.returnTime</p> *@

@@ -3,12 +3,20 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 @await Component.InvokeAsync("_HeadUILayoutComponentPartial")
 
 <body>
     @await Component.InvokeAsync("_NavbarUILayoutComponentPartial")
+
+    @{
+        var currentUrl = Context.Request.Path.Value;
+        if (currentUrl != "/CarBook/Default/Index" && currentUrl != "/CarBook/Default/Index/")
+        {
+            @await Component.InvokeAsync("_MainCoverUILayoutComponentPartial")
+        }
+    }
 
     @RenderBody()
 

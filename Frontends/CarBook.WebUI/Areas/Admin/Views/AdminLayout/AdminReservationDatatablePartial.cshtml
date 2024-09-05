@@ -1,0 +1,33 @@
+﻿<script>
+    $(document).ready(function () {
+        var table = $('#reservation-datatable').DataTable({
+            responsive: true,
+            language: {
+                search: "Ara:",
+                lengthMenu: "Sayfa başın gösterilen mesaj:&nbsp;&nbsp;&nbsp;_MENU_",
+                info: "_TOTAL_ kayıt içinden _START_ - _END_ arası gösteriliyor",
+                infoEmpty: "Kayıt bulunamadı",
+                infoFiltered: "(toplam _MAX_ kayıt arasından filtrelendi)",
+            }
+        });
+
+        $('#reservation-datatable tbody').on('click', 'button.expand-icon', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+                $(this).find('i').removeClass('fa-minus-circle').addClass('fa-plus-circle');
+            } else {
+                row.child(format(tr.data('message'))).show();
+                tr.addClass('shown');
+                $(this).find('i').removeClass('fa-plus-circle').addClass('fa-minus-circle');
+            }
+        });
+
+        function format(message) {
+            return '<div style="padding: 10px; white-space: normal; word-break: break-word; overflow-wrap: break-word; vertical-align: middle;"><br> ' + message + '</div>';
+        }
+    });
+</script>

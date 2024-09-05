@@ -50,13 +50,13 @@ namespace CarBook.Persistence.Migrations
                     b.ToTable("Abouts");
                 });
 
-            modelBuilder.Entity("CarBook.Domain.Entities.AppUser", b =>
+            modelBuilder.Entity("CarBook.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("AppUserID")
+                    b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppUserID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -74,9 +74,9 @@ namespace CarBook.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AppUserID");
+                    b.HasKey("UserID");
 
-                    b.ToTable("AppUsers");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CarBook.Domain.Entities.Author", b =>

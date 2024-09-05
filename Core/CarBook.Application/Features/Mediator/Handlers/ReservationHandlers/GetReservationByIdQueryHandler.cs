@@ -36,7 +36,10 @@ namespace CarBook.Application.Features.Mediator.Handlers.ReservationHandlers
                 PickUpLocationID = values.PickUpLocationID,
                 DropOffLocationID = values.DropOffLocationID,
                 CarID = values.CarID,
-                
+                PickUpDate = values.PickUpDate,
+                DropOffDate = values.DropOffDate,
+                PickUpTime = values.PickUpTime,
+                DropOffTime = values.DropOffTime,
 
             };
         }
