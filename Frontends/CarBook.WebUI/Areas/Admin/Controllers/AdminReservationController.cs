@@ -21,8 +21,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _locationService = locationService;
         }
 
-        [HttpGet]
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiAdminService.GetListAsync("https://localhost:7278/api/AdminReservations/");

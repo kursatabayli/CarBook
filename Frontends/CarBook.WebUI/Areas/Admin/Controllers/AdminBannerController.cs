@@ -26,22 +26,21 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Banners/");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateBanner")]
-        public IActionResult CreateBanner()
+        [HttpGet("CreateBanner")]
+        public async Task<IActionResult> CreateBanner()
         {
-
+            await _createApiService.GetEmpty();
             return View();
         }
-        [HttpPost]
-        [Route("CreateBanner")]
+
+        [HttpPost("CreateBanner")]
         public async Task<IActionResult> CreateBanner(CreateBannerDto createBannerDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminBanners/", createBannerDto);
@@ -50,15 +49,11 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
         }
 
-        [Route("RemoveBanner/{id}")]
+        [HttpDelete("RemoveBanner/{id}")]
         public async Task<IActionResult> RemoveBanner(int id)
         {
-            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBanners/{id}");
-            if (value)
-            {
-                return RedirectToAction("Index");
-            }
-            return View();
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBanners/{id}");
+            return Ok();
         }
        
         [HttpGet]

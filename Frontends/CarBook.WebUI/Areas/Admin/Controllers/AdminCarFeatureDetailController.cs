@@ -20,16 +20,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _apiService = apiService;
         }
 
-        [HttpGet]
-        [Route("Index/{id}")]
+        [HttpGet("Index/{id}")]
         public async Task<IActionResult> Index(int id)
         {
             var values = await _apiService.GetListAsync($"https://localhost:7278/api/CarFeatures/GetCarFeatureDetail/{id}");
             return View(values);
         }
 
-        [HttpPost]
-        [Route("Index/{id}")]
+        [HttpPost("Index/{id}")]
         public async Task<IActionResult> Index(int id, List<ResultCarFeatureDetailDto> resultCarFeatureDetailDto)
         {
             var currentValues = await _apiService.GetListAsync($"https://localhost:7278/api/CarFeatures/GetCarFeatureDetail/{id}");

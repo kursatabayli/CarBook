@@ -24,23 +24,22 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/FooterAddresses/");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateFooterAddress")]
-        public IActionResult CreateFooterAddress()
+        [HttpGet("CreateFooterAddress")]
+        public async Task<IActionResult> CreateFooterAddress()
         {
 
+            await _createApiService.GetEmpty();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreateFooterAddress")]
+        [HttpPost("CreateFooterAddress")]
         public async Task<IActionResult> CreateFooterAddress(CreateFooterAddressDto createFooterAddressDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminFooterAddresses/", createFooterAddressDto);
@@ -52,15 +51,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createFooterAddressDto);
         }
 
-        [Route("RemoveFooterAddress/{id}")]
+        [HttpDelete("RemoveFooterAddress/{id}")]
         public async Task<IActionResult> RemoveFooterAddress(int id)
         {
             await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminFooterAddresses/{id}");
-            return RedirectToAction("Index");
+            return Ok();
         }
 
-        [HttpGet]
-        [Route("UpdateFooterAddress/{id}")]
+        [HttpGet("UpdateFooterAddress/{id}")]
         public async Task<IActionResult> UpdateFooterAddress(int id)
         {
             var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/FooterAddresses/{id}");
@@ -71,8 +69,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Route("UpdateFooterAddress/{id}")]
+        [HttpPost("UpdateFooterAddress/{id}")]
         public async Task<IActionResult> UpdateFooterAddress(UpdateFooterAddressDto updateFooterAddressDto)
         {
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminFooterAddresses/", updateFooterAddressDto);

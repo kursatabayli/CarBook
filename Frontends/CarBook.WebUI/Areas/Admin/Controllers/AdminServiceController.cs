@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using Newtonsoft.Json.Linq;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -27,22 +28,21 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Services/");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateService")]
-        public IActionResult CreateService()
+        [HttpGet("CreateService")]
+        public async Task<IActionResult> CreateService()
         {
+            await _createApiService.GetEmpty();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreateService")]
+        [HttpPost("CreateService")]
         public async Task<IActionResult> CreateService(CreateServiceDto createServiceDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminServices/", createServiceDto);
@@ -53,16 +53,15 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createServiceDto);
         }
 
-        [Route("RemoveService/{id}")]
+        [HttpDelete("RemoveService/{id}")]
         public async Task<IActionResult> RemoveService(int id)
         {
             await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminServices/{id}");
-            return RedirectToAction("Index");
+            return Ok();
 
         }
 
-        [HttpGet]
-        [Route("UpdateService/{id}")]
+        [HttpGet("UpdateService/{id}")]
         public async Task<IActionResult> UpdateService(int id)
         {
             var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Services/{id}");
@@ -73,8 +72,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Route("UpdateService/{id}")]
+        [HttpPost("UpdateService/{id}")]
         public async Task<IActionResult> UpdateService(UpdateServiceDto updateServiceDto)
         {
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminServices/", updateServiceDto);

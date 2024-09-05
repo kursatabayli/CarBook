@@ -8,5 +8,6 @@
         Task<bool> UpdateItemAsync(string url, T item);
         Task<bool> RemoveItemAsync(string url);
         Task<bool> GetSingleAsync(string url);
+        Task GetEmpty();
     }
 }

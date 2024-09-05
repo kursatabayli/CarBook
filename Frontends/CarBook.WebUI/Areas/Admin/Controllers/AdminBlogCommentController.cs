@@ -9,7 +9,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/BlogComment")]
-    
+
     public class AdminBlogCommentController : Controller
     {
         private readonly IApiAdminService<ResultCommentDto> _apiService;
@@ -19,7 +19,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _apiService = apiService;
         }
 
-        [Route("Index/{id}")]
+        [HttpGet("Index/{id}")]
         public async Task<IActionResult> Index(int id)
         {
             ViewBag.v = id;
@@ -27,12 +27,13 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(values);
         }
 
-        [Route("RemoveComment/{id}")]
+        [HttpDelete("RemoveComment/{id}")]
         public async Task<IActionResult> RemoveComment(int id)
         {
-            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminComments/{id}");
-            return RedirectToAction("Index");
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminComments/{id}");
+            return Ok();
         }
+
 
     }
 }

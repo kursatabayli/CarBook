@@ -25,24 +25,22 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [HttpGet]
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Features");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateFeature")]
-        public IActionResult CreateFeature()
+        [HttpGet("CreateFeature")]
+        public async Task<IActionResult> CreateFeature()
         {
 
+            await _createApiService.GetEmpty();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreateFeature")]
+        [HttpPost("CreateFeature")]
         public async Task<IActionResult> CreateFeature(CreateFeatureDto createFeatureDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminFeatures/", createFeatureDto);
@@ -54,16 +52,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createFeatureDto);
         }
 
-        [Route("RemoveFeature/{id}")]
+        [HttpDelete("RemoveFeature/{id}")]
         public async Task<IActionResult> RemoveFeature(int id)
         {
             await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminFeatures/{id}");
-            return RedirectToAction("Index");
+            return Ok();
         }
 
-        [HttpGet]
-        [Route("UpdateFeature/{id}")]
-
+        [HttpGet("UpdateFeature/{id}")]
         public async Task<IActionResult> UpdateFeature(int id)
         {
             var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Features/{id}");
@@ -74,9 +70,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Route("UpdateFeature/{id}")]
-
+        [HttpPost("UpdateFeature/{id}")]
         public async Task<IActionResult> UpdateFeature(UpdateFeatureDto updateFeatureDto)
         {
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminFeatures/", updateFeatureDto);

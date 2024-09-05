@@ -27,22 +27,21 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/SocialMedias/");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateSocialMedia")]
-        public IActionResult CreateSocialMedia()
+        [HttpGet("CreateSocialMedia")]
+        public async Task<IActionResult> CreateSocialMedia()
         {
+            await _createApiService.GetEmpty();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreateSocialMedia")]
+        [HttpPost("CreateSocialMedia")]
         public async Task<IActionResult> CreateSocialMedia(CreateSocialMediaDto createSocialMediaDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminSocialMedias/", createSocialMediaDto);
@@ -54,16 +53,15 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createSocialMediaDto);
         }
 
-        [Route("RemoveSocialMedia/{id}")]
+        [HttpDelete("RemoveSocialMedia/{id}")]
         public async Task<IActionResult> RemoveSocialMedia(int id)
         {
             await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminSocialMedias/{id}");
-            return RedirectToAction("Index");
+            return Ok();
 
         }
 
-        [HttpGet]
-        [Route("UpdateSocialMedia/{id}")]
+        [HttpGet("UpdateSocialMedia/{id}")]
         public async Task<IActionResult> UpdateSocialMedia(int id)
         {
             var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/SocialMedias/{id}");
@@ -74,8 +72,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Route("UpdateSocialMedia/{id}")]
+        [HttpPost("UpdateSocialMedia/{id}")]
         public async Task<IActionResult> UpdateSocialMedia(UpdateSocialMediaDto updateSocialMediaDto)
         {
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminSocialMedias/", updateSocialMediaDto);

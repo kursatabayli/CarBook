@@ -28,24 +28,22 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        [HttpGet]
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/Cars/CarsListWithBrandAndOtherFeatures");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateCar")]
+        [HttpGet("CreateCar")]
         public async Task<IActionResult> CreateCar()
         {
+            await _createApiService.GetEmpty();
             await LoadSelectLists();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreateCar")]
+        [HttpPost("CreateCar")]
         public async Task<IActionResult> CreateCar(CreateCarDto createCarDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminCars/", createCarDto);
@@ -58,15 +56,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createCarDto);
         }
 
-        [Route("RemoveCar/{id}")]
+        [HttpDelete("RemoveCar/{id}")]
         public async Task<IActionResult> RemoveCar(int id)
         {
-            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminCars/{id}");
-            return RedirectToAction("Index");
+            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminCars/{id}");
+            return Ok();
         }
 
-        [HttpGet]
-        [Route("UpdateCar/{id}")]
+        [HttpGet("UpdateCar/{id}")]
         public async Task<IActionResult> UpdateCar(int id)
         {
             await LoadSelectLists();
@@ -74,8 +71,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(value);
         }
 
-        [HttpPost]
-        [Route("UpdateCar/{id}")]
+        [HttpPost("UpdateCar/{id}")]
         public async Task<IActionResult> UpdateCar(UpdateCarDto updateCarDto)
         {
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminCars/", updateCarDto);

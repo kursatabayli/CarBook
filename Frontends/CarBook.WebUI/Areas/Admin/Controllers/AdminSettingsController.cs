@@ -17,8 +17,9 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         }
 
         [HttpGet("Index")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            await _apiService.GetEmpty();
             return View();
         }
 

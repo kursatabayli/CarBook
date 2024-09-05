@@ -27,22 +27,21 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             _updateApiService = updateApiService;
         }
 
-        [Route("Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var values = await _apiService.GetListAsync("https://localhost:7278/api/TagClouds/");
             return View(values);
         }
 
-        [HttpGet]
-        [Route("CreateTagCloud")]
-        public IActionResult CreateTagCloud()
+        [HttpGet("CreateTagCloud")]
+        public async Task<IActionResult> CreateTagCloud()
         {
+            await _createApiService.GetEmpty();
             return View();
         }
 
-        [HttpPost]
-        [Route("CreateTagCloud")]
+        [HttpPost("CreateTagCloud")]
         public async Task<IActionResult> CreateTagCloud(CreateTagCloudDto createTagCloudDto)
         {
             var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminTagClouds/", createTagCloudDto);
@@ -54,16 +53,15 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View(createTagCloudDto);
         }
 
-        [Route("RemoveTagCloud/{id}")]
+        [HttpDelete("RemoveTagCloud/{id}")]
         public async Task<IActionResult> RemoveTagCloud(int id)
         {
             await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminTagClouds/{id}");
-            return RedirectToAction("Index");
+            return Ok();
 
         }
 
-        [HttpGet]
-        [Route("UpdateTagCloud/{id}")]
+        [HttpGet("UpdateTagCloud/{id}")]
         public async Task<IActionResult> UpdateTagCloud(int id)
         {
             var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/TagClouds/{id}");
@@ -74,8 +72,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [Route("UpdateTagCloud/{id}")]
+        [HttpPost("UpdateTagCloud/{id}")]
         public async Task<IActionResult> UpdateTagCloud(UpdateTagCloudDto updateTagCloudDto)
         {
             var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminTagClouds/", updateTagCloudDto);
