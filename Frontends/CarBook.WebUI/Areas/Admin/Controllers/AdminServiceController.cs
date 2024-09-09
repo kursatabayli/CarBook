@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
 using Newtonsoft.Json.Linq;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -14,14 +14,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminServiceController : Controller
     {
-        private readonly IApiAdminService<ResultServiceDto> _apiService;
-        private readonly IApiAdminService<CreateServiceDto> _createApiService;
-        private readonly IApiAdminService<UpdateServiceDto> _updateApiService;
+        private readonly IApiService<ResultServiceDto> _apiService;
+        private readonly IApiService<CreateServiceDto> _createApiService;
+        private readonly IApiService<UpdateServiceDto> _updateApiService;
 
         public AdminServiceController(
-            IApiAdminService<ResultServiceDto> apiService,
-            IApiAdminService<CreateServiceDto> createApiService,
-            IApiAdminService<UpdateServiceDto> updateApiService)
+            IApiService<ResultServiceDto> apiService,
+            IApiService<CreateServiceDto> createApiService,
+            IApiService<UpdateServiceDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -31,7 +31,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Services/");
+            var values = await _apiService.GetListAsync("Services/");
             return View(values);
         }
 
@@ -45,7 +45,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateService")]
         public async Task<IActionResult> CreateService(CreateServiceDto createServiceDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminServices/", createServiceDto);
+            var value = await _createApiService.CreateItemAsync("AdminServices/", createServiceDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminService", new { area = "Admin" }) });
@@ -56,7 +56,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveService/{id}")]
         public async Task<IActionResult> RemoveService(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminServices/{id}");
+            await _apiService.RemoveItemAsync($"AdminServices/{id}");
             return Ok();
 
         }
@@ -64,7 +64,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("UpdateService/{id}")]
         public async Task<IActionResult> UpdateService(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Services/{id}");
+            var value = await _updateApiService.GetItemAsync($"Services/{id}");
             if (value != null)
             {
                 return View(value);
@@ -75,7 +75,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("UpdateService/{id}")]
         public async Task<IActionResult> UpdateService(UpdateServiceDto updateServiceDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminServices/", updateServiceDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminServices/", updateServiceDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminService", new { area = "Admin" }) });

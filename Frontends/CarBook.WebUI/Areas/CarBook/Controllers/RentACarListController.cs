@@ -1,5 +1,5 @@
 ﻿using CarBook.Dto.RentACarDtos;
-using CarBook.WebUI.Areas.CarBook.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,9 +13,9 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
     [Route("CarBook/[controller]")]
     public class RentACarListController : Controller
     {
-        private readonly IApiCarBookService<FilterRentACarDto> _apiService;
+        private readonly IApiService<FilterRentACarDto> _apiService;
 
-        public RentACarListController(IApiCarBookService<FilterRentACarDto> apiService)
+        public RentACarListController(IApiService<FilterRentACarDto> apiService)
         {
             _apiService = apiService;
         }
@@ -40,7 +40,7 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
             string dropOffTimeEncoded = HttpUtility.UrlEncode(returnTime);
             string locationIDEncoded = HttpUtility.UrlEncode(pickUpLocation.ToString());
 
-            var apiUrl = $"https://localhost:7278/api/Reservations/GetAvailableCars?pickUpDate={pickUpDateEncoded}&dropOffDate={dropOffDateEncoded}&pickUpTime={pickUpTimeEncoded}&dropOffTime={dropOffTimeEncoded}&locationID={locationIDEncoded}";
+            var apiUrl = $"Reservations/GetAvailableCars?pickUpDate={pickUpDateEncoded}&dropOffDate={dropOffDateEncoded}&pickUpTime={pickUpTimeEncoded}&dropOffTime={dropOffTimeEncoded}&locationID={locationIDEncoded}";
 
 
             var values = await _apiService.GetListAsync(apiUrl);

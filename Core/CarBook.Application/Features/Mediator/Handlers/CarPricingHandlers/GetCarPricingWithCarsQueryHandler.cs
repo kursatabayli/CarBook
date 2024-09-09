@@ -28,11 +28,11 @@ namespace CarBook.Application.Features.Mediator.Handlers.CarPricingHandlers
                 .Select(g => new GetCarPricingWithCarsQueryResult
                 {
                     CarID = g.Key,
-                    CarPricingID = g.First().CarPricingID,
                     PricingName = g.First().Pricing.Name,
                     BrandName = g.First().Car.Brand.Name,
                     Model = g.First().Car.Model,
                     CoverImageUrl = g.First().Car.CoverImageUrl,
+                    Amount = g.First().Amount,
                     DailyPrice = g.Where(x=>x.PricingID==1).Select(x=>x.Amount).FirstOrDefault(),
                     WeeklyPrice = g.Where(x => x.PricingID == 2).Select(x => x.Amount).FirstOrDefault(),
                     MonthlyPrice = g.Where(x => x.PricingID == 3).Select(x => x.Amount).FirstOrDefault(),

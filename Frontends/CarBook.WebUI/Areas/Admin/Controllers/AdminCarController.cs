@@ -1,6 +1,6 @@
 ﻿using CarBook.Dto.BrandDtos;
 using CarBook.Dto.CarDtos;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -11,27 +11,36 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     [Route("Admin/AdminCar")]
     public class AdminCarController : Controller
     {
-        private readonly IApiAdminService<ResultCarWithBrandsDto> _apiService;
-        private readonly IApiAdminService<CreateCarDto> _createApiService;
-        private readonly IApiAdminService<UpdateCarDto> _updateApiService;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiService<ResultCarWithBrandsDto> _apiService;
+        private readonly IApiService<CreateCarDto> _createApiService;
+        private readonly IApiService<UpdateCarDto> _updateApiService;
+        private readonly IApiService<ResultBrandDto> _brandApiService;
+        private readonly IApiService<FuelDto> _fuelApiService;
+        private readonly IApiService<LuggageDto> _luggageApiService;
+        private readonly IApiService<TransmissionDto> _transmissionApiService;
 
         public AdminCarController(
-            IApiAdminService<ResultCarWithBrandsDto> apiService,
-            IApiAdminService<CreateCarDto> createApiService,
-            IApiAdminService<UpdateCarDto> updateApiService,
-            IHttpClientFactory httpClientFactory)
+            IApiService<ResultCarWithBrandsDto> apiService,
+            IApiService<CreateCarDto> createApiService,
+            IApiService<UpdateCarDto> updateApiService,
+            IApiService<ResultBrandDto> brandApiService,
+            IApiService<FuelDto> fuelApiService,
+            IApiService<LuggageDto> luggageApiService,
+            IApiService<TransmissionDto> transmissionApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
             _updateApiService = updateApiService;
-            _httpClientFactory = httpClientFactory;
+            _brandApiService = brandApiService;
+            _fuelApiService = fuelApiService;
+            _luggageApiService = luggageApiService;
+            _transmissionApiService = transmissionApiService;
         }
 
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Cars/CarsListWithBrandAndOtherFeatures");
+            var values = await _apiService.GetListAsync("Cars/CarsListWithBrandAndOtherFeatures");
             return View(values);
         }
 
@@ -46,7 +55,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateCar")]
         public async Task<IActionResult> CreateCar(CreateCarDto createCarDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminCars/", createCarDto);
+            var value = await _createApiService.CreateItemAsync("AdminCars/", createCarDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminCar", new { area = "Admin" }) });
@@ -59,7 +68,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveCar/{id}")]
         public async Task<IActionResult> RemoveCar(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminCars/{id}");
+            await _apiService.RemoveItemAsync($"AdminCars/{id}");
             return Ok();
         }
 
@@ -67,14 +76,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> UpdateCar(int id)
         {
             await LoadSelectLists();
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Cars/{id}");
+            var value = await _updateApiService.GetItemAsync($"Cars/{id}");
             return View(value);
         }
 
         [HttpPost("UpdateCar/{id}")]
         public async Task<IActionResult> UpdateCar(UpdateCarDto updateCarDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminCars/", updateCarDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminCars/", updateCarDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminCar", new { area = "Admin" }) });
@@ -86,51 +95,17 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
         private async Task LoadSelectLists()
         {
-            var client = _httpClientFactory.CreateClient();
-            var brandResponseTask = client.GetAsync("https://localhost:7278/api/Brands");
-            var fuelResponseTask = client.GetAsync("https://localhost:7278/api/Cars/FeulTypes");
-            var luggageResponseTask = client.GetAsync("https://localhost:7278/api/Cars/LuggageTypes");
-            var transmissionResponseTask = client.GetAsync("https://localhost:7278/api/Cars/TransmissionTypes");
+            var brandTask = _brandApiService.GetListAsync("Brands/");
+            var fuelTask = _fuelApiService.GetListAsync("Cars/FeulTypes/");
+            var luggageTask = _luggageApiService.GetListAsync("Cars/LuggageTypes/");
+            var transmissionTask = _transmissionApiService.GetListAsync("Cars/TransmissionTypes/");
 
-            await Task.WhenAll(brandResponseTask, fuelResponseTask, luggageResponseTask, transmissionResponseTask);
+            await Task.WhenAll(brandTask, fuelTask, luggageTask, transmissionTask);
 
-            var brands = await GetSelectListItemsAsync<ResultBrandDto>(
-                await brandResponseTask.Result.Content.ReadAsStringAsync(),
-                x => x.Name,
-                x => x.BrandID.ToString()
-            );
-            ViewBag.BrandValues = brands;
-
-            var fuels = await GetSelectListItemsAsync<FuelDto>(
-                await fuelResponseTask.Result.Content.ReadAsStringAsync(),
-                x => x.FuelType,
-                x => x.CarFuelID.ToString()
-            );
-            ViewBag.FuelValues = fuels;
-
-            var luggages = await GetSelectListItemsAsync<LuggageDto>(
-                await luggageResponseTask.Result.Content.ReadAsStringAsync(),
-                x => x.LuggageType,
-                x => x.CarLuggageID.ToString()
-            );
-            ViewBag.LuggageValues = luggages;
-
-            var transmissions = await GetSelectListItemsAsync<TransmissionDto>(
-                await transmissionResponseTask.Result.Content.ReadAsStringAsync(),
-                x => x.TransmissionType,
-                x => x.CarTransmissionID.ToString()
-            );
-            ViewBag.TransmissionValues = transmissions;
-        }
-
-        private async Task<List<SelectListItem>> GetSelectListItemsAsync<T>(string jsonData, Func<T, string> textSelector, Func<T, string> valueSelector)
-        {
-            var items = JsonConvert.DeserializeObject<List<T>>(jsonData);
-            return items.Select(x => new SelectListItem
-            {
-                Text = textSelector(x),
-                Value = valueSelector(x)
-            }).ToList();
+            ViewBag.BrandValues = brandTask.Result.Select(x => new SelectListItem { Text = x.Name, Value = x.BrandID.ToString() }).ToList();
+            ViewBag.FuelValues = fuelTask.Result.Select(x => new SelectListItem { Text = x.FuelType, Value = x.CarFuelID.ToString() }).ToList();
+            ViewBag.LuggageValues = luggageTask.Result.Select(x => new SelectListItem { Text = x.LuggageType, Value = x.CarLuggageID.ToString() }).ToList();
+            ViewBag.TransmissionValues = transmissionTask.Result.Select(x => new SelectListItem { Text = x.TransmissionType, Value = x.CarTransmissionID.ToString() }).ToList();
         }
     }
 }

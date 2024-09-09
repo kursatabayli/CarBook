@@ -2,37 +2,45 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.AspNetCore.Http;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
-namespace CarBook.WebUI.Areas.Admin.Services.Implementations
+namespace CarBook.WebUI.Services.Implementations
 {
-    public class ApiAdminService<T> : IApiAdminService<T>
+    public class ApiService<T> : IApiService<T>
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public ApiAdminService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+        private readonly IConfiguration _configuration;
+        private readonly string _baseUrl;
+        public ApiService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
             _httpContextAccessor = httpContextAccessor;
+            _configuration = configuration;
+            _baseUrl = _configuration["ApiUrls:BaseApiUrl"]!;
         }
+
 
         private HttpClient CreateClient()
         {
             var client = _httpClientFactory.CreateClient();
+            var area = _httpContextAccessor.HttpContext?.Request.RouteValues["area"]?.ToString();
 
-            var token = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
-
-            if (!string.IsNullOrEmpty(token))
+            if (area == "Admin")
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
-            else
-            {
-                _httpContextAccessor.HttpContext?.Response.Redirect("/Admin/AdminLogin/Index");
-                throw new UnauthorizedAccessException("Yetkilendirme hatası: Geçerli bir token bulunamadı.");
-            }
+                var token = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == "carbooktoken")?.Value;
 
+                if (!string.IsNullOrEmpty(token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
+                else
+                {
+                    _httpContextAccessor.HttpContext?.Response.Redirect("/Admin/AdminLogin/Index");
+                    _httpContextAccessor.HttpContext?.Response.CompleteAsync();
+                    return null!;
+                }
+            }
             return client;
         }
 
@@ -40,7 +48,7 @@ namespace CarBook.WebUI.Areas.Admin.Services.Implementations
         {
             var client = CreateClient();
 
-            var responseMessage = await client.GetAsync(url);
+            var responseMessage = await client.GetAsync(_baseUrl + url);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -54,7 +62,7 @@ namespace CarBook.WebUI.Areas.Admin.Services.Implementations
         {
             var client = CreateClient();
 
-            var responseMessage = await client.GetAsync(url);
+            var responseMessage = await client.GetAsync(_baseUrl + url);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -70,7 +78,7 @@ namespace CarBook.WebUI.Areas.Admin.Services.Implementations
 
             var jsonData = JsonConvert.SerializeObject(item);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync(url, stringContent);
+            var responseMessage = await client.PostAsync(_baseUrl + url, stringContent);
 
             return responseMessage.IsSuccessStatusCode;
         }
@@ -81,7 +89,7 @@ namespace CarBook.WebUI.Areas.Admin.Services.Implementations
 
             var jsonData = JsonConvert.SerializeObject(item);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync(url, stringContent);
+            var responseMessage = await client.PutAsync(_baseUrl + url, stringContent);
 
             return responseMessage.IsSuccessStatusCode;
         }
@@ -90,7 +98,7 @@ namespace CarBook.WebUI.Areas.Admin.Services.Implementations
         {
             var client = CreateClient();
 
-            var responseMessage = await client.DeleteAsync(url);
+            var responseMessage = await client.DeleteAsync(_baseUrl + url);
             return responseMessage.IsSuccessStatusCode;
         }
 
@@ -98,7 +106,7 @@ namespace CarBook.WebUI.Areas.Admin.Services.Implementations
         {
             var client = CreateClient();
 
-            var responseMessage = await client.GetAsync(url);
+            var responseMessage = await client.GetAsync(_baseUrl + url);
             return responseMessage.IsSuccessStatusCode;
         }
 

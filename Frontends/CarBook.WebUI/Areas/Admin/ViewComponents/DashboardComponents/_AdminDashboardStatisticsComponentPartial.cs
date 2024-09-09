@@ -1,77 +1,68 @@
 ﻿using CarBook.Dto.StatisticDtos;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CarBook.WebUI.Areas.Admin.ViewComponents.DashboardComponents
 {
     public class _AdminDashboardStatisticsComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiService<ResultStatisticDto> _statisticApiService;
 
-        public _AdminDashboardStatisticsComponentPartial(IHttpClientFactory httpClientFactory)
+        public _AdminDashboardStatisticsComponentPartial(IApiService<ResultStatisticDto> statisticApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _statisticApiService = statisticApiService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
             Random random = new Random();
-            var client = _httpClientFactory.CreateClient();
 
+            var carCountTask = _statisticApiService.GetItemAsync("Statistics/GetCarCount");
+            var brandCountTask = _statisticApiService.GetItemAsync("Statistics/GetBrandCount");
+            var locationCountTask = _statisticApiService.GetItemAsync("Statistics/GetLocationCount");
+            var avgCarRentPriceTask = _statisticApiService.GetItemAsync("Statistics/GetDailyAverageCarRentingPrice");
 
-            #region statistic_1
-            var responseMessage1 = await client.GetAsync("https://localhost:7278/api/Statistics/GetCarCount");
-            if (responseMessage1.IsSuccessStatusCode)
+            await Task.WhenAll(carCountTask, brandCountTask, locationCountTask, avgCarRentPriceTask);
+
+            #region statistic_1 - Car Count
+            var carCountResult = carCountTask.Result;
+            if (carCountResult != null)
             {
                 int carCountRandom = random.Next(0, 101);
-                var jsonData = await responseMessage1.Content.ReadAsStringAsync();
-                var values1 = JsonConvert.DeserializeObject<ResultStatisticDto>(jsonData);
-                ViewBag.carCount = values1.CarCount.ToString();
+                ViewBag.carCount = carCountResult.CarCount.ToString();
                 ViewBag.carCountRandom = carCountRandom;
             }
             #endregion
 
-
-            #region statistic_2
-            var responseMessage2 = await client.GetAsync("https://localhost:7278/api/Statistics/GetBrandCount");
-            if (responseMessage2.IsSuccessStatusCode)
+            #region statistic_2 - Brand Count
+            var brandCountResult = brandCountTask.Result;
+            if (brandCountResult != null)
             {
                 int brandCountRandom = random.Next(0, 101);
-                var jsonData = await responseMessage2.Content.ReadAsStringAsync();
-                var values2 = JsonConvert.DeserializeObject<ResultStatisticDto>(jsonData);
-                ViewBag.brandCount = values2.BrandCount.ToString();
+                ViewBag.brandCount = brandCountResult.BrandCount.ToString();
                 ViewBag.brandCountRandom = brandCountRandom;
             }
             #endregion
 
-
-
-            #region statistic_3
-            var responseMessage3 = await client.GetAsync("https://localhost:7278/api/Statistics/GetLocationCount");
-            if (responseMessage3.IsSuccessStatusCode)
+            #region statistic_3 - Location Count
+            var locationCountResult = locationCountTask.Result;
+            if (locationCountResult != null)
             {
                 int locationCountRandom = random.Next(0, 101);
-                var jsonData = await responseMessage3.Content.ReadAsStringAsync();
-                var values3 = JsonConvert.DeserializeObject<ResultStatisticDto>(jsonData);
-                ViewBag.locationCount = values3.LocationCount.ToString();
+                ViewBag.locationCount = locationCountResult.LocationCount.ToString();
                 ViewBag.locationCountRandom = locationCountRandom;
             }
             #endregion
 
-
-
-            #region statistic_4
-            var responseMessage4 = await client.GetAsync("https://localhost:7278/api/Statistics/GetDailyAverageCarRentingPrice");
-            if (responseMessage4.IsSuccessStatusCode)
+            #region statistic_4 - Daily Average Car Renting Price
+            var avgCarRentPriceResult = avgCarRentPriceTask.Result;
+            if (avgCarRentPriceResult != null)
             {
                 int d_AvgCarR_Price_Random = random.Next(0, 101);
-                var jsonData = await responseMessage4.Content.ReadAsStringAsync();
-                var values4 = JsonConvert.DeserializeObject<ResultStatisticDto>(jsonData);
-                ViewBag.d_AvgCarR_Price = values4.D_AvgCarR_Price.ToString("0.00");
+                ViewBag.d_AvgCarR_Price = avgCarRentPriceResult.D_AvgCarR_Price.ToString("0.00");
                 ViewBag.d_AvgCarR_Price_Random = d_AvgCarR_Price_Random;
             }
             #endregion
-
 
             return View();
         }

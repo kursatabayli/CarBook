@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -13,14 +13,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminBrandController : Controller
     {
-        private readonly IApiAdminService<ResultBrandDto> _apiService;
-        private readonly IApiAdminService<CreateBrandDto> _createApiService;
-        private readonly IApiAdminService<UpdateBrandDto> _updateApiService;
+        private readonly IApiService<ResultBrandDto> _apiService;
+        private readonly IApiService<CreateBrandDto> _createApiService;
+        private readonly IApiService<UpdateBrandDto> _updateApiService;
 
         public AdminBrandController(
-            IApiAdminService<ResultBrandDto> apiService,
-            IApiAdminService<CreateBrandDto> createApiService,
-            IApiAdminService<UpdateBrandDto> updateApiService)
+            IApiService<ResultBrandDto> apiService,
+            IApiService<CreateBrandDto> createApiService,
+            IApiService<UpdateBrandDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -30,7 +30,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Brands/");
+            var values = await _apiService.GetListAsync("Brands/");
             return View(values);
         }
 
@@ -45,7 +45,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateBrand")]
         public async Task<IActionResult> CreateBrand(CreateBrandDto createBrandDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminBrands/", createBrandDto);
+            var value = await _createApiService.CreateItemAsync("AdminBrands/", createBrandDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminBrand", new { area = "Admin" }) });
@@ -57,7 +57,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveBrand/{id}")]
         public async Task<IActionResult> RemoveBrand(int id)
         {
-            var value = await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBrands/{id}");
+            var value = await _apiService.RemoveItemAsync($"AdminBrands/{id}");
             return Ok();
 
         }
@@ -65,7 +65,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("UpdateBrand/{id}")]
         public async Task<IActionResult> UpdateBrand(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Brands/{id}");
+            var value = await _updateApiService.GetItemAsync($"Brands/{id}");
             if (value != null)
             {
                 return View(value);
@@ -76,7 +76,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("UpdateBrand/{id}")]
         public async Task<IActionResult> UpdateBrand(UpdateBrandDto updateBrandDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminBrands/", updateBrandDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminBrands/", updateBrandDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminBrand", new { area = "Admin" }) });

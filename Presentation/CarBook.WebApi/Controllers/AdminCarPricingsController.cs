@@ -38,5 +38,12 @@ namespace CarBook.WebApi.Controllers
             await _mediator.Send(command);
             return Ok("Fiyat Bilgisi Başarıyla Güncellendi");
         }
+        
+        [HttpPut("UpdateCarPricingByCarId")]
+        public async Task<IActionResult> UpdateCarPricingByCarId(UpdateCarPricingByCarIdCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok("Fiyat Bilgileri Başarıyla Güncellendi");
+        }
     }
 }

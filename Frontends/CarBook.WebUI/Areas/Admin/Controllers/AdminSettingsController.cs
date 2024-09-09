@@ -1,5 +1,5 @@
 ﻿using CarBook.Dto.LoginDtos;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
@@ -9,9 +9,9 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     [Route("Admin/AdminSettings")]
     public class AdminSettingsController : Controller
     {
-        private readonly IApiAdminService<UpdateUserDto> _apiService;
+        private readonly IApiService<UpdateUserDto> _apiService;
 
-        public AdminSettingsController(IApiAdminService<UpdateUserDto> apiService)
+        public AdminSettingsController(IApiService<UpdateUserDto> apiService)
         {
             _apiService = apiService;
         }
@@ -26,12 +26,12 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("Index")]
         public async Task<IActionResult> Index(UpdateUserDto updateUserDto)
         {
-            var user = await _apiService.GetItemAsync("https://localhost:7278/api/AdminUser/");
+            var user = await _apiService.GetItemAsync("AdminUser/");
             if (updateUserDto.OldPassword != user.OldPassword)
             {
                 return Json(new { success = false, message = "Eski şifre yanlış." });
             }
-            var value = await _apiService.UpdateItemAsync($"https://localhost:7278/api/AdminUser/", updateUserDto);
+            var value = await _apiService.UpdateItemAsync("AdminUser/", updateUserDto);
             return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminSettings", new { area = "Admin" }) });
         }
 

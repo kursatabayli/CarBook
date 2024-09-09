@@ -1,5 +1,5 @@
 ﻿using CarBook.Dto.ContactDtos;
-using CarBook.WebUI.Areas.CarBook.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -10,9 +10,9 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
     [Route("CarBook/[controller]")]
     public class ContactController : Controller
     {
-        private readonly IApiCarBookService<CreateContactDto> _createApiService;
+        private readonly IApiService<CreateContactDto> _createApiService;
 
-        public ContactController(IApiCarBookService<CreateContactDto> createApiService)
+        public ContactController(IApiService<CreateContactDto> createApiService)
         {
             _createApiService = createApiService;
         }
@@ -29,7 +29,7 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
         [HttpPost("Index")]
         public async Task<IActionResult> Index(CreateContactDto createContactDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/Contacts", createContactDto);
+            var value = await _createApiService.CreateItemAsync("Contacts", createContactDto);
             if (value)
             {
                 return RedirectToAction("Index", "Contact");

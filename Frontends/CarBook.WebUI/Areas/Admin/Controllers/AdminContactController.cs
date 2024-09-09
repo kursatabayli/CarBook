@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -13,9 +13,9 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminContactController : Controller
     {
-        private readonly IApiAdminService<ResultContactDto> _apiService;
+        private readonly IApiService<ResultContactDto> _apiService;
 
-        public AdminContactController(IApiAdminService<ResultContactDto> apiService)
+        public AdminContactController(IApiService<ResultContactDto> apiService)
         {
             _apiService = apiService;
         }
@@ -23,7 +23,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/AdminContacts/");
+            var values = await _apiService.GetListAsync("AdminContacts/");
             return View(values);
         }
 

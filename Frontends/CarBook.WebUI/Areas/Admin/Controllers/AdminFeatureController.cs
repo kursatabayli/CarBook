@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -14,11 +14,11 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminFeatureController : Controller
     {
-        private readonly IApiAdminService<ResultFeatureDto> _apiService;
-        private readonly IApiAdminService<CreateFeatureDto> _createApiService;
-        private readonly IApiAdminService<UpdateFeatureDto> _updateApiService;
+        private readonly IApiService<ResultFeatureDto> _apiService;
+        private readonly IApiService<CreateFeatureDto> _createApiService;
+        private readonly IApiService<UpdateFeatureDto> _updateApiService;
 
-        public AdminFeatureController(IApiAdminService<ResultFeatureDto> apiService, IApiAdminService<CreateFeatureDto> createApiService, IApiAdminService<UpdateFeatureDto> updateApiService)
+        public AdminFeatureController(IApiService<ResultFeatureDto> apiService, IApiService<CreateFeatureDto> createApiService, IApiService<UpdateFeatureDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -28,7 +28,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Features");
+            var values = await _apiService.GetListAsync("Features");
             return View(values);
         }
 
@@ -43,7 +43,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateFeature")]
         public async Task<IActionResult> CreateFeature(CreateFeatureDto createFeatureDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminFeatures/", createFeatureDto);
+            var value = await _createApiService.CreateItemAsync("AdminFeatures/", createFeatureDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminFeature", new { area = "Admin" }) });
@@ -55,14 +55,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveFeature/{id}")]
         public async Task<IActionResult> RemoveFeature(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminFeatures/{id}");
+            await _apiService.RemoveItemAsync($"AdminFeatures/{id}");
             return Ok();
         }
 
         [HttpGet("UpdateFeature/{id}")]
         public async Task<IActionResult> UpdateFeature(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Features/{id}");
+            var value = await _updateApiService.GetItemAsync($"Features/{id}");
             if (value != null)
             {
                 return View(value);
@@ -73,7 +73,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("UpdateFeature/{id}")]
         public async Task<IActionResult> UpdateFeature(UpdateFeatureDto updateFeatureDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminFeatures/", updateFeatureDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminFeatures/", updateFeatureDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminFeature", new { area = "Admin" }) });

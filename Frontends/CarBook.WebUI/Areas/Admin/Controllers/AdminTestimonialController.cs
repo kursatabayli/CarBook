@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -13,9 +13,9 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminTestimonialController : Controller
     {
-        private readonly IApiAdminService<ResultTestimonialDto> _apiService;
+        private readonly IApiService<ResultTestimonialDto> _apiService;
 
-        public AdminTestimonialController(IApiAdminService<ResultTestimonialDto> apiService)
+        public AdminTestimonialController(IApiService<ResultTestimonialDto> apiService)
         {
             _apiService = apiService;
         }
@@ -23,14 +23,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Testimonials/");
+            var values = await _apiService.GetListAsync("Testimonials/");
             return View(values);
         }
 
         [HttpDelete("RemoveTestimonial/{id}")]
         public async Task<IActionResult> RemoveTestimonial(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminTestimonials/{id}");
+            await _apiService.RemoveItemAsync($"AdminTestimonials/{id}");
             return Ok();
         }
     }

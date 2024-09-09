@@ -9,7 +9,7 @@
                 <div class="col-md-4">
                     <ul class="features">
                         <li class="@(Model.Available[i] ? "check" : "remove")">
-                            <span class="ion-ios-checkmark"></span>@Model.FeatureName[i]
+                            <span class="@(Model.Available[i] ? "ion-ios-checkmark" : "ion-ios-close")"></span> @Model.FeatureName[i]
                         </li>
                     </ul>
                 </div>

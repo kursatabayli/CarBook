@@ -11,6 +11,8 @@ namespace CarBook.Application.Interfaces.PricingInterfaces
     public interface ICarPricingRepository
     {
         List<CarPricing> GetCarPricingWithCars();
-		List<CarPricing> GetCarPricingByCarAndPricingId(int id);
-	}
+		Task<List<CarPricing>> GetCarPricingByCarAndPricingIdAsync(int id);
+        Task SaveChangesAsync();
+
+    }
 }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -13,9 +13,9 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminCarFeatureDetailController : Controller
     {
-        private readonly IApiAdminService<ResultCarFeatureDetailDto> _apiService;
+        private readonly IApiService<ResultCarFeatureDetailDto> _apiService;
 
-        public AdminCarFeatureDetailController(IApiAdminService<ResultCarFeatureDetailDto> apiService)
+        public AdminCarFeatureDetailController(IApiService<ResultCarFeatureDetailDto> apiService)
         {
             _apiService = apiService;
         }
@@ -23,14 +23,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index/{id}")]
         public async Task<IActionResult> Index(int id)
         {
-            var values = await _apiService.GetListAsync($"https://localhost:7278/api/CarFeatures/GetCarFeatureDetail/{id}");
+            var values = await _apiService.GetListAsync($"CarFeatures/GetCarFeatureDetail/{id}");
             return View(values);
         }
 
         [HttpPost("Index/{id}")]
         public async Task<IActionResult> Index(int id, List<ResultCarFeatureDetailDto> resultCarFeatureDetailDto)
         {
-            var currentValues = await _apiService.GetListAsync($"https://localhost:7278/api/CarFeatures/GetCarFeatureDetail/{id}");
+            var currentValues = await _apiService.GetListAsync($"CarFeatures/GetCarFeatureDetail/{id}");
 
             if (currentValues != null)
             {
@@ -41,8 +41,8 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
                     if (currentItem != null && currentItem.Available != item.Available)
                     {
                         string url = item.Available
-                            ? $"https://localhost:7278/api/AdminCarFeatures/MakeitTrue/{item.CarFeatureID}"
-                            : $"https://localhost:7278/api/AdminCarFeatures/MakeitFalse/{item.CarFeatureID}";
+                            ? $"AdminCarFeatures/MakeitTrue/{item.CarFeatureID}"
+                            : $"AdminCarFeatures/MakeitFalse/{item.CarFeatureID}";
 
                         await _apiService.GetSingleAsync(url);
                     }

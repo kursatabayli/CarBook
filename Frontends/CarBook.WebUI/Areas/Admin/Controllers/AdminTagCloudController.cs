@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -13,14 +13,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminTagCloudController : Controller
     {
-        private readonly IApiAdminService<ResultTagCloudDto> _apiService;
-        private readonly IApiAdminService<CreateTagCloudDto> _createApiService;
-        private readonly IApiAdminService<UpdateTagCloudDto> _updateApiService;
+        private readonly IApiService<ResultTagCloudDto> _apiService;
+        private readonly IApiService<CreateTagCloudDto> _createApiService;
+        private readonly IApiService<UpdateTagCloudDto> _updateApiService;
 
         public AdminTagCloudController(
-            IApiAdminService<ResultTagCloudDto> apiService,
-            IApiAdminService<CreateTagCloudDto> createApiService,
-            IApiAdminService<UpdateTagCloudDto> updateApiService)
+            IApiService<ResultTagCloudDto> apiService,
+            IApiService<CreateTagCloudDto> createApiService,
+            IApiService<UpdateTagCloudDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -30,7 +30,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/TagClouds/");
+            var values = await _apiService.GetListAsync("TagClouds/");
             return View(values);
         }
 
@@ -44,7 +44,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateTagCloud")]
         public async Task<IActionResult> CreateTagCloud(CreateTagCloudDto createTagCloudDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminTagClouds/", createTagCloudDto);
+            var value = await _createApiService.CreateItemAsync("AdminTagClouds/", createTagCloudDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminTagCloud", new { area = "Admin" }) });
@@ -56,7 +56,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveTagCloud/{id}")]
         public async Task<IActionResult> RemoveTagCloud(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminTagClouds/{id}");
+            await _apiService.RemoveItemAsync($"AdminTagClouds/{id}");
             return Ok();
 
         }
@@ -64,7 +64,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("UpdateTagCloud/{id}")]
         public async Task<IActionResult> UpdateTagCloud(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/TagClouds/{id}");
+            var value = await _updateApiService.GetItemAsync($"TagClouds/{id}");
             if (value != null)
             {
                 return View(value);
@@ -75,7 +75,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("UpdateTagCloud/{id}")]
         public async Task<IActionResult> UpdateTagCloud(UpdateTagCloudDto updateTagCloudDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminTagClouds/", updateTagCloudDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminTagClouds/", updateTagCloudDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminTagCloud", new { area = "Admin" }) });

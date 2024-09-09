@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -12,9 +12,9 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
     public class AdminBlogCommentController : Controller
     {
-        private readonly IApiAdminService<ResultCommentDto> _apiService;
+        private readonly IApiService<ResultCommentDto> _apiService;
 
-        public AdminBlogCommentController(IApiAdminService<ResultCommentDto> apiService)
+        public AdminBlogCommentController(IApiService<ResultCommentDto> apiService)
         {
             _apiService = apiService;
         }
@@ -23,14 +23,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> Index(int id)
         {
             ViewBag.v = id;
-            var values = await _apiService.GetListAsync($"https://localhost:7278/api/Comments/CommentByBlogId/{id}");
+            var values = await _apiService.GetListAsync($"Comments/CommentByBlogId/{id}");
             return View(values);
         }
 
         [HttpDelete("RemoveComment/{id}")]
         public async Task<IActionResult> RemoveComment(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminComments/{id}");
+            await _apiService.RemoveItemAsync($"AdminComments/{id}");
             return Ok();
         }
 

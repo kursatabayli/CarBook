@@ -1,5 +1,5 @@
 ﻿using CarBook.Dto.BannerDtos;
-using CarBook.WebUI.Areas.CarBook.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -7,16 +7,16 @@ namespace CarBook.WebUI.Areas.Site.ViewComponents.DefaultViewComponents
 {
     public class _DefaultCoverUILayoutComponentPartial : ViewComponent
     {
-        private readonly IApiCarBookService<ResultBannerDto> _apiService;
+        private readonly IApiService<ResultBannerDto> _apiService;
 
-        public _DefaultCoverUILayoutComponentPartial(IApiCarBookService<ResultBannerDto> apiService)
+        public _DefaultCoverUILayoutComponentPartial(IApiService<ResultBannerDto> apiService)
         {
             _apiService = apiService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Banners");
+            var values = await _apiService.GetListAsync("Banners");
             return View(values);
         }
     }

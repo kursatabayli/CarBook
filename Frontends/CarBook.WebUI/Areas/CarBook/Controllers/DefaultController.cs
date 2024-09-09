@@ -6,8 +6,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using CarBook.WebUI.Areas.CarBook.Services.Interfaces;
-
 namespace CarBook.WebUI.Areas.CarBook.Controllers
 {
     [Area("CarBook")]

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
 using Newtonsoft.Json.Linq;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -14,14 +14,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminAboutController : Controller
     {
-        private readonly IApiAdminService<ResultAboutDto> _apiService;
-        private readonly IApiAdminService<CreateAboutDto> _createApiService;
-        private readonly IApiAdminService<UpdateAboutDto> _updateApiService;
+        private readonly IApiService<ResultAboutDto> _apiService;
+        private readonly IApiService<CreateAboutDto> _createApiService;
+        private readonly IApiService<UpdateAboutDto> _updateApiService;
 
         public AdminAboutController(
-            IApiAdminService<ResultAboutDto> apiService,
-            IApiAdminService<CreateAboutDto> createApiService,
-            IApiAdminService<UpdateAboutDto> updateApiService)
+            IApiService<ResultAboutDto> apiService,
+            IApiService<CreateAboutDto> createApiService,
+            IApiService<UpdateAboutDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -31,7 +31,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Abouts/");
+            var values = await _apiService.GetListAsync("Abouts/");
             return View(values);
         }
 
@@ -45,7 +45,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateAbout")]
         public async Task<IActionResult> CreateAbout(CreateAboutDto createAboutDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminAbouts/", createAboutDto);
+            var value = await _createApiService.CreateItemAsync("AdminAbouts/", createAboutDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminAbout", new {area = "Admin"}) });
@@ -56,14 +56,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveAbout/{id}")]
         public async Task<IActionResult> RemoveAbout(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminAbouts/{id}");
+            await _apiService.RemoveItemAsync($"AdminAbouts/{id}");
             return Ok();
         }
 
         [HttpGet("UpdateAbout/{id}")]
         public async Task<IActionResult> UpdateAbout(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Abouts/{id}");
+            var value = await _updateApiService.GetItemAsync($"Abouts/{id}");
             if (value != null)
             {
                 return View(value);
@@ -74,7 +74,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("UpdateAbout/{id}")]
         public async Task<IActionResult> UpdateAbout(UpdateAboutDto updateAboutDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminAbouts/", updateAboutDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminAbouts/", updateAboutDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminAbout", new { area = "Admin" }) });

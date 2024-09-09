@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -13,9 +13,9 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminBlogController : Controller
     {
-        private readonly IApiAdminService<ResultBlogDto> _apiService;
+        private readonly IApiService<ResultBlogDto> _apiService;
 
-        public AdminBlogController(IApiAdminService<ResultBlogDto> apiService)
+        public AdminBlogController(IApiService<ResultBlogDto> apiService)
         {
             _apiService = apiService;
         }
@@ -23,7 +23,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Blogs/GetAllBlogsWithAuthorsList");
+            var values = await _apiService.GetListAsync("Blogs/GetAllBlogsWithAuthorsList");
             return View(values);
         }
 
@@ -31,7 +31,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveBlog/{id}")]
         public async Task<IActionResult> RemoveBlog(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBlogs/{id}");
+            await _apiService.RemoveItemAsync($"AdminBlogs/{id}");
             return Ok();
 
         }

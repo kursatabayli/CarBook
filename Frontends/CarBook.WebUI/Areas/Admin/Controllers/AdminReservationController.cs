@@ -1,7 +1,7 @@
 ﻿using CarBook.Dto.CarPricingWithCarsDtos;
 using CarBook.Dto.LocationDtos;
 using CarBook.Dto.ReservationDtos;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -10,11 +10,11 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     [Route("Admin/AdminReservation")]
     public class AdminReservationController : Controller
     {
-        private readonly IApiAdminService<ResultReservationDto> _apiAdminService;
-        private readonly IApiAdminService<ResultCarPricingWithCarsDto> _carService;
-        private readonly IApiAdminService<ResultLocationDto> _locationService;
+        private readonly IApiService<ResultReservationDto> _apiAdminService;
+        private readonly IApiService<ResultCarPricingWithCarsDto> _carService;
+        private readonly IApiService<ResultLocationDto> _locationService;
 
-        public AdminReservationController(IApiAdminService<ResultReservationDto> apiAdminService, IApiAdminService<ResultCarPricingWithCarsDto> carService, IApiAdminService<ResultLocationDto> locationService)
+        public AdminReservationController(IApiService<ResultReservationDto> apiAdminService, IApiService<ResultCarPricingWithCarsDto> carService, IApiService<ResultLocationDto> locationService)
         {
             _apiAdminService = apiAdminService;
             _carService = carService;
@@ -24,20 +24,20 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiAdminService.GetListAsync("https://localhost:7278/api/AdminReservations/");
+            var values = await _apiAdminService.GetListAsync("AdminReservations/");
 
             var tasks = values.Select(async v =>
             {
-                var pickUpLocation = await _apiAdminService.GetItemAsync($"https://localhost:7278/api/Locations/{v.PickUpLocationID}");
+                var pickUpLocation = await _apiAdminService.GetItemAsync($"Locations/{v.PickUpLocationID}");
                 v.PickUpLocationName = pickUpLocation.Name;
 
-                var dropOffLocation = await _apiAdminService.GetItemAsync($"https://localhost:7278/api/Locations/{v.DropOffLocationID}");
+                var dropOffLocation = await _apiAdminService.GetItemAsync($"Locations/{v.DropOffLocationID}");
                 v.DropOffLocationName = dropOffLocation.Name;
 
-                var carInfo = await _apiAdminService.GetItemAsync($"https://localhost:7278/api/CarPricings/GetCarPricingDayWeekMonthById/{v.CarID}");
+                var carInfo = await _apiAdminService.GetItemAsync($"CarPricings/GetCarPricingsByCarId/{v.CarID}");
                 v.BrandAndModel = carInfo.BrandAndModel;
                 
-                var amount = await _apiAdminService.GetItemAsync($"https://localhost:7278/api/CarPricings/GetCarPricingDayWeekMonthById/{v.CarID}");
+                var amount = await _apiAdminService.GetItemAsync($"CarPricings/GetCarPricingsByCarId/{v.CarID}");
                 v.Amount = amount.Amount*(v.DropOffDate-v.PickUpDate).Days;
             });
 

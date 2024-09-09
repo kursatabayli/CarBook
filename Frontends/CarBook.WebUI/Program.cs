@@ -1,8 +1,6 @@
-using CarBook.WebUI.Areas.Admin.Services.Implementations;
-using CarBook.WebUI.Areas.CarBook.Services.Implementations;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
-using CarBook.WebUI.Areas.CarBook.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using CarBook.WebUI.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +21,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         });
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped(typeof(IApiAdminService<>), typeof(ApiAdminService<>));
-builder.Services.AddScoped(typeof(IApiCarBookService<>), typeof(ApiCarBookService<>));
+builder.Services.AddScoped(typeof(IApiService<>), typeof(ApiService<>));
 
 var app = builder.Build();
 

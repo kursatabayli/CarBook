@@ -65,7 +65,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
                 }
             }
 
-            return View(resultLoginDto);
+            return Json(new { success = false, message = "Kullanıcı adı veya şifre hatalı!" });
         }
 
         [HttpGet("Logout")]

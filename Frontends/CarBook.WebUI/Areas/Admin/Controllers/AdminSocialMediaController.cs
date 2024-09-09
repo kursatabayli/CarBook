@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -13,14 +13,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminSocialMediaController : Controller
     {
-        private readonly IApiAdminService<ResultSocialMediaDto> _apiService;
-        private readonly IApiAdminService<CreateSocialMediaDto> _createApiService;
-        private readonly IApiAdminService<UpdateSocialMediaDto> _updateApiService;
+        private readonly IApiService<ResultSocialMediaDto> _apiService;
+        private readonly IApiService<CreateSocialMediaDto> _createApiService;
+        private readonly IApiService<UpdateSocialMediaDto> _updateApiService;
 
         public AdminSocialMediaController(
-            IApiAdminService<ResultSocialMediaDto> apiService,
-            IApiAdminService<CreateSocialMediaDto> createApiService,
-            IApiAdminService<UpdateSocialMediaDto> updateApiService)
+            IApiService<ResultSocialMediaDto> apiService,
+            IApiService<CreateSocialMediaDto> createApiService,
+            IApiService<UpdateSocialMediaDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -30,7 +30,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/SocialMedias/");
+            var values = await _apiService.GetListAsync("SocialMedias/");
             return View(values);
         }
 
@@ -44,7 +44,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateSocialMedia")]
         public async Task<IActionResult> CreateSocialMedia(CreateSocialMediaDto createSocialMediaDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminSocialMedias/", createSocialMediaDto);
+            var value = await _createApiService.CreateItemAsync("AdminSocialMedias/", createSocialMediaDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminSocialMedia", new { area = "Admin" }) });
@@ -56,7 +56,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveSocialMedia/{id}")]
         public async Task<IActionResult> RemoveSocialMedia(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminSocialMedias/{id}");
+            await _apiService.RemoveItemAsync($"AdminSocialMedias/{id}");
             return Ok();
 
         }
@@ -64,7 +64,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("UpdateSocialMedia/{id}")]
         public async Task<IActionResult> UpdateSocialMedia(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/SocialMedias/{id}");
+            var value = await _updateApiService.GetItemAsync($"SocialMedias/{id}");
             if (value != null)
             {
                 return View(value);
@@ -75,7 +75,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("UpdateSocialMedia/{id}")]
         public async Task<IActionResult> UpdateSocialMedia(UpdateSocialMediaDto updateSocialMediaDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminSocialMedias/", updateSocialMediaDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminSocialMedias/", updateSocialMediaDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminSocialMedia", new { area = "Admin" }) });

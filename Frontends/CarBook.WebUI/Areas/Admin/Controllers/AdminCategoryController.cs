@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -13,14 +13,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminCategoryController : Controller
     {
-        private readonly IApiAdminService<ResultCategoryDto> _apiService;
-        private readonly IApiAdminService<CreateCategoryDto> _createApiService;
-        private readonly IApiAdminService<UpdateCategoryDto> _updateApiService;
+        private readonly IApiService<ResultCategoryDto> _apiService;
+        private readonly IApiService<CreateCategoryDto> _createApiService;
+        private readonly IApiService<UpdateCategoryDto> _updateApiService;
 
         public AdminCategoryController(
-            IApiAdminService<ResultCategoryDto> apiService,
-            IApiAdminService<CreateCategoryDto> createApiService,
-            IApiAdminService<UpdateCategoryDto> updateApiService)
+            IApiService<ResultCategoryDto> apiService,
+            IApiService<CreateCategoryDto> createApiService,
+            IApiService<UpdateCategoryDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -30,7 +30,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Categories/");
+            var values = await _apiService.GetListAsync("Categories/");
             return View(values);
         }
 
@@ -45,7 +45,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateCategory")]
         public async Task<IActionResult> CreateCategory(CreateCategoryDto createCategoryDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminCategories/", createCategoryDto);
+            var value = await _createApiService.CreateItemAsync("AdminCategories/", createCategoryDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminCategory", new { area = "Admin" }) });
@@ -57,14 +57,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveCategory/{id}")]
         public async Task<IActionResult> RemoveCategory(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminCategories/{id}");
+            await _apiService.RemoveItemAsync($"AdminCategories/{id}");
             return Ok();
         }
 
         [HttpGet("UpdateCategory/{id}")]
         public async Task<IActionResult> UpdateCategory(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Categories/{id}");
+            var value = await _updateApiService.GetItemAsync($"Categories/{id}");
             if (value != null)
             {
                 return View(value);
@@ -75,7 +75,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("UpdateCategory/{id}")]
         public async Task<IActionResult> UpdateCategory(UpdateCategoryDto updateCategoryDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminCategories/", updateCategoryDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminCategories/", updateCategoryDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminCategory", new { area = "Admin" }) });

@@ -1,5 +1,8 @@
-﻿using CarBook.Dto.LocationDtos;
+﻿using CarBook.Dto.BrandDtos;
+using CarBook.Dto.CarDtos;
+using CarBook.Dto.LocationDtos;
 using CarBook.Dto.RentACarDtos;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -7,26 +10,22 @@ namespace CarBook.WebUI.Areas.Admin.ViewComponents.DashboardComponents
 {
     public class _AdminDashboardChart3ComponentPartial : ViewComponent
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IApiService<ResultRentACarDto> _carApiService;
+        private readonly IApiService<ResultLocationDto> _locationApiService;
 
-        public _AdminDashboardChart3ComponentPartial(IHttpClientFactory httpClientFactory)
+        public _AdminDashboardChart3ComponentPartial(IApiService<ResultRentACarDto> carApiService, IApiService<ResultLocationDto> locationApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _carApiService = carApiService;
+            _locationApiService = locationApiService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = _httpClientFactory.CreateClient();
+            var locationValue = await _locationApiService.GetListAsync("Locations/");
 
-            var locationResponse = await client.GetAsync("https://localhost:7278/api/Locations");
-            var locationJson = await locationResponse.Content.ReadAsStringAsync();
-            var locations = JsonConvert.DeserializeObject<List<ResultLocationDto>>(locationJson);
+            var carValue = await _carApiService.GetListAsync("RentACars/rentacarbylocation");
 
-            var carResponse = await client.GetAsync("https://localhost:7278/api/RentACars/rentacarbylocation");
-            var carJson = await carResponse.Content.ReadAsStringAsync();
-            var cars = JsonConvert.DeserializeObject<List<ResultRentACarDto>>(carJson);
-
-            var locationCarCounts = cars.GroupBy(c => c.LocationID)
+            var locationCarCounts = carValue.GroupBy(c => c.LocationID)
                 .Select(group => new
                 {
                     LocationID = group.Key,
@@ -37,7 +36,7 @@ namespace CarBook.WebUI.Areas.Admin.ViewComponents.DashboardComponents
                 .ToList();
 
 
-            var locationNames = locations.Where(l => locationCarCounts.Any(c => c.LocationID == l.LocationID))
+            var locationNames = locationValue.Where(l => locationCarCounts.Any(c => c.LocationID == l.LocationID))
                 .ToDictionary(l => l.LocationID, l => l.Name);
 
             var chartData = locationCarCounts.Select(x => new
@@ -47,7 +46,7 @@ namespace CarBook.WebUI.Areas.Admin.ViewComponents.DashboardComponents
             }).ToList();
 
             ViewBag.ChartData = chartData;
-            ViewBag.LocationCount = locations.Count;
+            ViewBag.LocationCount = locationValue.Count;
 
             return View();
         }

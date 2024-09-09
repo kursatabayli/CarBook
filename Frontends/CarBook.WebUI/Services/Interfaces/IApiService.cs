@@ -1,6 +1,6 @@
-﻿namespace CarBook.WebUI.Areas.Admin.Services.Interfaces
+﻿namespace CarBook.WebUI.Services.Interfaces
 {
-    public interface IApiAdminService<T>
+    public interface IApiService<T>
     {
         Task<List<T>> GetListAsync(string url);
         Task<T> GetItemAsync(string url);

@@ -1,0 +1,43 @@
+﻿@model UpdateCarPricingDto
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Araç Fiyatları Güncelleme</h4>
+                            <form data-action-type="update" action="/Admin/AdminCarPricing/Index/" method="post">
+                                <input type="hidden" asp-for="CarID" value="@ViewBag.CarID"/>
+                                <div class="form-group">
+                                    <label asp-for="DailyPrice">Günlük Fiyat</label>
+                                    <input type="number" class="form-control" asp-for="DailyPrice" />
+                                    <span asp-validation-for="DailyPrice" class="number-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="WeeklyPrice">Haftalık Fiyat</label>
+                                    <input type="number" class="form-control" asp-for="WeeklyPrice" />
+                                    <span asp-validation-for="WeeklyPrice" class="number-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="MonthlyPrice">Aylık Fiyat</label>
+                                    <input type="number" class="form-control" asp-for="MonthlyPrice" />
+                                    <span asp-validation-for="MonthlyPrice" class="number-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Fiyatları Güncelle</button>
+                                <a href="/Admin/AdminCar/Index" class="btn btn-secondary waves-effect waves-light">İptal</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

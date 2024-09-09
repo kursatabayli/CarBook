@@ -1,6 +1,6 @@
 ﻿using CarBook.Dto.PricingDtos;
 using Microsoft.AspNetCore.Mvc;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -10,14 +10,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminPricingController : Controller
     {
-        private readonly IApiAdminService<ResultPricingDto> _apiService;
-        private readonly IApiAdminService<CreatePricingDto> _createApiService;
-        private readonly IApiAdminService<UpdatePricingDto> _updateApiService;
+        private readonly IApiService<ResultPricingDto> _apiService;
+        private readonly IApiService<CreatePricingDto> _createApiService;
+        private readonly IApiService<UpdatePricingDto> _updateApiService;
 
         public AdminPricingController(
-            IApiAdminService<ResultPricingDto> apiService,
-            IApiAdminService<CreatePricingDto> createApiService,
-            IApiAdminService<UpdatePricingDto> updateApiService)
+            IApiService<ResultPricingDto> apiService,
+            IApiService<CreatePricingDto> createApiService,
+            IApiService<UpdatePricingDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -27,7 +27,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Pricings");
+            var values = await _apiService.GetListAsync("Pricings");
             return View(values);
 
         }
@@ -42,7 +42,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreatePricing")]
         public async Task<IActionResult> CreatePricing(CreatePricingDto createPricingDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminPricings/", createPricingDto);
+            var value = await _createApiService.CreateItemAsync("AdminPricings/", createPricingDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminPricing", new { area = "Admin" }) });
@@ -54,7 +54,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemovePricing/{id}")]
         public async Task<IActionResult> RemovePricing(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminPricings/{id}");
+            await _apiService.RemoveItemAsync($"AdminPricings/{id}");
             return Ok();
         }
 
@@ -62,7 +62,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("UpdatePricing/{id}")]
         public async Task<IActionResult> UpdatePricing(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Pricings/{id}");
+            var value = await _updateApiService.GetItemAsync($"Pricings/{id}");
             if (value != null)
             {
                 return View(value);
@@ -74,7 +74,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("UpdatePricing/{id}")]
         public async Task<IActionResult> UpdatePricing(UpdatePricingDto updatePricingDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminPricings/", updatePricingDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminPricings/", updatePricingDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminPricing", new { area = "Admin" }) });

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace CarBook.Application.Features.Mediator.Queries.CarPricingQueries
 {
-	public class GetCarPricingDayWeekMonthByIdQuery:IRequest<GetCarPricingDayWeekMonthByIdQueryResult>
+	public class GetCarPricingsByCarIdQuery:IRequest<GetCarPricingsByCarIdQueryResult>
 	{
         public int Id { get; set; }
 
-		public GetCarPricingDayWeekMonthByIdQuery(int id)
+		public GetCarPricingsByCarIdQuery(int id)
 		{
 			Id = id;
 		}

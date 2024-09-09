@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -15,11 +15,11 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     public class AdminBannerController : Controller
     {
 
-        private readonly IApiAdminService<ResultBannerDto> _apiService;
-        private readonly IApiAdminService<CreateBannerDto> _createApiService; 
-        private readonly IApiAdminService<UpdateBannerDto> _updateApiService;
+        private readonly IApiService<ResultBannerDto> _apiService;
+        private readonly IApiService<CreateBannerDto> _createApiService; 
+        private readonly IApiService<UpdateBannerDto> _updateApiService;
 
-        public AdminBannerController(IApiAdminService<ResultBannerDto> apiService, IApiAdminService<CreateBannerDto> createApiService, IApiAdminService<UpdateBannerDto> updateApiService)
+        public AdminBannerController(IApiService<ResultBannerDto> apiService, IApiService<CreateBannerDto> createApiService, IApiService<UpdateBannerDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -29,7 +29,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Banners/");
+            var values = await _apiService.GetListAsync("Banners/");
             return View(values);
         }
 
@@ -43,7 +43,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateBanner")]
         public async Task<IActionResult> CreateBanner(CreateBannerDto createBannerDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminBanners/", createBannerDto);
+            var value = await _createApiService.CreateItemAsync("AdminBanners/", createBannerDto);
             return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminBanner", new { area = "Admin" }) });
 
 
@@ -52,7 +52,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveBanner/{id}")]
         public async Task<IActionResult> RemoveBanner(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminBanners/{id}");
+            await _apiService.RemoveItemAsync($"AdminBanners/{id}");
             return Ok();
         }
        
@@ -60,7 +60,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("UpdateBanner/{id}")]
         public async Task<IActionResult> UpdateBanner(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/Banners/{id}");
+            var value = await _updateApiService.GetItemAsync($"Banners/{id}");
             if (value != null)
             {
                 return View(value);
@@ -72,7 +72,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [Route("UpdateBanner/{id}")]
         public async Task<IActionResult> UpdateBanner(UpdateBannerDto updateBannerDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminBanners/", updateBannerDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminBanners/", updateBannerDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminBanner", new { area = "Admin" }) });

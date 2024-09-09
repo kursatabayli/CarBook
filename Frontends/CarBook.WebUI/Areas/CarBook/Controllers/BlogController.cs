@@ -1,6 +1,6 @@
 ﻿using CarBook.Dto.BlogDtos;
 using CarBook.Dto.CommentDtos;
-using CarBook.WebUI.Areas.CarBook.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -11,10 +11,10 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
     [Route("CarBook/Blog")]
     public class BlogController : Controller
     {
-        private readonly IApiCarBookService<ResultGetAllBlogsWithAuthorsDto> _apiService;
-        private readonly IApiCarBookService<CreateCommentDto> _createApiService;
+        private readonly IApiService<ResultGetAllBlogsWithAuthorsDto> _apiService;
+        private readonly IApiService<CreateCommentDto> _createApiService;
 
-        public BlogController(IApiCarBookService<ResultGetAllBlogsWithAuthorsDto> apiService, IApiCarBookService<CreateCommentDto> createApiService)
+        public BlogController(IApiService<ResultGetAllBlogsWithAuthorsDto> apiService, IApiService<CreateCommentDto> createApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -26,7 +26,7 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
             ViewBag.v1 = "Blog";
             ViewBag.v2 = "Bloglar";
             ViewBag.url = "/CarBook/Blog/Index/";
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/Blogs/GetAllBlogsWithAuthorsList");
+            var values = await _apiService.GetListAsync("Blogs/GetAllBlogsWithAuthorsList");
             return View(values);
         }
 
@@ -50,7 +50,7 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
         [HttpPost("CreateComment")]
         public async Task<IActionResult> CreateComment(CreateCommentDto commentDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/Comments/", commentDto);
+            var value = await _createApiService.CreateItemAsync("Comments/", commentDto);
             if(value)
             {
                 return RedirectToAction("BlogDetail", new { id = commentDto.BlogID });

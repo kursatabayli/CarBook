@@ -36,10 +36,10 @@ namespace CarBook.WebApi.Controllers
 			return Ok(values);
 		}
 
-		[HttpGet("GetCarPricingDayWeekMonthById/{id}")]
-		public async Task<IActionResult> GetCarPricingDayWeekMonthById(int id)
+		[HttpGet("GetCarPricingsByCarId/{id}")]
+		public async Task<IActionResult> GetCarPricingsByCarId(int id)
 		{
-			var values = await _mediator.Send(new GetCarPricingDayWeekMonthByIdQuery(id));
+			var values = await _mediator.Send(new GetCarPricingsByCarIdQuery(id));
 			return Ok(values);
 		}
 

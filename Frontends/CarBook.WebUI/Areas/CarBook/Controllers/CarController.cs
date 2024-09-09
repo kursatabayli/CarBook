@@ -1,5 +1,5 @@
 ﻿using CarBook.Dto.CarPricingWithCarsDtos;
-using CarBook.WebUI.Areas.CarBook.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -9,9 +9,9 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
     [Route("CarBook/[controller]")]
     public class CarController : Controller
     {
-        private readonly IApiCarBookService<ResultCarPricingWithCarsDto> _apiService;
+        private readonly IApiService<ResultCarPricingWithCarsDto> _apiService;
 
-        public CarController(IApiCarBookService<ResultCarPricingWithCarsDto> apiService)
+        public CarController(IApiService<ResultCarPricingWithCarsDto> apiService)
         {
             _apiService = apiService;
         }
@@ -22,7 +22,7 @@ namespace CarBook.WebUI.Areas.CarBook.Controllers
             ViewBag.v1 = "Arabalar";
             ViewBag.v2 = "Filomuz";
             ViewBag.url = "/CarBook/Car/Index/";
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/CarPricings/GetCarPricingWithDetails");
+            var values = await _apiService.GetListAsync("CarPricings/GetCarPricingWithDetails");
             return View(values);
         }
 

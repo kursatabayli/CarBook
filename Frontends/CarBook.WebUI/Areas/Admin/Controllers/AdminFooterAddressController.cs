@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using CarBook.WebUI.Areas.Admin.Services.Interfaces;
+using CarBook.WebUI.Services.Interfaces;
 
 
 namespace CarBook.WebUI.Areas.Admin.Controllers
@@ -13,11 +13,11 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
     
     public class AdminFooterAddressController : Controller
     {
-        private readonly IApiAdminService<ResultFooterAddressDto> _apiService;
-        private readonly IApiAdminService<CreateFooterAddressDto> _createApiService;
-        private readonly IApiAdminService<UpdateFooterAddressDto> _updateApiService;
+        private readonly IApiService<ResultFooterAddressDto> _apiService;
+        private readonly IApiService<CreateFooterAddressDto> _createApiService;
+        private readonly IApiService<UpdateFooterAddressDto> _updateApiService;
 
-        public AdminFooterAddressController(IApiAdminService<ResultFooterAddressDto> apiService, IApiAdminService<CreateFooterAddressDto> createApiService, IApiAdminService<UpdateFooterAddressDto> updateApiService)
+        public AdminFooterAddressController(IApiService<ResultFooterAddressDto> apiService, IApiService<CreateFooterAddressDto> createApiService, IApiService<UpdateFooterAddressDto> updateApiService)
         {
             _apiService = apiService;
             _createApiService = createApiService;
@@ -27,7 +27,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
-            var values = await _apiService.GetListAsync("https://localhost:7278/api/FooterAddresses/");
+            var values = await _apiService.GetListAsync("FooterAddresses/");
             return View(values);
         }
 
@@ -42,7 +42,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("CreateFooterAddress")]
         public async Task<IActionResult> CreateFooterAddress(CreateFooterAddressDto createFooterAddressDto)
         {
-            var value = await _createApiService.CreateItemAsync("https://localhost:7278/api/AdminFooterAddresses/", createFooterAddressDto);
+            var value = await _createApiService.CreateItemAsync("AdminFooterAddresses/", createFooterAddressDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminFooterAddress", new { area = "Admin" }) });
@@ -54,14 +54,14 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpDelete("RemoveFooterAddress/{id}")]
         public async Task<IActionResult> RemoveFooterAddress(int id)
         {
-            await _apiService.RemoveItemAsync($"https://localhost:7278/api/AdminFooterAddresses/{id}");
+            await _apiService.RemoveItemAsync($"AdminFooterAddresses/{id}");
             return Ok();
         }
 
         [HttpGet("UpdateFooterAddress/{id}")]
         public async Task<IActionResult> UpdateFooterAddress(int id)
         {
-            var value = await _updateApiService.GetItemAsync($"https://localhost:7278/api/FooterAddresses/{id}");
+            var value = await _updateApiService.GetItemAsync($"FooterAddresses/{id}");
             if (value != null)
             {
                 return View(value);
@@ -72,7 +72,7 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
         [HttpPost("UpdateFooterAddress/{id}")]
         public async Task<IActionResult> UpdateFooterAddress(UpdateFooterAddressDto updateFooterAddressDto)
         {
-            var value = await _updateApiService.UpdateItemAsync("https://localhost:7278/api/AdminFooterAddresses/", updateFooterAddressDto);
+            var value = await _updateApiService.UpdateItemAsync("AdminFooterAddresses/", updateFooterAddressDto);
             if (value)
             {
                 return Json(new { success = true, redirectUrl = Url.Action("Index", "AdminFooterAddress", new { area = "Admin" }) });
