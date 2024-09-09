@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.ContactCommands;
+using CarBook.Application.Features.Mediator.Commands.ContactCommands;
 using CarBook.Application.Interfaces;
 using CarBook.Domain.Entities;
 using MediatR;
@@ -22,7 +22,7 @@ namespace CarBook.Application.Features.Mediator.Handlers.ContactHandlers
                 Email = request.Email,
                 Message = request.Message,
                 Subject = request.Subject,
-                SendDate = request.SendDate,
+                SendDate = DateTime.UtcNow,
             });
         }
     }
