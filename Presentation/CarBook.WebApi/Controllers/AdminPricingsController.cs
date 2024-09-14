@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.PricingCommands;
+﻿using CarBook.Application.Features.CQRS.Commands.PricingCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,30 +11,30 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminPricingsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminPricingsController(IMediator mediator)
+        public AdminPricingsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreatePricing(CreatePricingCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Fiyat Bilgisi Eklendi");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemovePricing(int id)
         {
-            await _mediator.Send(new RemovePricingCommand(id));
+            await _Mediator.Send(new RemovePricingCommand(id));
             return Ok("Fiyat Bilgisi Silindi");
         }
         [HttpPut]
         public async Task<IActionResult> UpdatePricing(UpdatePricingCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Fiyat Bilgisi Güncellendi");
         }
     }

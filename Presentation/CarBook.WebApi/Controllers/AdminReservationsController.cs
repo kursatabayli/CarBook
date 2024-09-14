@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.ReservationQueries;
+﻿using CarBook.Application.Features.CQRS.Queries.ReservationQueries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,24 +11,24 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminReservationsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminReservationsController(IMediator mediator)
+        public AdminReservationsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> ReservationList()
         {
-            var values = await _mediator.Send(new GetReservationQuery());
+            var values = await _Mediator.Send(new GetReservationQuery());
             return Ok(values);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReservation(int id)
         {
-            var values = await _mediator.Send(new GetReservationByIdQuery(id));
+            var values = await _Mediator.Send(new GetReservationByIdQuery(id));
             return Ok(values);
         }
     }

@@ -1,5 +1,5 @@
 ﻿using CarBook.Application.Dtos;
-using CarBook.Application.Features.Mediator.Results.UserResults;
+using CarBook.Application.Features.CQRS.Results.UserResults;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;

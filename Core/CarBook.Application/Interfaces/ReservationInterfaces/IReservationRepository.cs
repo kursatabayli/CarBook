@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Results.ReservationResults;
+﻿using CarBook.Application.Features.CQRS.Results.ReservationResults;
 using CarBook.Domain.Entities;
 using System;
 using System.Collections.Generic;

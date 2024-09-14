@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.FooterAddressQueries;
+﻿using CarBook.Application.Features.CQRS.Queries.FooterAddressQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,24 +8,24 @@ namespace CarBook.WebApi.Controllers
 	[ApiController]
 	public class FooterAddressesController : ControllerBase
 	{
-		private readonly IMediator _mediator;
+		private readonly IMediator _Mediator;
 
-		public FooterAddressesController(IMediator mediator)
+		public FooterAddressesController(IMediator Mediator)
 		{
-			_mediator = mediator;
+			_Mediator = Mediator;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> FooterAddressList()
 		{
-			var values = await _mediator.Send(new GetFooterAddressQuery());
+			var values = await _Mediator.Send(new GetFooterAddressQuery());
 			return Ok(values);
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetFooterAddress(int id)
 		{
-			var values = await _mediator.Send(new GetFooterAddressByIdQuery(id));
+			var values = await _Mediator.Send(new GetFooterAddressByIdQuery(id));
 			return Ok(values);
 		}
 	}

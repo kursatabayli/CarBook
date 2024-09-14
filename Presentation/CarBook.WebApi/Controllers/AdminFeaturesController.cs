@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.FeatureCommands;
+﻿using CarBook.Application.Features.CQRS.Commands.FeatureCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,30 +11,30 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminFeaturesController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminFeaturesController(IMediator mediator)
+        public AdminFeaturesController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFeature(CreateFeatureCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Özellik Başarıyla Eklendi");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveFeature(int id)
         {
-            await _mediator.Send(new RemoveFeatureCommand(id));
+            await _Mediator.Send(new RemoveFeatureCommand(id));
             return Ok("Özellik Başarıyla Silindi");
         }
         [HttpPut]
         public async Task<IActionResult> UpdateFeature(UpdateFeatureCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Özellik Başarıyla Güncellendi");
         }
     }

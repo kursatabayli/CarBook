@@ -1,5 +1,5 @@
-﻿using CarBook.Application.Features.Mediator.Commands.TestimonialCommands;
-using CarBook.Application.Features.Mediator.Queries.TestimonialQueries;
+﻿using CarBook.Application.Features.CQRS.Commands.TestimonialCommands;
+using CarBook.Application.Features.CQRS.Queries.TestimonialQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,31 +9,31 @@ namespace CarBook.WebApi.Controllers
 	[ApiController]
 	public class TestimonialsController : ControllerBase
 	{
-		private readonly IMediator _mediator;
+		private readonly IMediator _Mediator;
 
-		public TestimonialsController(IMediator mediator)
+		public TestimonialsController(IMediator Mediator)
 		{
-			_mediator = mediator;
+			_Mediator = Mediator;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> TestimonialList()
 		{
-			var values = await _mediator.Send(new GetTestimonialQuery());
+			var values = await _Mediator.Send(new GetTestimonialQuery());
 			return Ok(values);
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetTestimonial(int id)
 		{
-			var values = await _mediator.Send(new GetTestimonialByIdQuery(id));
+			var values = await _Mediator.Send(new GetTestimonialByIdQuery(id));
 			return Ok(values);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> CreateTestimonial(CreateTestimonialCommand command)
 		{
-			await _mediator.Send(command);
+			await _Mediator.Send(command);
 			return Ok("Referans Bilgisi Eklendi");
 		}
 	}

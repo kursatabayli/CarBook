@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.StatisticQuery;
+﻿using CarBook.Application.Features.CQRS.Queries.StatisticQuery;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,87 +9,87 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class StatisticsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public StatisticsController(IMediator mediator)
+        public StatisticsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpGet("GetAuthorCount")]
         public async Task<IActionResult> GetAuthorCount()
         {
-            var values = await _mediator.Send(new GetAuthorCountQuery());
+            var values = await _Mediator.Send(new GetAuthorCountQuery());
             return Ok(values);
         }
 
         [HttpGet("GetAutomaticCount")]
         public async Task<IActionResult> GetAutomaticCount()
         {
-            var values = await _mediator.Send(new GetAutomaticCountQuery());
+            var values = await _Mediator.Send(new GetAutomaticCountQuery());
             return Ok(values);
         }
 
         [HttpGet("GetBlogCount")]
         public async Task<IActionResult> GetBlogCount()
         {
-            var values = await _mediator.Send(new GetBlogCountQuery());
+            var values = await _Mediator.Send(new GetBlogCountQuery());
             return Ok(values);
         }
 
         [HttpGet("GetBrandCount")]
         public async Task<IActionResult> GetBrandCount()
         {
-            var values = await _mediator.Send(new GetBrandCountQuery());
+            var values = await _Mediator.Send(new GetBrandCountQuery());
             return Ok(values);
         }
 
         [HttpGet("GetCarCount")]
         public async Task<IActionResult> GetCarCount()
         {
-            var values = await _mediator.Send(new GetCarCountQuery());
+            var values = await _Mediator.Send(new GetCarCountQuery());
             return Ok(values);
         }
 
         [HttpGet("GetHighestCarBrandCount")]
         public async Task<IActionResult> GetHighestCarBrandCount()
         {
-            var values = await _mediator.Send(new GetHighestCarBrandQuery());
+            var values = await _Mediator.Send(new GetHighestCarBrandQuery());
             return Ok(values);
         }
 
         [HttpGet("GetLocationCount")]
         public async Task<IActionResult> GetLocationCount()
         {
-            var values = await _mediator.Send(new GetLocationCountQuery());
+            var values = await _Mediator.Send(new GetLocationCountQuery());
             return Ok(values);
         }
 
         [HttpGet("GetDailyAverageCarRentingPrice")]
         public async Task<IActionResult> GetDailyAverageCarRentingPrice()
         {
-            var values = await _mediator.Send(new GetDailyAverageCarRentingPriceQuery());
+            var values = await _Mediator.Send(new GetDailyAverageCarRentingPriceQuery());
             return Ok(values);
         }
 
         [HttpGet("GetWeeklyAverageCarRentingPrice")]
         public async Task<IActionResult> GetWeeklyAverageCarRentingPrice()
         {
-            var values = await _mediator.Send(new GetWeeklyAverageCarRentingPriceQuery());
+            var values = await _Mediator.Send(new GetWeeklyAverageCarRentingPriceQuery());
             return Ok(values);
         }
 
         [HttpGet("GetMonthlyAverageCarRentingPrice")]
         public async Task<IActionResult> GetMonthlyAverageCarRentingPrice()
         {
-            var values = await _mediator.Send(new GetMonthlyAverageCarRentingPriceQuery());
+            var values = await _Mediator.Send(new GetMonthlyAverageCarRentingPriceQuery());
             return Ok(values);
         }
         
         [HttpGet("GetTestimonialsCount")]
         public async Task<IActionResult> GetTestimonialsCount()
         {
-            var values = await _mediator.Send(new GetTestimonialsCountQuery());
+            var values = await _Mediator.Send(new GetTestimonialsCountQuery());
             return Ok(values);
         }
 

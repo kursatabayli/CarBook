@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.TagCloudCommands;
+﻿using CarBook.Application.Features.CQRS.Commands.TagCloudCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,31 +11,31 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminTagCloudsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminTagCloudsController(IMediator mediator)
+        public AdminTagCloudsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateTagCloud(CreateTagCloudCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Etiket Başarıyla Eklendi");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveTagCloud(int id)
         {
-            await _mediator.Send(new RemoveTagCloudCommand(id));
+            await _Mediator.Send(new RemoveTagCloudCommand(id));
             return Ok("Etiket Başarıyla Silindi");
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateTagCloud(UpdateTagCloudCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Etiket Başarıyla Güncellendi");
         }
 

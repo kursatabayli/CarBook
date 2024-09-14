@@ -1,0 +1,24 @@
+﻿using CarBook.Application.Features.CQRS.Commands.LocationCommands;
+using CarBook.Application.Interfaces;
+using CarBook.Domain.Entities;
+using MediatR;
+
+namespace CarBook.Application.Features.CQRS.Handlers.LocationHandlers
+{
+	public class UpdateLocationCommandHandler : IRequestHandler<UpdateLocationCommand>
+	{
+		private readonly IRepository<Location> _repository;
+
+		public UpdateLocationCommandHandler(IRepository<Location> repository)
+		{
+			_repository = repository;
+		}
+		public async Task Handle(UpdateLocationCommand request, CancellationToken cancellationToken)
+		{
+			var values = await _repository.GetByIdAsync(request.LocationID);
+			values.Name = request.Name;
+			values.Maps = request.Maps;
+			await _repository.UpdateAsync(values);
+		}
+	}
+}

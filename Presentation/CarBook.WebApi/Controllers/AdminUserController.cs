@@ -1,5 +1,5 @@
-﻿using CarBook.Application.Features.Mediator.Commands.UserCommands;
-using CarBook.Application.Features.Mediator.Queries.UserQueries;
+﻿using CarBook.Application.Features.CQRS.Commands.UserCommands;
+using CarBook.Application.Features.CQRS.Queries.UserQueries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,24 +12,24 @@ namespace CarBook.WebApi.Controllers
     [Authorize]
     public class AdminUserController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminUserController(IMediator mediator)
+        public AdminUserController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> User()
         {
-            var value = await _mediator.Send(new GetUserInfoChangeQuery());
+            var value = await _Mediator.Send(new GetUserInfoChangeQuery());
             return Ok(value);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Kullanıcı bilgileri başarıyla güncellendi");
         }
     }

@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.FeatureQueries;
+﻿using CarBook.Application.Features.CQRS.Queries.FeatureQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,24 +8,24 @@ namespace CarBook.WebApi.Controllers
 	[ApiController]
 	public class FeaturesController : ControllerBase
 	{
-		private readonly IMediator _mediator;
+		private readonly IMediator _Mediator;
 
-		public FeaturesController(IMediator mediator)
+		public FeaturesController(IMediator Mediator)
 		{
-			_mediator = mediator;
+			_Mediator = Mediator;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> FeatureList()
 		{
-			var values = await _mediator.Send(new GetFeatureQuery());
+			var values = await _Mediator.Send(new GetFeatureQuery());
 			return Ok(values);
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetFeature(int id)
 		{
-			var values = await _mediator.Send(new GetFeatureByIdQuery(id));
+			var values = await _Mediator.Send(new GetFeatureByIdQuery(id));
 			return Ok(values);
 		}	
 	}

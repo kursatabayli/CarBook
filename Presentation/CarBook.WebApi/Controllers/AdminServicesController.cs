@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.ServiceCommands;
+﻿using CarBook.Application.Features.CQRS.Commands.ServiceCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,30 +11,30 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminServicesController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminServicesController(IMediator mediator)
+        public AdminServicesController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateService(CreateServiceCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Servis Bilgisi Eklendi");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveService(int id)
         {
-            await _mediator.Send(new RemoveServiceCommand(id));
+            await _Mediator.Send(new RemoveServiceCommand(id));
             return Ok("Servis Bilgisi Silindi");
         }
         [HttpPut]
         public async Task<IActionResult> UpdateService(UpdateServiceCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Servis Bilgisi Güncellendi");
         }
     }

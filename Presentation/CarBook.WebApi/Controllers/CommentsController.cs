@@ -1,5 +1,5 @@
-﻿using CarBook.Application.Features.Mediator.Commands.CommentCommands;
-using CarBook.Application.Features.Mediator.Queries.CommentQueries;
+﻿using CarBook.Application.Features.CQRS.Commands.CommentCommands;
+using CarBook.Application.Features.CQRS.Queries.CommentQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,38 +9,38 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public CommentsController(IMediator mediator)
+        public CommentsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> CommentList()
         {
-            var values = await _mediator.Send(new GetCommentQuery());
+            var values = await _Mediator.Send(new GetCommentQuery());
             return Ok(values);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetComment(int id)
         {
-            var values = await _mediator.Send(new GetCommentByIdQuery(id));
+            var values = await _Mediator.Send(new GetCommentByIdQuery(id));
             return Ok(values);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateComment(CreateCommentCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Yorum Başarıyla Eklendi");
         }
 
         [HttpGet("CommentByBlogId/{id}")]
         public async Task<IActionResult> CommentByBlogId(int id)
         {
-            var values = await _mediator.Send(new GetCommentByBlogIdQuery(id));
+            var values = await _Mediator.Send(new GetCommentByBlogIdQuery(id));
             return Ok(values);
         }
     }

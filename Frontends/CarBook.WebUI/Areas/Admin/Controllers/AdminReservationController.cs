@@ -36,9 +36,9 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
 
                 var carInfo = await _apiAdminService.GetItemAsync($"CarPricings/GetCarPricingsByCarId/{v.CarID}");
                 v.BrandAndModel = carInfo.BrandAndModel;
-                
-                var amount = await _apiAdminService.GetItemAsync($"CarPricings/GetCarPricingsByCarId/{v.CarID}");
-                v.Amount = amount.Amount*(v.DropOffDate-v.PickUpDate).Days;
+
+                var price = await _apiAdminService.GetItemAsync($"CarPricings/GetCarPricingsByCarId/{v.CarID}");
+                v.DailyPrice = price.DailyPrice * (v.DropOffDate - v.PickUpDate).Days;
             });
 
             await Task.WhenAll(tasks);

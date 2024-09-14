@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.CategoryQueries;
+﻿using CarBook.Application.Features.CQRS.Queries.CategoryQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,24 +8,24 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public CategoriesController(IMediator mediator)
+        public CategoriesController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> CategoryList()
         {
-            var values = await _mediator.Send(new GetCategoryQuery());
+            var values = await _Mediator.Send(new GetCategoryQuery());
             return Ok(values);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategory(int id)
         {
-            var values = await _mediator.Send(new GetCategoryByIdQuery(id));
+            var values = await _Mediator.Send(new GetCategoryByIdQuery(id));
             return Ok(values);
         }      
     }

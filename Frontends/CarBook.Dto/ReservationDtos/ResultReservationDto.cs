@@ -19,7 +19,7 @@ namespace CarBook.Dto.ReservationDtos
         public string PickUpLocationName { get; set; }
         public string DropOffLocationName { get; set; }
         public string BrandAndModel { get; set; }
-        public Decimal Amount { get; set; }
+        public Decimal DailyPrice { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime DriverLicenseYear { get; set; }
         public DateTime PickUpDate { get; set; }

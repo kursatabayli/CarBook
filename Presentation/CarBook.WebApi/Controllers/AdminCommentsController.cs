@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.CommentCommands;
+﻿using CarBook.Application.Features.CQRS.Commands.CommentCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,24 +11,24 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminCommentsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminCommentsController(IMediator mediator)
+        public AdminCommentsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveComment(int id)
         {
-            await _mediator.Send(new RemoveCommentCommand(id));
+            await _Mediator.Send(new RemoveCommentCommand(id));
             return Ok("Yorum Başarıyla Silindi");
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateComment(UpdateCommentCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Yorum Başarıyla Güncellendi");
         }
 

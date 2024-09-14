@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.BrandCommands;
+﻿using CarBook.Application.Features.CQRS.Commands.BrandCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,30 +11,30 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminBrandsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminBrandsController(IMediator mediator)
+        public AdminBrandsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateBrand(CreateBrandCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Marka Bilgisi Eklendi");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveBrand(int id)
         {
-            await _mediator.Send(new RemoveBrandCommand(id));
+            await _Mediator.Send(new RemoveBrandCommand(id));
             return Ok("Marka Bilgisi Silindi");
         }
         [HttpPut]
         public async Task<IActionResult> UpdateBrand(UpdateBrandCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Marka Bilgisi Güncellendi");
         }
     }

@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.CarFeatureCommands;
+﻿using CarBook.Application.Features.CQRS.Commands.CarFeatureCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,24 +11,24 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminCarFeaturesController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminCarFeaturesController(IMediator mediator)
+        public AdminCarFeaturesController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpGet("MakeitFalse/{id}")]
         public async Task<IActionResult> UpdateCarFeatureAvaliableChangeToFalseCommand(int id)
         {
-            await _mediator.Send(new UpdateCarFeatureAvaliableChangeToFalseCommand(id));
+            await _Mediator.Send(new UpdateCarFeatureAvaliableChangeToFalseCommand(id));
             return Ok("Güncelleme yapıldı");
         }
 
         [HttpGet("MakeitTrue/{id}")]
         public async Task<IActionResult> UpdateCarFeatureAvaliableChangeToTrueCommand(int id)
         {
-            await _mediator.Send(new UpdateCarFeatureAvaliableChangeToTrueCommand(id));
+            await _Mediator.Send(new UpdateCarFeatureAvaliableChangeToTrueCommand(id));
             return Ok("Güncelleme yapıldı");
         }
     }

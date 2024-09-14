@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.LocationQueries;
+﻿using CarBook.Application.Features.CQRS.Queries.LocationQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,24 +8,24 @@ namespace CarBook.WebApi.Controllers
 	[ApiController]
 	public class LocationsController : ControllerBase
 	{
-		private readonly IMediator _mediator;
+		private readonly IMediator _Mediator;
 
-		public LocationsController(IMediator mediator)
+		public LocationsController(IMediator Mediator)
 		{
-			_mediator = mediator;
+			_Mediator = Mediator;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> LocationList()
 		{
-			var values = await _mediator.Send(new GetLocationQuery());
+			var values = await _Mediator.Send(new GetLocationQuery());
 			return Ok(values);
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetLocation(int id)
 		{
-			var values = await _mediator.Send(new GetLocationByIdQuery(id));
+			var values = await _Mediator.Send(new GetLocationByIdQuery(id));
 			return Ok(values);
 		}
 	}

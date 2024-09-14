@@ -1,5 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.ReviewCommands;
-using CarBook.Application.Validators.ReviewValidators;
+﻿using CarBook.Application.Features.CQRS.Commands.ReviewCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,32 +11,24 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminReviewsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminReviewsController(IMediator mediator)
+        public AdminReviewsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveReview(int id)
         {
-            await _mediator.Send(new RemoveReviewCommand(id));
+            await _Mediator.Send(new RemoveReviewCommand(id));
             return Ok("Yorum Bilgisi Silindi");
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateReview(UpdateReviewCommand command)
         {
-            UpdateReviewValidator validator = new UpdateReviewValidator();
-            var validationResult = validator.Validate(command);
-
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);
-            }
-
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Yorum Bilgisi Güncellendi");
         }
     }

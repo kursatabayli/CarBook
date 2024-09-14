@@ -1,96 +1,21 @@
-using CarBook.Application.Interfaces;
-using CarBook.Application.Interfaces.BlogInterfaces;
-using CarBook.Application.Interfaces.CarInterfaces;
-using CarBook.Application.Interfaces.CommentInterfaces;
-using CarBook.Application.Interfaces.PricingInterfaces;
-using CarBook.Application.Interfaces.RentACarInterfaces;
-using CarBook.Application.Interfaces.TagCloudInterfaces;
 using CarBook.Application.Services;
-using CarBook.Persistence.Context;
-using CarBook.Persistence.Repositories;
-using CarBook.Persistence.Repositories.BlogRepostories;
-using CarBook.Persistence.Repositories.CarPricingRepositories;
-using CarBook.Persistence.Repositories.CarReporsitories;
-using CarBook.Persistence.Repositories.CommentRepositories;
-using CarBook.Persistence.Repositories.TagCloudRepositories;
-using CarBook.Persistence.Repositories.RentACarRepositories;
-using CarBook.Application.Interfaces.StatisticInterfaces;
-using CarBook.Persistence.Repositories.StatisticRepositories;
-using CarBook.Application.Interfaces.CarFeaturesInterfaces;
-using CarBook.Persistence.Repositories.CarFeatureRepositories;
-using CarBook.Application.Interfaces.ReviewInterfaces;
-using CarBook.Persistence.Repositories.ReviewRepositories;
-using FluentValidation.AspNetCore;
-using System.Reflection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using CarBook.Application.Interfaces.UserInterfaces;
-using CarBook.Persistence.Repositories.UserRepositories;
-using CarBook.Application.Tools;
-using CarBook.Application.Interfaces.ReservationInterfaces;
-using CarBook.Persistence.Repositories.ReservationRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = JwtTokenDefaults.ValidIssuer,
-        ValidAudience = JwtTokenDefaults.ValidAudience,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key))
-    };
-});
-
-
 // Add services to the container.
-builder.Services.AddScoped<CarBookContext>();
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped(typeof(ICarRepository), typeof(CarRepository));
-builder.Services.AddScoped(typeof(IBlogRepository), typeof(BlogRepository));
-builder.Services.AddScoped(typeof(ITagCloudRepository), typeof(TagCloudRepository));
-builder.Services.AddScoped(typeof(ICommentRepository), typeof(CommentRepository));
-builder.Services.AddScoped(typeof(IRentACarRepository), typeof(RentACarRepository));
-builder.Services.AddScoped(typeof(IStatisticRepository), typeof(StatisticRepository));
-builder.Services.AddScoped(typeof(ICarPricingRepository), typeof(CarPricingRepository));
-builder.Services.AddScoped(typeof(ICarFeatureRepository), typeof(CarFeatureRepository));
-builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
-builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
-builder.Services.AddScoped(typeof(IReservationRepository), typeof(ReservationRepository));
-
-
-//api
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.RegisterServices();
 builder.Services.AddApplicationService(builder.Configuration);
+builder.Services.AddSwaggerDocumentation();
 
-
-builder.Services.AddControllers().AddFluentValidation(x =>
-{
-    x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-});
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwaggerDocumentation(app.Environment);
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();

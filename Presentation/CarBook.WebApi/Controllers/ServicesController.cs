@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.ServiceQueries;
+﻿using CarBook.Application.Features.CQRS.Queries.ServiceQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,24 +8,24 @@ namespace CarBook.WebApi.Controllers
 	[ApiController]
 	public class ServicesController : ControllerBase
 	{
-		private readonly IMediator _mediator;
+		private readonly IMediator _Mediator;
 
-		public ServicesController(IMediator mediator)
+		public ServicesController(IMediator Mediator)
 		{
-			_mediator = mediator;
+			_Mediator = Mediator;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> ServiceList()
 		{
-			var values = await _mediator.Send(new GetServiceQuery());
+			var values = await _Mediator.Send(new GetServiceQuery());
 			return Ok(values);
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetService(int id)
 		{
-			var values = await _mediator.Send(new GetServiceByIdQuery(id));
+			var values = await _Mediator.Send(new GetServiceByIdQuery(id));
 			return Ok(values);
 		}
 	}

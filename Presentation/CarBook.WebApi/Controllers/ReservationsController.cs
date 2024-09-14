@@ -1,6 +1,6 @@
-﻿using CarBook.Application.Features.Mediator.Commands.ReservationCommands;
-using CarBook.Application.Features.Mediator.Queries.ReservationQueries;
-using CarBook.Application.Features.Mediator.Results.ReservationResults;
+﻿using CarBook.Application.Features.CQRS.Commands.ReservationCommands;
+using CarBook.Application.Features.CQRS.Queries.ReservationQueries;
+using CarBook.Application.Features.CQRS.Results.ReservationResults;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,17 +11,17 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class ReservationsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public ReservationsController(IMediator mediator)
+        public ReservationsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateReservation(CreateReservationCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Rezervasyon Başarıyla Oluşturuldu");
         }
 
@@ -42,7 +42,7 @@ namespace CarBook.WebApi.Controllers
                 LocationID = locationID
             };
 
-            var availableCars = await _mediator.Send(query);
+            var availableCars = await _Mediator.Send(query);
 
             if (availableCars == null || availableCars.Count == 0)
                 return NotFound("Belirtilen kriterlere göre müsait araç bulunamadı.");

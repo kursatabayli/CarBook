@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.LocationCommands;
+﻿using CarBook.Application.Features.CQRS.Commands.LocationCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,30 +11,30 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminLocationsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminLocationsController(IMediator mediator)
+        public AdminLocationsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateLocation(CreateLocationCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Konum Başarıyla Eklendi");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveLocation(int id)
         {
-            await _mediator.Send(new RemoveLocationCommand(id));
+            await _Mediator.Send(new RemoveLocationCommand(id));
             return Ok("Konum Başarıyla Silindi");
         }
         [HttpPut]
         public async Task<IActionResult> UpdateLocation(UpdateLocationCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Konum Başarıyla Güncellendi");
         }
     }

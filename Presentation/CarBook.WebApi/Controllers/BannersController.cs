@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.BannerQueries;
+﻿using CarBook.Application.Features.CQRS.Queries.BannerQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,24 +8,24 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class BannersController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public BannersController(IMediator mediator)
+        public BannersController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> BannerList()
         {
-            var values = await _mediator.Send(new GetBannerQuery());
+            var values = await _Mediator.Send(new GetBannerQuery());
             return Ok(values);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBanner(int id)
         {
-            var values = await _mediator.Send(new GetBannerByIdQuery(id));
+            var values = await _Mediator.Send(new GetBannerByIdQuery(id));
             return Ok(values);
         }
     }

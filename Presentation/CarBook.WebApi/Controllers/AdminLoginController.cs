@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.UserQueries;
+﻿using CarBook.Application.Features.CQRS.Queries.UserQueries;
 using CarBook.Application.Tools;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,17 +11,17 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminLoginController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminLoginController(IMediator mediator)
+        public AdminLoginController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(GetCheckUserQuery query)
         {
-            var values = await _mediator.Send(query);
+            var values = await _Mediator.Send(query);
             if(values.IsExist)
             {
                 return Created("", JwtTokenGenerator.GenerateToken(values));

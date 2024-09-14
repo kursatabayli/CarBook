@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Commands.CarCommands;
+﻿using CarBook.Application.Features.CQRS.Commands.CarCommands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,31 +11,31 @@ namespace CarBook.WebApi.Controllers
     [ApiController]
     public class AdminCarsController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _Mediator;
 
-        public AdminCarsController(IMediator mediator)
+        public AdminCarsController(IMediator Mediator)
         {
-            _mediator = mediator;
+            _Mediator = Mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCar(CreateCarCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Araç Bilgisi Eklendi");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveCar(int id)
         {
-            await _mediator.Send(new RemoveCarCommand(id));
+            await _Mediator.Send(new RemoveCarCommand(id));
             return Ok("Araç Bilgisi Silindi");
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateCar(UpdateCarCommand command)
         {
-            await _mediator.Send(command);
+            await _Mediator.Send(command);
             return Ok("Araç Bilgisi Güncellendi");
         }
 

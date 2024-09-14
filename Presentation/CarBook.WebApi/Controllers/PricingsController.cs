@@ -1,4 +1,4 @@
-﻿using CarBook.Application.Features.Mediator.Queries.PricingQueries;
+﻿using CarBook.Application.Features.CQRS.Queries.PricingQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,24 +8,24 @@ namespace CarBook.WebApi.Controllers
 	[ApiController]
 	public class PricingsController : ControllerBase
 	{
-		private readonly IMediator _mediator;
+		private readonly IMediator _Mediator;
 
-		public PricingsController(IMediator mediator)
+		public PricingsController(IMediator Mediator)
 		{
-			_mediator = mediator;
+			_Mediator = Mediator;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> PricingList()
 		{
-			var values = await _mediator.Send(new GetPricingQuery());
+			var values = await _Mediator.Send(new GetPricingQuery());
 			return Ok(values);
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetPricing(int id)
 		{
-			var values = await _mediator.Send(new GetPricingByIdQuery(id));
+			var values = await _Mediator.Send(new GetPricingByIdQuery(id));
 			return Ok(values);
 		}
 	}
