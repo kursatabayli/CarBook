@@ -3,41 +3,45 @@
         <div class="row no-gutters">
             <div class="col-md-12 featured-top">
                 <div class="row no-gutters">
-                    <div class="col-md-4 d-flex align-items-center">
+                    <div class="col-md-4">
                         <form action="/CarBook/Default/ReservationInfos" class="request-form ftco-animate bg-primary" method="post">
                             <h2>Yolculuğunuzu Planlayın</h2>
                             <div class="form-group">
                                 <label for="pickUpLocation" class="label">Alış Lokasyonu</label>
                                 @Html.DropDownList("pickUpLocation", (List<SelectListItem>)ViewBag.LocationValues, "Aracı Teslim Almak İstediğiniz Lokasyon", new { @class = "form-control firstdropdown", @required = "required" })
                             </div>
-
                             <div class="form-group">
                                 <label for="dropOffLocation" class="label">İade Lokasyonu</label>
                                 @Html.DropDownList("dropOffLocation", (List<SelectListItem>)ViewBag.LocationValues, "Aracı Teslim Etmek İstediğiniz Lokasyon", new { @class = "form-control firstdropdown", @required = "required" })
                             </div>
-
-                            <div class="d-flex">
-                                <div class="form-group mr-2">
-                                    <label for="reservationDate" class="label">Rezervasyon Tarihi</label>
-                                    <input type="text" class="form-control datepicker" name="reservationDate" id="reservationDate" placeholder="Tarih" required />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="reservationDate" class="label">Rezervasyon Tarihi</label>
+                                        <input type="text" class="form-control datepicker" name="reservationDate" id="reservationDate" placeholder="Tarih" required />
+                                    </div>
                                 </div>
-                                <div class="form-group ml-2">
-                                    <label for="reservationTime" class="label">Rezervasyon Saati</label>
-                                    <input type="text" class="form-control timepicker" name="reservationTime" id="reservationTime" placeholder="Saat" required>
-                                </div>
-                            </div>
-
-                            <div class="d-flex">
-                                <div class="form-group mr-2">
-                                    <label for="returnDate" class="label">İade Tarihi</label>
-                                    <input type="text" class="form-control datepicker" name="returnDate" id="returnDate" placeholder="Tarih" required />
-                                </div>
-                                <div class="form-group ml-2">
-                                    <label for="returnTime" class="label">İade Saati</label>
-                                    <input type="text" class="form-control timepicker" name="returnTime" id="returnTime" placeholder="Saat" required>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="reservationTime" class="label">Rezervasyon Saati</label>
+                                        <input type="text" class="form-control timepicker" name="reservationTime" id="reservationTime" placeholder="Saat" required>
+                                    </div>
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="returnDate" class="label">İade Tarihi</label>
+                                        <input type="text" class="form-control datepicker" name="returnDate" id="returnDate" placeholder="Tarih" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="returnTime" class="label">İade Saati</label>
+                                        <input type="text" class="form-control timepicker" name="returnTime" id="returnTime" placeholder="Saat" required>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-secondary py-3 px-4">Hemen Araç Kiralayın</button>
                             </div>
